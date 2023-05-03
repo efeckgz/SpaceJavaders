@@ -2,12 +2,14 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
+        SwingUtilities.invokeLater(Main::mainWindow);
+    }
+
+    private static void mainWindow() {
         // Use native macOS menu bar if possible
         try {
             System.setProperty("apple.laf.useScreenMenuBar", "true");
-        } catch (Exception e) {
-            // Do nothing if the property cannot be set
-        }
+        } catch (Exception ignored) {  }
 
         JFrame frame = new JFrame("SpaceJavaders"); // Frame
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -19,15 +21,22 @@ public class Main {
         menuBar.add(fileMenu);
 
         // Creating & adding menu items
-        JMenuItem openItem = new JMenuItem("Open");
-        JMenuItem saveItem = new JMenuItem("Save");
-        JMenuItem exitItem = new JMenuItem("Exit");
-        fileMenu.add(openItem);
-        fileMenu.add(saveItem);
+        JMenuItem playGameItem = new JMenuItem("Play Game");
+        fileMenu.add(playGameItem);
+
+        JMenuItem highScoresItem = new JMenuItem("High Scores");
+        fileMenu.add(highScoresItem);
+
         fileMenu.addSeparator();
-        fileMenu.add(exitItem);
+
+        JMenuItem aboutItem = new JMenuItem("About");
+        fileMenu.add(aboutItem);
+
+        GamePanel gamePanel = new GamePanel();
+        frame.add(gamePanel);
 
         // Setting frame properties
+        frame.pack();
         frame.setJMenuBar(menuBar);
         frame.setSize(700, 500);
         frame.setLocationRelativeTo(null);
