@@ -9,4 +9,7 @@ public abstract class Character extends GameItem {
     }
 
     public abstract boolean getIsEnemy();
+    public boolean isDead() {
+        return getHp() == 0;
+    }
 }

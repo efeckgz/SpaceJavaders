@@ -2,10 +2,15 @@ public class Player extends Character {
     private static int livesLeft = 3;
 
     public Player() {
-        if (getHp() == 0) {
+        if (isDead()) {
             Player.livesLeft -= 1;
             resetHp();
         }
+    }
+
+    @Override
+    public double getTravelSpeed() {
+        return 5; // Arbitrary value
     }
 
     @Override

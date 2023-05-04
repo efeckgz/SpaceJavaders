@@ -6,6 +6,11 @@ public class Bullet extends GameItem {
     }
 
     @Override
+    public double getTravelSpeed() {
+        return 5; // Arbitrary value
+    }
+
+    @Override
     void updatePosition() {
 
     }

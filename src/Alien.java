@@ -20,6 +20,11 @@ public class Alien extends Character {
     }
 
     @Override
+    public double getTravelSpeed() {
+        return 0; // I will try to make the aliens move with the background
+    }
+
+    @Override
     public void updatePosition() {
         // logic that calculates the new position
         // setPosition(p);
