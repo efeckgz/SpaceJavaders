@@ -38,7 +38,7 @@ public class Main {
         // Setting frame properties
         frame.pack();
         frame.setJMenuBar(menuBar);
-        frame.setSize(700, 500);
+        frame.setSize(919, 687);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setVisible(true);
