@@ -1,20 +1,24 @@
+import java.awt.geom.Point2D;
+
 public class Player extends Character {
-    private static int livesLeft = 3;
+    private int livesLeft = 3;
 
     public Player() {
+        setPosition(new Point2D.Double(919.0 / 2.0, 0));
+
         if (isDead()) {
-            Player.livesLeft -= 1;
+            this.livesLeft -= 1;
             resetHp();
         }
     }
 
     @Override
     public double getTravelSpeed() {
-        return 5; // Arbitrary value
+        return 30; // Arbitrary value
     }
 
     @Override
-    void updatePosition() {
+    public void updatePosition() {
         // The position of player will be updated according to the user input.
     }
 
@@ -32,11 +36,11 @@ public class Player extends Character {
         hp = 100;
     }
 
-    public static int getLivesLeft() {
+    public int getLivesLeft() {
         return livesLeft;
     }
 
-    public static void fireBullet() {
+    public void fireBullet() {
         // fire bullets here
         Bullet bullet = new Bullet();
     }

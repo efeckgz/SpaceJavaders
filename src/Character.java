@@ -8,6 +8,8 @@ public abstract class Character extends GameItem {
         this.hp = getHp() - damage;
     }
 
+
+
     public abstract boolean getIsEnemy();
     public boolean isDead() {
         return getHp() == 0;

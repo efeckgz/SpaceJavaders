@@ -1,39 +1,68 @@
 import javax.swing.*;
 import java.awt.*;
-import javax.imageio.ImageIO;
-import java.io.IOException;
-import java.awt.image.BufferedImage;
-import java.util.Objects;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class GamePanel extends JPanel {
     // declare game objects
-    private BufferedImage img;
-    public GamePanel() {
-        try {
-            img = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Assets/Game1.png")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    Player player = new Player();
 
-    public BufferedImage getImg() {
-        return img;
+    private double playerX = getPlayer().getPosition().getX();
+    private double playerY = getPlayer().getPosition().getY();
+
+    public GamePanel() {
+        setFocusable(true);
+        requestFocusInWindow();
+        startGameLoop();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g); // Draw game objects
-        // g.drawString("Welcome screen", 350, 250);
+        super.paintComponent(g);
+        g.drawRect((int) getPlayerX(), (int) getPlayerY(), 50, 50);
+    }
 
-        BufferedImage _img = getImg();
-        if (_img != null) g.drawImage(_img, 0, 0, null);
+    public double getPlayerX() {
+        return playerX;
+    }
+
+    public double getPlayerY() {
+        return playerY;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public void startGameLoop() {
-        while (true) { // the condition for this loop will be changed
-            for (GameItem item : GameItem.getGameItems()) {
-                item.updatePosition();
+//        while (true) { // the condition for this loop will be changed
+//            for (GameItem item : GameItem.getGameItems()) {
+//                item.updatePosition();
+//            }
+//        }
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                Player _player = getPlayer();
+
+                switch (key) {
+                    case KeyEvent.VK_W:
+                        playerY -= _player.getTravelSpeed();
+                        break;
+                    case KeyEvent.VK_S:
+                        playerY += _player.getTravelSpeed();
+                        break;
+                    case KeyEvent.VK_A:
+                        playerX -= _player.getTravelSpeed();
+                        break;
+                    case KeyEvent.VK_D:
+                        playerX += _player.getTravelSpeed();
+                        break;
+                }
+
+                repaint();
             }
-        }
+        });
     }
 }
