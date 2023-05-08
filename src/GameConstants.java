@@ -1,7 +1,9 @@
 public enum GameConstants {
     SCREEN_WIDTH(919),
     SCREEN_HEIGHT(687),
-    PLAYER_SIZE(50);
+    PLAYER_WIDTH(50),
+    PLAYER_HEIGHT(50),
+    PLAYER_TRAVEL_SPEED(10);
 
     private final int value;
 

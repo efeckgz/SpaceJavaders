@@ -14,7 +14,7 @@ public class Player extends Character {
 
     @Override
     public double getTravelSpeed() {
-        return 30; // Arbitrary value
+        return GameConstants.PLAYER_TRAVEL_SPEED.getValue(); // Arbitrary value
     }
 
     @Override
