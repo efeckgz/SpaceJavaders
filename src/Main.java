@@ -38,7 +38,7 @@ public class Main {
         // Setting frame properties
         frame.pack();
         frame.setJMenuBar(menuBar);
-        frame.setSize(919, 687);
+        frame.setSize(GameConstants.SCREEN_WIDTH.getValue(), GameConstants.SCREEN_HEIGHT.getValue());
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setVisible(true);

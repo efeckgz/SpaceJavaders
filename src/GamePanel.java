@@ -19,7 +19,7 @@ public class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawRect((int) getPlayerX(), (int) getPlayerY(), 50, 50);
+        g.drawRect((int) getPlayerX(), (int) getPlayerY(), GameConstants.PLAYER_SIZE.getValue(), GameConstants.PLAYER_SIZE.getValue());
     }
 
     public double getPlayerX() {
@@ -49,6 +49,9 @@ public class GamePanel extends JPanel {
                 switch (key) {
                     case KeyEvent.VK_W:
                         playerY -= _player.getTravelSpeed();
+                        if (_player.getPosition().getY() == (double) GameConstants.SCREEN_HEIGHT.getValue() / 2) {
+                            break;
+                        }
                         break;
                     case KeyEvent.VK_S:
                         playerY += _player.getTravelSpeed();
