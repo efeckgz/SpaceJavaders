@@ -1,10 +1,21 @@
+import javax.imageio.ImageIO;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Objects;
 
 public class Player extends Character {
     private int livesLeft = 3;
+    private BufferedImage asset;
 
     public Player() {
         setPosition(new Point2D.Double(919.0 / 2.0, 0));
+
+        try {
+            asset = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Assets/player.png")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         if (isDead()) {
             this.livesLeft -= 1;
@@ -38,6 +49,10 @@ public class Player extends Character {
 
     public int getLivesLeft() {
         return livesLeft;
+    }
+
+    public BufferedImage getAsset() {
+        return asset;
     }
 
     public void fireBullet() {
