@@ -1,4 +1,5 @@
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -8,12 +9,15 @@ public class Player extends Character {
     private int livesLeft = 3;
     private BufferedImage asset;
 
-    public Player() {
-        //setPosition(new Point2D.Double(919.0 / 2.0, 0));
+    private final JPanel parent;
+
+    public Player(JPanel parent) {
         setPosition(new Point2D.Double(
                 (double) GameConstants.SCREEN_WIDTH.getValue() / 2,
                 -GameConstants.SCREEN_HEIGHT.getValue()
         ));
+
+        this.parent = parent;
 
         try {
             asset = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Assets/player.png")));
@@ -61,6 +65,6 @@ public class Player extends Character {
 
     public void fireBullet() {
         // fire bullets here
-        Bullet bullet = new Bullet();
+        Bullet bullet = new Bullet(this, parent);
     }
 }

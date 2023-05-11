@@ -4,7 +4,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class GamePanel extends JPanel {
-    Player player = new Player();
+    Player player = new Player(this);
 
     private StarField starField;
     private Timer timer;
