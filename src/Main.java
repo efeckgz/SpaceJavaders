@@ -43,7 +43,7 @@ public class Main {
                 BufferedImage img = ImageIO.read(Objects.requireNonNull(Main.class.getResource("Assets/red.png")));
                 JOptionPane.showMessageDialog(
                         null,
-                        "Space Javaders: Galactic Battle\nCreated by: Efe Açıkgöz\n20210702094",
+                        "Space Javaders: Bytecode Battle\nCreated by: Efe Açıkgöz\n20210702094",
                         "About",
                         JOptionPane.INFORMATION_MESSAGE,
                         new ImageIcon(img)
