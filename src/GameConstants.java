@@ -1,3 +1,5 @@
+import java.awt.geom.Point2D;
+
 public enum GameConstants {
     SCREEN_WIDTH(919),
     SCREEN_HEIGHT(687),

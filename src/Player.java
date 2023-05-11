@@ -9,7 +9,11 @@ public class Player extends Character {
     private BufferedImage asset;
 
     public Player() {
-        setPosition(new Point2D.Double(919.0 / 2.0, 0));
+        //setPosition(new Point2D.Double(919.0 / 2.0, 0));
+        setPosition(new Point2D.Double(
+                (double) GameConstants.SCREEN_WIDTH.getValue() / 2,
+                -GameConstants.SCREEN_HEIGHT.getValue()
+        ));
 
         try {
             asset = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Assets/player.png")));
