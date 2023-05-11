@@ -25,6 +25,9 @@ public class Main {
         menuBar.add(fileMenu);
 
         // Creating & adding menu items
+        JMenuItem loginRegisterItem = new JMenuItem("Login/Register");
+        fileMenu.add(loginRegisterItem);
+
         JMenuItem playGameItem = new JMenuItem("Play Game");
         fileMenu.add(playGameItem);
 
@@ -38,20 +41,6 @@ public class Main {
         fileMenu.addSeparator();
 
         JMenuItem aboutItem = new JMenuItem("About");
-        aboutItem.addActionListener(e -> {
-            try {
-                BufferedImage img = ImageIO.read(Objects.requireNonNull(Main.class.getResource("Assets/red.png")));
-                JOptionPane.showMessageDialog(
-                        null,
-                        "Space Javaders: Bytecode Battle\nCreated by: Efe Açıkgöz\n20210702094",
-                        "About",
-                        JOptionPane.INFORMATION_MESSAGE,
-                        new ImageIcon(img)
-                );
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-        });
         fileMenu.add(aboutItem);
 
         StartPanel startPanel = new StartPanel();
@@ -69,6 +58,26 @@ public class Main {
 
         backToStart.addActionListener(e -> {
             // frame.remove();
+        });
+
+        loginRegisterItem.addActionListener(e -> {
+            LoginRegisterDialog loginRegisterDialog = new LoginRegisterDialog(frame);
+            loginRegisterDialog.setVisible(true);
+        });
+
+        aboutItem.addActionListener(e -> {
+            try {
+                BufferedImage img = ImageIO.read(Objects.requireNonNull(Main.class.getResource("Assets/red.png")));
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Space Javaders: Bytecode Battle\nCreated by: Efe Açıkgöz\n20210702094",
+                        "About",
+                        JOptionPane.INFORMATION_MESSAGE,
+                        new ImageIcon(img)
+                );
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         });
 
         // Setting frame properties

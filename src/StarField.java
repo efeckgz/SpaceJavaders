@@ -3,7 +3,7 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 public class StarField {
-    private BufferedImage starField;
+    private final BufferedImage starField;
     private int yOffset;
 
     public StarField(int width, int height) {
@@ -36,37 +36,6 @@ public class StarField {
         if (yOffset >= starField.getHeight()) yOffset = 0;
     }
 
-//    public void draw(Graphics g, int x, int y) {
-//        int starFieldHeight = starField.getHeight();
-//        int firstPartHeight = starFieldHeight - yOffset;
-//        int secondPartHeight = yOffset;
-//
-//        g.drawImage(
-//                starField,
-//                x,
-//                y,
-//                starField.getWidth(),
-//                firstPartHeight,
-//                0,
-//                yOffset,
-//                starField.getWidth(),
-//                starFieldHeight,
-//                null
-//        );
-//
-//        g.drawImage(
-//                starField,
-//                x,
-//                y + firstPartHeight,
-//                starField.getWidth(),
-//                secondPartHeight,
-//                0,
-//                0,
-//                starField.getWidth(),
-//                yOffset,
-//                null
-//        );
-//    }
     public void draw(Graphics g, int x, int y) {
         int starFieldHeight = starField.getHeight();
         int firstPartHeight = starFieldHeight - yOffset;

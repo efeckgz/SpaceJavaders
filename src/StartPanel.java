@@ -60,6 +60,7 @@ public class StartPanel extends JPanel {
         try {
             //  FIX THE PATH!!!!!!!
             font = Font.createFont(Font.TRUETYPE_FONT, new File("/Users/efeacikgoz/projects/SpaceJavaders/src/Assets/upheavtt.ttf"));
+            // font = Font.createFont(Font.TRUETYPE_FONT, new File("Assets/upheavtt.ttf"));
             fontTitle = font.deriveFont(100f);
             fontSubtitle = font.deriveFont(32f);
         } catch (IOException | FontFormatException e) {

@@ -71,22 +71,7 @@ public class GamePanel extends JPanel {
                 if (key == KeyEvent.VK_D) moveRight = false;
             }
         });
-
-//        // Calculate the delay for 120 FPS
-//        timer = new Timer(1000 / 120, e -> {
-//            starField.animate();
-//            updatePosition();
-//            repaint();
-//        });
-//        timer.start();
     }
-
-//    @Override
-//    public void addNotify() {
-//        super.addNotify();
-//        starField = new StarField(getWidth(), getHeight());
-//        timer.start();
-//    }
 
     public Player getPlayer() {
         return player;
