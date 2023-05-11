@@ -36,6 +36,37 @@ public class StarField {
         if (yOffset >= starField.getHeight()) yOffset = 0;
     }
 
+//    public void draw(Graphics g, int x, int y) {
+//        int starFieldHeight = starField.getHeight();
+//        int firstPartHeight = starFieldHeight - yOffset;
+//        int secondPartHeight = yOffset;
+//
+//        g.drawImage(
+//                starField,
+//                x,
+//                y,
+//                starField.getWidth(),
+//                firstPartHeight,
+//                0,
+//                yOffset,
+//                starField.getWidth(),
+//                starFieldHeight,
+//                null
+//        );
+//
+//        g.drawImage(
+//                starField,
+//                x,
+//                y + firstPartHeight,
+//                starField.getWidth(),
+//                secondPartHeight,
+//                0,
+//                0,
+//                starField.getWidth(),
+//                yOffset,
+//                null
+//        );
+//    }
     public void draw(Graphics g, int x, int y) {
         int starFieldHeight = starField.getHeight();
         int firstPartHeight = starFieldHeight - yOffset;
@@ -46,7 +77,7 @@ public class StarField {
                 x,
                 y,
                 starField.getWidth(),
-                firstPartHeight,
+                y + firstPartHeight,
                 0,
                 yOffset,
                 starField.getWidth(),
@@ -59,11 +90,11 @@ public class StarField {
                 x,
                 y + firstPartHeight,
                 starField.getWidth(),
-                secondPartHeight,
+                y + starFieldHeight,
                 0,
                 0,
                 starField.getWidth(),
-                yOffset,
+                secondPartHeight,
                 null
         );
     }
