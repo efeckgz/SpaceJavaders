@@ -1,7 +1,5 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
@@ -17,7 +15,7 @@ public class Main {
             System.setProperty("apple.laf.useScreenMenuBar", "true");
         } catch (Exception ignored) {  }
 
-        JFrame frame = new JFrame("Space Javaders: Galactic Battle"); // Frame
+        JFrame frame = new JFrame("Space Javaders: Bytecode Battle"); // Frame
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JMenuBar menuBar = new JMenuBar(); // Create the menu bar
@@ -28,17 +26,14 @@ public class Main {
 
         // Creating & adding menu items
         JMenuItem playGameItem = new JMenuItem("Play Game");
-        playGameItem.addActionListener(e -> {
-            GamePanel gamePanel = new GamePanel();
-            frame.add(gamePanel);
-            frame.revalidate();
-            frame.repaint();
-            gamePanel.requestFocusInWindow();
-        });
         fileMenu.add(playGameItem);
 
         JMenuItem highScoresItem = new JMenuItem("High Scores");
         fileMenu.add(highScoresItem);
+
+        JMenuItem backToStart = new JMenuItem("Back to Start");
+        backToStart.setVisible(false);
+        fileMenu.add(backToStart);
 
         fileMenu.addSeparator();
 
@@ -61,6 +56,20 @@ public class Main {
 
         StartPanel startPanel = new StartPanel();
         frame.add(startPanel);
+
+        playGameItem.addActionListener(e -> {
+            GamePanel gamePanel = new GamePanel();
+            frame.remove(startPanel);
+            frame.add(gamePanel);
+            backToStart.setVisible(true);
+            frame.revalidate();
+            frame.repaint();
+            gamePanel.requestFocusInWindow();
+        });
+
+        backToStart.addActionListener(e -> {
+            // frame.remove();
+        });
 
         // Setting frame properties
         frame.pack();

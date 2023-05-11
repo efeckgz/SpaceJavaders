@@ -8,8 +8,21 @@ public class StartPanel extends JPanel {
     private Font fontTitle;
     private Font fontSubtitle;
 
+    private StarField starField;
+    private Timer timer;
+
     public StartPanel() {
         setBackground(Color.BLACK);
+
+        SwingUtilities.invokeLater(() -> {
+            starField = new StarField(getWidth(), getHeight());
+
+            timer = new Timer(1000 / 120, e -> {
+                starField.animate();
+                repaint();
+            });
+            timer.start();
+        });
 
         try {
             //  FIX THE PATH!!!!!!!
@@ -28,11 +41,13 @@ public class StartPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        starField.draw(g, 0, 0);
+
         g.setColor(Color.WHITE);
         g.setFont(fontTitle);
         g.drawString("Space Javaders", getWidth() / 16, 300);
 
         g.setFont(fontSubtitle);
-        g.drawString("The galactic battle", 275, 350);
+        g.drawString("Bytecode Battle", 315, 350);
     }
 }
