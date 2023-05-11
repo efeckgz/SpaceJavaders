@@ -61,6 +61,8 @@ public class GamePanel extends JPanel {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
+                Player _player = getPlayer();
+
                 int key = e.getKeyCode();
                 switch (key) {
                     case KeyEvent.VK_W:
@@ -79,6 +81,8 @@ public class GamePanel extends JPanel {
                     case KeyEvent.VK_D:
                         moveRight = true;
                         break;
+                    case KeyEvent.VK_SPACE:
+                        _player.fireBullet();
                 }
             }
 
@@ -138,19 +142,15 @@ public class GamePanel extends JPanel {
         Player _player = getPlayer();
 
         super.paintComponent(g);
+
         g.drawImage(starField1, 0, starField1Y, this);
         g.drawImage(starField2, 0, starField2Y, this);
 
-        starField1Y += GameConstants.PLAYER_TRAVEL_SPEED.getValue();
-        starField2Y += GameConstants.PLAYER_TRAVEL_SPEED.getValue();
+        starField1Y += GameConstants.PLAYER_TRAVEL_SPEED.getValue() / 2;
+        starField2Y += GameConstants.PLAYER_TRAVEL_SPEED.getValue() / 2;
 
-        if (starField1Y >= getHeight()) {
-            starField1Y = -getHeight();
-        }
-
-        if (starField2Y >= getHeight()) {
-            starField2Y = -getHeight();
-        }
+        if (starField1Y >= getHeight()) starField1Y = -getHeight();
+        if (starField2Y >= getHeight()) starField2Y = -getHeight();
 
         g.drawImage(_player.getAsset(), (int) getPlayerX(), (int) getPlayerY(), null);
     }

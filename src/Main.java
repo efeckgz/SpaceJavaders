@@ -1,5 +1,7 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
@@ -26,6 +28,13 @@ public class Main {
 
         // Creating & adding menu items
         JMenuItem playGameItem = new JMenuItem("Play Game");
+        playGameItem.addActionListener(e -> {
+            GamePanel gamePanel = new GamePanel();
+            frame.add(gamePanel);
+            frame.revalidate();
+            frame.repaint();
+            gamePanel.requestFocusInWindow();
+        });
         fileMenu.add(playGameItem);
 
         JMenuItem highScoresItem = new JMenuItem("High Scores");
@@ -50,8 +59,8 @@ public class Main {
         });
         fileMenu.add(aboutItem);
 
-        GamePanel gamePanel = new GamePanel();
-        frame.add(gamePanel);
+        StartPanel startPanel = new StartPanel();
+        frame.add(startPanel);
 
         // Setting frame properties
         frame.pack();
