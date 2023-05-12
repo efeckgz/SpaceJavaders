@@ -1,11 +1,11 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 
 public class WindowManager extends JFrame {
-
     public WindowManager() {
         // setting window properties
         setTitle("Space Javaders: Bytecode Battle");
@@ -17,9 +17,17 @@ public class WindowManager extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
+        try { // this doesn't work as expected
+            Image icon = ImageIO.read(Objects.requireNonNull(getClass().getResource("Assets/red.png")));
+            setIconImage(icon);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // The file menu
+        JMenu fileMenu = new JMenu("File");
 
         // Adding the sub-menu items to the file menu
-        JMenu fileMenu = new JMenu("File");
         JMenuItem loginRegisterItem = new JMenuItem("Login/Register");
         fileMenu.add(loginRegisterItem);
         JMenuItem playGameItem = new JMenuItem("Play Game");

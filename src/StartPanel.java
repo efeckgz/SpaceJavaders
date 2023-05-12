@@ -8,40 +8,48 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class StartPanel extends JPanel {
+    // Initializing title related variables.
     private Font font;
     private Font fontTitle;
     private Font fontSubtitle;
-
-    private StarField starField;
-
-    private boolean starFieldInitialized = false;
-
     private String titleColor1 = "#f14f50";
     private String titleColor2 = "#50d070";
+    private Color active = Color.WHITE;
+    private Color inactive = Color.BLACK;
 
-    private final ArrayList<BufferedImage> aliens = new ArrayList<>();
+    // Initializing the star field.
+    private StarField starField;
+    private boolean starFieldInitialized = false;
+
+
+    // Set to true if the user is logged in.
+    private boolean loggedIn = false;
+
+    // this array holds alien assets to be drawn on the screen.
+    private BufferedImage[] aliens;
 
     public StartPanel() {
         setBackground(Color.BLACK); // set background color
 
         // synchronize title colors
-        Timer colorTimer = new Timer(1000 / 3, e -> cycleTitleColors());
+        // handle user not logged in flashing
+        Timer colorTimer = new Timer(1000 / 3, e -> {
+            cycleTitleColors();
+            if (!loggedIn) {
+                cycleLoggedInActive();
+            }
+        });
         colorTimer.start();
 
         // load alien assets and add them to the ArrayList
         BufferedImage redAlien, greenAlien, extraAlien, yellowALien;
         try {
             redAlien = ImageIO.read(Objects.requireNonNull(getClass().getResource("Assets/red.png")));
-            aliens.add(redAlien);
-
             greenAlien = ImageIO.read(Objects.requireNonNull(getClass().getResource("Assets/green.png")));
-            aliens.add(greenAlien);
-
             extraAlien = ImageIO.read(Objects.requireNonNull(getClass().getResource("Assets/extra.png")));
-            aliens.add(extraAlien);
-
             yellowALien = ImageIO.read(Objects.requireNonNull(getClass().getResource("Assets/yellow.png")));
-            aliens.add(yellowALien);
+
+            aliens = new BufferedImage[]{redAlien, greenAlien, extraAlien, yellowALien};
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -66,6 +74,12 @@ public class StartPanel extends JPanel {
         String temp = titleColor1;
         titleColor1 = titleColor2;
         titleColor2 = temp;
+    }
+
+    private void cycleLoggedInActive() {
+        Color temp = active;
+        active = inactive;
+        inactive = temp;
     }
 
     @Override
@@ -102,5 +116,11 @@ public class StartPanel extends JPanel {
             g.drawImage(alien, x, 375, null);
             x += 60;
         }
+
+        String loggedInMessage = loggedIn ? String.format("Logged in as %s.", "efeckgz") : "User not logged in!";
+        int loggedInMessageX = loggedIn ? 274 : 287;
+
+        g.setColor(active);
+        g.drawString(loggedInMessage, loggedInMessageX, 625);
     }
 }

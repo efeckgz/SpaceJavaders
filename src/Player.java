@@ -9,7 +9,9 @@ public class Player extends Character {
     private int livesLeft = 3;
     private BufferedImage asset;
 
-    private final JPanel parent; // The parent of this component - passed to the bullet object.
+    // The parent of this component should be GamePanel
+    // This is passed to the bullet object.
+    private final JPanel parent;
 
     public Player(JPanel parent) {
         setPosition(new Point2D.Double(
@@ -66,5 +68,6 @@ public class Player extends Character {
     public void fireBullet() {
         // fire bullets here
         Bullet bullet = new Bullet(this, parent);
+        // parent.repaint();
     }
 }
