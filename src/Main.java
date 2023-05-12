@@ -1,6 +1,11 @@
 import javax.swing.*;
 public class Main {
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(WindowManager::mainWindow);
+        // Use native macOS menu bar if possible
+        try {
+            System.setProperty("apple.laf.useScreenMenuBar", "true");
+        } catch (Exception ignored) {  }
+
+        SwingUtilities.invokeLater(WindowManager::new);
     }
 }

@@ -13,7 +13,8 @@ public class StartPanel extends JPanel {
     private Font fontSubtitle;
 
     private StarField starField;
-    private Timer timer;
+
+    private boolean starFieldInitialized = false;
 
     private String titleColor1 = "#f14f50";
     private String titleColor2 = "#50d070";
@@ -22,17 +23,6 @@ public class StartPanel extends JPanel {
 
     public StartPanel() {
         setBackground(Color.BLACK); // set background color
-
-        // initialize star field
-        SwingUtilities.invokeLater(() -> {
-            starField = new StarField(getWidth(), getHeight());
-
-            timer = new Timer(1000 / 120, e -> {
-                starField.animate();
-                repaint();
-            });
-            timer.start();
-        });
 
         // synchronize title colors
         Timer colorTimer = new Timer(1000 / 3, e -> cycleTitleColors());
@@ -81,6 +71,19 @@ public class StartPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        // Initialize the StarField the first time paintComponent is called
+        if (!starFieldInitialized) {
+            starField = new StarField(getWidth(), getHeight());
+
+            Timer timer = new Timer(1000 / 120, e -> {
+                starField.animate();
+                repaint();
+            });
+            timer.start();
+
+            starFieldInitialized = true;
+        }
 
         starField.draw(g, 0, 0); // draws the star field
 
