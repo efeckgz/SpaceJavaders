@@ -9,7 +9,7 @@ public class Player extends Character {
     private int livesLeft = 3;
     private BufferedImage asset;
 
-    private final JPanel parent;
+    private final JPanel parent; // The parent of this component - passed to the bullet object.
 
     public Player(JPanel parent) {
         setPosition(new Point2D.Double(

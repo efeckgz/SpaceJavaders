@@ -4,7 +4,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class GamePanel extends JPanel {
-    Player player = new Player(this);
+    Player player;
 
     private StarField starField;
     private Timer timer;
@@ -21,6 +21,8 @@ public class GamePanel extends JPanel {
         setFocusable(true);
         requestFocusInWindow();
         setBackground(Color.BLACK);
+
+        player = new Player(this);
 
         SwingUtilities.invokeLater(() -> {
             starField = new StarField(getWidth(), getHeight());

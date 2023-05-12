@@ -15,6 +15,7 @@ public class LoginRegisterDialog extends JDialog {
         usernameField = new JTextField(20);
         passwordField = new JPasswordField(20);
         registerCheckBox = new JCheckBox("Register");
+
         JButton submitButton = new JButton("Submit");
         JButton cancelButton = new JButton("Cancel");
 
