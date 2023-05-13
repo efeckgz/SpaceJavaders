@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Point2D;
 
 public class GamePanel extends JPanel {
     private final Player player;
@@ -9,8 +10,8 @@ public class GamePanel extends JPanel {
     private StarField starField;
     private Timer timer;
 
-    private double playerX = getPlayerX();
-    private double playerY = getPlayerY();
+//    private double playerX = getPlayerX();
+//    private double playerY = getPlayerY();
 
     private boolean moveUp = false;
     private boolean moveDown = false;
@@ -23,32 +24,43 @@ public class GamePanel extends JPanel {
         setBackground(Color.BLACK);
 
         player = new Player(this);
+        player.setPosition(new Point2D.Double(420, 620));
 
         SwingUtilities.invokeLater(() -> {
             starField = new StarField(getWidth(), getHeight());
 
             int delay = 1000 / 120; // Calculate the delay for 120 FPS
-            Timer timer = new Timer(delay, e -> {
+            new Timer(delay, e -> {
                 starField.animate();
                 updatePosition();
+
                 repaint();
-            });
-            timer.start();
+            }).start();
+
+            // Only run in debug mode
+            if (Main.debug) {
+                new Timer(1000, e -> {
+                    System.out.printf(
+                            "Player location (x, y): %f, %f\n",
+                            player.getPosition().getX(),
+                            player.getPosition().getY()
+                    );
+                }).start();
+            }
         });
 
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                Player _player = getPlayer();
-
                 int key = e.getKeyCode();
                 switch (key) {
                     case KeyEvent.VK_W:
-                        if (playerY == (double) GameConstants.SCREEN_HEIGHT.getValue() / 2) {
-                            playerY = (double) GameConstants.SCREEN_HEIGHT.getValue() / 2;
-                        } else {
-                            moveUp = true;
-                        }
+//                        if (playerY == (double) GameConstants.SCREEN_HEIGHT.getValue() / 2) {
+//                            playerY = (double) GameConstants.SCREEN_HEIGHT.getValue() / 2;
+//                        } else {
+//                            moveUp = true;
+//                        }
+                        moveUp = true;
                         break;
                     case KeyEvent.VK_S:
                         moveDown = true;
@@ -60,7 +72,7 @@ public class GamePanel extends JPanel {
                         moveRight = true;
                         break;
                     case KeyEvent.VK_SPACE:
-                        _player.fireBullet();
+                        // _player.fireBullet();
                 }
             }
 
@@ -75,32 +87,36 @@ public class GamePanel extends JPanel {
         });
     }
 
-    public Player getPlayer() {
-        return player;
-    }
-
-    public double getPlayerX() {
-        return playerX;
-    }
-
-    public double getPlayerY() {
-        return playerY;
-    }
-
     private void updatePosition() {
         int speed = GameConstants.PLAYER_TRAVEL_SPEED.getValue();
+
+        Point2D.Double pos = player.getPosition();
+        double playerX = pos.getX();
+        double playerY = pos.getY();
 
         if (moveUp) playerY -= speed;
         if (moveDown) playerY += speed;
         if (moveLeft) playerX -= speed;
         if (moveRight) playerX += speed;
+
+        player.setPosition(new Point2D.Double(playerX, playerY));
+
+        revalidate();
+        repaint();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Player _player = getPlayer();
         starField.draw(g, 0, 0);
-        g.drawImage(_player.getAsset(), (int) getPlayerX(), (int) getPlayerY(), null);
+        Point2D.Double pos = player.getPosition();
+        g.drawImage(player.getAsset(), (int) pos.getX(), (int) pos.getY(), null);
+
+        // Draw each bullet
+        g.setColor(Color.WHITE);
+        for (Bullet bullet : Bullet.getBullets()) {
+            pos = bullet.getPosition();
+            g.fillRect((int) pos.getX(), (int) pos.getY(), 5, 25);
+        }
     }
 }

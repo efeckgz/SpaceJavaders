@@ -7,7 +7,7 @@ public abstract class GameItem extends JPanel implements CanMove {
     // and methods to update it. This abstract class may get bigger in the future.
 
     // A Point2D instance holds the position of each GameItem. THis one here uses the double data type.
-    Point2D position = new Point2D.Double();
+    private Point2D.Double position = new Point2D.Double();
 
     // This is an arraylist that holds every item in the game.
     // The constructor of this class adds every object created to this arraylist.
@@ -20,10 +20,10 @@ public abstract class GameItem extends JPanel implements CanMove {
     }
 
     // getter setters - these will be used in updatePosition() implementations.
-    public Point2D getPosition() {
+    public Point2D.Double getPosition() {
         return position;
     }
-    public void setPosition(Point2D p) {
+    public void setPosition(Point2D.Double p) {
         position = p;
     }
 

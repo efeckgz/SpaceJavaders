@@ -91,6 +91,8 @@ public class Bullet {
                 (double) (int) player.getPosition().getX() / 2,
                 player.getPosition().getY()
         );
+
+        bullets.add(this);
     }
 
     public Player getPlayer() {

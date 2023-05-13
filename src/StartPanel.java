@@ -90,11 +90,10 @@ public class StartPanel extends JPanel {
         if (!starFieldInitialized) {
             starField = new StarField(getWidth(), getHeight());
 
-            Timer timer = new Timer(1000 / 120, e -> {
+            new Timer(1000 / 120, e -> {
                 starField.animate();
                 repaint();
-            });
-            timer.start();
+            }).start();
 
             starFieldInitialized = true;
         }

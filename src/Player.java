@@ -13,12 +13,12 @@ public class Player extends Character {
     // This is passed to the bullet object.
     private final JPanel parent;
 
-    public Player(JPanel parent) {
-        setPosition(new Point2D.Double(
-                (double) GameConstants.SCREEN_WIDTH.getValue() / 2,
-                -GameConstants.SCREEN_HEIGHT.getValue()
-        ));
+    private boolean moveUp = false;
+    private boolean moveDown = false;
+    private boolean moveLeft = false;
+    private boolean moveRight = false;
 
+    public Player(JPanel parent) {
         this.parent = parent;
 
         try {
@@ -27,10 +27,31 @@ public class Player extends Character {
             e.printStackTrace();
         }
 
+        setPosition(new Point2D.Double(
+                (double) GameConstants.SCREEN_WIDTH.getValue() / 2 - (double) asset.getWidth() / 2,
+                GameConstants.SCREEN_HEIGHT.getValue() - this.getAsset().getHeight()
+        ));
+
         if (isDead()) {
             this.livesLeft -= 1;
             resetHp();
         }
+    }
+
+    public void setMoveUp(boolean moveUp) {
+        this.moveUp = moveUp;
+    }
+
+    public void setMoveDown(boolean moveDown) {
+        this.moveDown = moveDown;
+    }
+
+    public void setMoveLeft(boolean moveLeft) {
+        this.moveLeft = moveLeft;
+    }
+
+    public void setMoveRight(boolean moveRight) {
+        this.moveRight = moveRight;
     }
 
     @Override
@@ -40,7 +61,22 @@ public class Player extends Character {
 
     @Override
     public void updatePosition() {
-        // The position of player will be updated according to the user input.
+        // The position of player will be updated according to the user input
+        int speed = GameConstants.PLAYER_TRAVEL_SPEED.getValue();
+
+//        Point2D.Double pos = getPosition();
+//        double playerX = pos.getX();
+//        double playerY = pos.getY();
+
+        if (moveUp) getPosition().y -= speed;
+        if (moveDown) getPosition().y += speed;
+        if (moveLeft) getPosition().x -= speed;
+        if (moveRight) getPosition().x += speed;
+
+//        setPosition(new Point2D.Double(playerX, playerY));
+
+        revalidate();
+        repaint();
     }
 
     @Override
@@ -65,9 +101,9 @@ public class Player extends Character {
         return asset;
     }
 
-    public void fireBullet() {
-        // fire bullets here
-        Bullet bullet = new Bullet(this, parent);
-        // parent.repaint();
-    }
+//    public void fireBullet() {
+//        // fire bullets here
+//        parent.fireBullet();
+//        // parent.repaint();
+//    }
 }
