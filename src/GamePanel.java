@@ -31,9 +31,11 @@ public class GamePanel extends JPanel {
 
             int delay = 1000 / 120; // Calculate the delay for 120 FPS
             new Timer(delay, e -> {
-                starField.animate();
-                updatePosition();
+                starField.animate(); // Start the star field.
+                player.updatePosition(); // update the players position.
 
+                // update the component
+                revalidate();
                 repaint();
             }).start();
 
@@ -52,24 +54,18 @@ public class GamePanel extends JPanel {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                int key = e.getKeyCode();
-                switch (key) {
+                switch (e.getKeyCode()) {
                     case KeyEvent.VK_W:
-//                        if (playerY == (double) GameConstants.SCREEN_HEIGHT.getValue() / 2) {
-//                            playerY = (double) GameConstants.SCREEN_HEIGHT.getValue() / 2;
-//                        } else {
-//                            moveUp = true;
-//                        }
-                        moveUp = true;
+                        player.setMoveUp(true);
                         break;
                     case KeyEvent.VK_S:
-                        moveDown = true;
+                        player.setMoveDown(true);
                         break;
                     case KeyEvent.VK_A:
-                        moveLeft = true;
+                        player.setMoveLeft(true);
                         break;
                     case KeyEvent.VK_D:
-                        moveRight = true;
+                        player.setMoveRight(true);
                         break;
                     case KeyEvent.VK_SPACE:
                         // _player.fireBullet();
@@ -78,31 +74,22 @@ public class GamePanel extends JPanel {
 
             @Override
             public void keyReleased(KeyEvent e) {
-                int key = e.getKeyCode();
-                if (key == KeyEvent.VK_W) moveUp = false;
-                if (key == KeyEvent.VK_S) moveDown = false;
-                if (key == KeyEvent.VK_A) moveLeft = false;
-                if (key == KeyEvent.VK_D) moveRight = false;
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_W:
+                        player.setMoveUp(false);
+                        break;
+                    case KeyEvent.VK_S:
+                        player.setMoveDown(false);
+                        break;
+                    case KeyEvent.VK_A:
+                        player.setMoveLeft(false);
+                        break;
+                    case KeyEvent.VK_D:
+                        player.setMoveRight(false);
+                        break;
+                }
             }
         });
-    }
-
-    private void updatePosition() {
-        int speed = GameConstants.PLAYER_TRAVEL_SPEED.getValue();
-
-        Point2D.Double pos = player.getPosition();
-        double playerX = pos.getX();
-        double playerY = pos.getY();
-
-        if (moveUp) playerY -= speed;
-        if (moveDown) playerY += speed;
-        if (moveLeft) playerX -= speed;
-        if (moveRight) playerX += speed;
-
-        player.setPosition(new Point2D.Double(playerX, playerY));
-
-        revalidate();
-        repaint();
     }
 
     @Override

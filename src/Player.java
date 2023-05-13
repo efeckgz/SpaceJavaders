@@ -75,8 +75,8 @@ public class Player extends Character {
 
 //        setPosition(new Point2D.Double(playerX, playerY));
 
-        revalidate();
-        repaint();
+//        revalidate();
+//        repaint();
     }
 
     @Override
