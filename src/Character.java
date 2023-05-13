@@ -1,5 +1,3 @@
-import java.awt.geom.Point2D;
-
 public abstract class Character extends GameItem {
     protected int hp;
     protected boolean isEnemy;

@@ -1,96 +1,33 @@
-//import java.awt.*;
-//import java.awt.geom.Point2D;
-//import java.util.ArrayList;
-//import java.util.List;
-//import javax.swing.*;
-//
-//public class Bullet extends GameItem {
-//    private final Player player;
-//    private Point2D.Double position;
-//
-//    private boolean isAlive;
-//
-//    private static final ArrayList<Bullet> bullets = new ArrayList<>();
-//
-//    public Bullet(Player player, JPanel parent) {
-//        // constructor creates the bullet at the tip of the players muzzle and handles the logic
-//        // for updating its location. This method should track the required properties of the bullet
-//        // (its location, whether it is destroyed or not etc.) and handle its destruction accordingly.
-//        this.player = player;
-//        isAlive = true;
-//
-//        bullets.add(this);
-//        parent.add(this);
-//
-//        // parent.repaint();
-//
-//        setVisible(true);
-//
-//        setPosition(new Point2D.Double((double) (int) getPlayer().getPosition().getX() / 2, getPlayer().getPosition().getY()));
-//
-//        Timer timer = new Timer(1000 / 120, e -> updatePosition());
-//        timer.start();
-//
-//        System.out.println("bullet time\n");
-//    }
-//
-//    public static ArrayList<Bullet> getBullets() {
-//        return bullets;
-//    }
-//
-//    public Player getPlayer() {
-//        return player;
-//    }
-//
-//    @Override
-//    public Point2D.Double getPosition() {
-//        return position;
-//    }
-//
-//    @Override
-//    public void setPosition(Point2D p) {
-//        super.setPosition(p);
-//    }
-//
-//    @Override
-//    public double getTravelSpeed() {
-//        return GameConstants.BULLET_TRAVEL_SPEED.getValue(); // Arbitrary value
-//    }
-//
-//    @Override
-//    void updatePosition() {
-//        if (isAlive) {
-//            setPosition(new Point2D.Double((double) (int) getPlayer().getPosition().getX() / 2, getPlayer().getPosition().getY() - getTravelSpeed()));
-//        }
-//    }
-//
-//    @Override
-//    protected void paintComponent(Graphics g) {
-//        super.paintComponent(g);
-//        Point2D.Double p = getPosition();
-//
-//        g.setColor(Color.WHITE);
-//        g.fillRect((int) p.getX(), (int) p.getY(), 5, 25);
-//    }
-//}
-
+import javax.swing.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-public class Bullet {
+public class Bullet extends GameItem {
     private final Player player;
-    private Point2D.Double position;
     private boolean isAlive;
-
     private static final ArrayList<Bullet> bullets = new ArrayList<>();
 
     public Bullet(Player player) {
         this.player = player;
         this.isAlive = true;
-        this.position = new Point2D.Double(
-                (double) (int) player.getPosition().getX() / 2,
-                player.getPosition().getY()
-        );
+
+        setPosition(new Point2D.Double(
+                (player.getPosition().getX() + (double) player.getAsset().getWidth() / 2) - 2,
+                player.getPosition().getY() - 5
+        ));
+
+        if (Main.debug) {
+            new Timer(1000, e -> {
+                if (getIsAlive()) {
+                    System.out.printf(
+                            "Bullet %s location (x, y): %.2f, %.2f\n",
+                            Bullet.getBullets().indexOf(this),
+                            getPosition().getX(),
+                            getPosition().getY()
+                    );
+                }
+            }).start();
+        }
 
         bullets.add(this);
     }
@@ -99,36 +36,32 @@ public class Bullet {
         return player;
     }
 
-    public Point2D.Double getPosition() {
-        return position;
-    }
-
-    public void setPosition(Point2D p) {
-        this.position = (Point2D.Double) p;
-    }
-
+    @Override
     public double getTravelSpeed() {
-        return GameConstants.BULLET_TRAVEL_SPEED.getValue(); // Arbitrary value
+        return GameConstants.BULLET_TRAVEL_SPEED.getValue() * TimeManager.getDeltaTime(); // Arbitrary value
     }
 
     public static ArrayList<Bullet> getBullets() {
         return bullets;
     }
 
+    @Override
     public void updatePosition() {
-        if (isAlive) {
-            setPosition(new Point2D.Double(
-                    (double) (int) getPlayer().getPosition().getX() / 2,
-                    getPlayer().getPosition().getY() - getTravelSpeed()
-            ));
+        if (getPosition().y < 1) {
+            setIsAlive(false);
+//            if (Main.debug) System.out.printf("Bullet %s died.\n", Bullet.bullets.indexOf(this));
+        }
+
+        if (getIsAlive()) {
+            getPosition().y -= getTravelSpeed();
         }
     }
 
-    public boolean isAlive() {
+    public boolean getIsAlive() {
         return isAlive;
     }
 
-    public void setAlive(boolean isAlive) {
+    public void setIsAlive(boolean isAlive) {
         this.isAlive = isAlive;
     }
 }

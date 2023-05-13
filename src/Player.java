@@ -1,5 +1,7 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -13,10 +15,14 @@ public class Player extends Character {
     // This is passed to the bullet object.
     private final JPanel parent;
 
+    // Variables for player movement
     private boolean moveUp = false;
     private boolean moveDown = false;
     private boolean moveLeft = false;
     private boolean moveRight = false;
+
+    // Variable for bullet firing logic
+    private boolean bulletFired = false;
 
     public Player(JPanel parent) {
         this.parent = parent;
@@ -32,10 +38,15 @@ public class Player extends Character {
                 GameConstants.SCREEN_HEIGHT.getValue() - this.getAsset().getHeight()
         ));
 
+        // fireBullet();
+
         if (isDead()) {
             this.livesLeft -= 1;
             resetHp();
         }
+
+        // Fire bullets every 2 seconds
+        new Timer(850, e -> fireBullet()).start();
     }
 
     public void setMoveUp(boolean moveUp) {
@@ -54,29 +65,22 @@ public class Player extends Character {
         this.moveRight = moveRight;
     }
 
-    @Override
-    public double getTravelSpeed() {
-        return GameConstants.PLAYER_TRAVEL_SPEED.getValue(); // Arbitrary value
+    public void setBulletFired(boolean bulletFired) {
+        this.bulletFired = bulletFired;
     }
 
     @Override
-    public void updatePosition() {
-        // The position of player will be updated according to the user input
-        int speed = GameConstants.PLAYER_TRAVEL_SPEED.getValue();
-
-//        Point2D.Double pos = getPosition();
-//        double playerX = pos.getX();
-//        double playerY = pos.getY();
+    public double getTravelSpeed() {
+        return GameConstants.PLAYER_TRAVEL_SPEED.getValue() * TimeManager.getDeltaTime(); // Arbitrary value
+    }
+    @Override
+    public void updatePosition() { // The position of player will be updated according to the user input
+        double speed = getTravelSpeed();
 
         if (moveUp) getPosition().y -= speed;
         if (moveDown) getPosition().y += speed;
         if (moveLeft) getPosition().x -= speed;
         if (moveRight) getPosition().x += speed;
-
-//        setPosition(new Point2D.Double(playerX, playerY));
-
-//        revalidate();
-//        repaint();
     }
 
     @Override
@@ -101,9 +105,70 @@ public class Player extends Character {
         return asset;
     }
 
-//    public void fireBullet() {
-//        // fire bullets here
-//        parent.fireBullet();
-//        // parent.repaint();
-//    }
+    public void fireBullet() {
+        // fire bullets here
+        Bullet bullet = new Bullet(this);
+        setBulletFired(true);
+    }
+
+    private void controlKeyPressedActionHandler(KeyEvent e) {
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_W:
+                setMoveUp(true);
+                break;
+            case KeyEvent.VK_S:
+                setMoveDown(true);
+                break;
+            case KeyEvent.VK_A:
+                setMoveLeft(true);
+                break;
+            case KeyEvent.VK_D:
+                setMoveRight(true);
+                break;
+//            case KeyEvent.VK_SPACE:
+//                fireBullet();
+        }
+    }
+
+    private void controlKeyReleasedActionHandler(KeyEvent e) {
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_W:
+                setMoveUp(false);
+                break;
+            case KeyEvent.VK_S:
+                setMoveDown(false);
+                break;
+            case KeyEvent.VK_A:
+                setMoveLeft(false);
+                break;
+            case KeyEvent.VK_D:
+                setMoveRight(false);
+                break;
+        }
+
+        // Only run in debug mode
+        if (Main.debug) {
+            System.out.printf(
+                    "Player location (x, y): %.2f, %.2f\n",
+                    getPosition().getX(),
+                    getPosition().getY()
+            );
+        }
+    }
+
+    public KeyAdapter handleUserInput() {
+        return new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+                controlKeyPressedActionHandler(e);
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                super.keyReleased(e);
+                controlKeyReleasedActionHandler(e);
+            }
+        };
+    }
 }

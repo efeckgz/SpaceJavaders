@@ -2,12 +2,12 @@ import javax.swing.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-public abstract class GameItem extends JPanel implements CanMove {
+public abstract class GameItem extends JPanel {
     // Every game object must extend this abstract class. The abstract class includes the position of the Item
     // and methods to update it. This abstract class may get bigger in the future.
 
     // A Point2D instance holds the position of each GameItem. THis one here uses the double data type.
-    private Point2D.Double position = new Point2D.Double();
+    Point2D.Double position = new Point2D.Double();
 
     // This is an arraylist that holds every item in the game.
     // The constructor of this class adds every object created to this arraylist.
@@ -19,20 +19,20 @@ public abstract class GameItem extends JPanel implements CanMove {
         GameItem.getGameItems().add(this); // Add the created object to the arraylist.
     }
 
+    public static ArrayList<GameItem> getGameItems() {
+        return gameItems;
+    }
+
     // getter setters - these will be used in updatePosition() implementations.
     public Point2D.Double getPosition() {
         return position;
     }
+
     public void setPosition(Point2D.Double p) {
         position = p;
     }
 
-    @Override
     public abstract double getTravelSpeed();
-
-    public static ArrayList<GameItem> getGameItems() {
-        return gameItems;
-    }
 
     // Calculate the changes in items position and update it accordingly using setPosition.
     abstract void updatePosition();
