@@ -1,7 +1,7 @@
 import javax.swing.*;
 
 public class Main {
-    public static boolean debug = true;
+    public static boolean debug = false;
 
     public static void main(String[] args) {
         // Use native macOS menu bar if possible

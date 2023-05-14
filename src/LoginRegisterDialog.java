@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Map;
 
 public class LoginRegisterDialog extends JDialog {
     private static boolean loggedIn = false;
@@ -88,6 +89,9 @@ public class LoginRegisterDialog extends JDialog {
                 // Check if the inputted username/password combo matches an existing user
                 System.out.println("Logging in user: " + username);
                 setLoggedIn(true);
+
+                // Enable debug mode for the user admin
+                if (username.equalsIgnoreCase("admin")) Main.debug = true;
             }
 
             // Close the dialog

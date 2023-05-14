@@ -61,15 +61,6 @@ public class Player extends Character {
     public double getTravelSpeed() {
         return GameConstants.PLAYER_TRAVEL_SPEED.getValue() /* TimeManager.getDeltaTime()*/;
     }
-//    @Override
-//    public void updatePosition() { // The position of player will be updated according to the user input
-//        double speed = getTravelSpeed();
-//
-//        if (moveUp) getPosition().y -= speed;
-//        if (moveDown) getPosition().y += speed;
-//        if (moveLeft) getPosition().x -= speed;
-//        if (moveRight) getPosition().x += speed;
-//    }
 
     @Override
     public void updatePosition() { // The position of player will be updated according to the user input
@@ -78,6 +69,7 @@ public class Player extends Character {
         if (moveUp && getPosition().y - speed >= (double) GameConstants.SCREEN_HEIGHT.getValue() / 2) {
             getPosition().y -= speed;
         }
+
         if (moveDown && getPosition().y + speed + asset.getHeight() <= GameConstants.SCREEN_HEIGHT.getValue() - this.getAsset().getHeight()) {
             getPosition().y += speed;
         }
@@ -85,6 +77,7 @@ public class Player extends Character {
         if (moveLeft && getPosition().x - speed >= 0) {
             getPosition().x -= speed;
         }
+
         if (moveRight && getPosition().x + speed + asset.getWidth() <= GameConstants.SCREEN_WIDTH.getValue()) {
             getPosition().x += speed;
         }

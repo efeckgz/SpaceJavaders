@@ -7,6 +7,8 @@ public class GamePanel extends JPanel {
     private final Player player;
     private StarField starField;
 
+    private Alien[][] aliens;
+
     public GamePanel() {
         setFocusable(true);
         requestFocusInWindow();
@@ -14,6 +16,27 @@ public class GamePanel extends JPanel {
 
         player = new Player(this);
         player.setPosition(new Point2D.Double(420, 620));
+
+        int[][] level1 = Levels.getLevel1();
+        aliens = new Alien[level1.length][level1[0].length];
+        for (int i = 0; i < level1.length; i++) {
+            for (int j = 0; j < level1[i].length; j++) {
+                switch (level1[i][j]) {
+                    case 1:
+                        aliens[i][j] = new Alien.RedAlien(false);
+                        break;
+                    case 2:
+                        aliens[i][j] = new Alien.GreenAlien(false);
+                        break;
+                    case 3:
+                        aliens[i][j] = new Alien.YellowAlien(false);
+                        break;
+                    case 4:
+                        aliens[i][j] = new Alien.ExtraAlien(false);
+                        break;
+                }
+            }
+        }
 
         SwingUtilities.invokeLater(() -> {
             starField = new StarField(getWidth(), getHeight());
@@ -28,6 +51,15 @@ public class GamePanel extends JPanel {
                     Bullet bullet = bulletIterator.next();
                     bullet.updatePosition();
                     if (!bullet.getIsAlive()) bulletIterator.remove();
+                }
+
+                // Update the position of each alien
+                for (Alien[] row : aliens) {
+                    for (Alien alien : row) {
+                        if (alien != null) {
+                            alien.updatePosition();
+                        }
+                    }
                 }
 
                 // update the component
@@ -55,7 +87,23 @@ public class GamePanel extends JPanel {
         g.setColor(Color.WHITE);
         g.setFont(FontManager.getFontText());
         g.drawString("Lives: ", 15, 30);
-        g.drawImage(ImageManager.loadLivesLeft(player), 70, 15, null);
+        if (player.getLivesLeft() > 0) {
+            // The check is there for the debug mode
+            g.drawImage(ImageManager.loadLivesLeft(player), 70, 15, null);
+        }
+
+        // Draw each alien
+        for (int i = 0; i < aliens.length; i++) {
+            for (int j = 0; j < aliens[i].length; j++) {
+                Alien alien = aliens[i][j];
+                if (alien != null) {
+                    // Calculate position based on grid index
+                    int x = j * (GameConstants.ALIEN_WIDTH.getValue() + GameConstants.ALIEN_PADDING.getValue());
+                    int y = i * (GameConstants.ALIEN_HEIGHT.getValue() + GameConstants.ALIEN_PADDING.getValue());
+                    g.drawImage(alien.getAsset(), x, y, null);
+                }
+            }
+        }
 
         // Draw each bullet
         g.setColor(Color.WHITE);
