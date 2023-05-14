@@ -3,9 +3,9 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public class Bullet extends GameItem {
+    private static final ArrayList<Bullet> bullets = new ArrayList<>();
     private final Player player;
     private boolean isAlive;
-    private static final ArrayList<Bullet> bullets = new ArrayList<>();
 
     public Bullet(Player player) {
         this.player = player;
@@ -32,6 +32,10 @@ public class Bullet extends GameItem {
         bullets.add(this);
     }
 
+    public static ArrayList<Bullet> getBullets() {
+        return bullets;
+    }
+
     public Player getPlayer() {
         return player;
     }
@@ -39,10 +43,6 @@ public class Bullet extends GameItem {
     @Override
     public double getTravelSpeed() {
         return GameConstants.BULLET_TRAVEL_SPEED.getValue() /* TimeManager.getDeltaTime()*/;
-    }
-
-    public static ArrayList<Bullet> getBullets() {
-        return bullets;
     }
 
     @Override

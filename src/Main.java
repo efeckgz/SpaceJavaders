@@ -7,7 +7,8 @@ public class Main {
         // Use native macOS menu bar if possible
         try {
             System.setProperty("apple.laf.useScreenMenuBar", "true");
-        } catch (Exception ignored) {  }
+        } catch (Exception ignored) {
+        }
 
         SwingUtilities.invokeLater(WindowManager::new);
     }

@@ -7,7 +7,8 @@ public enum GameConstants {
     BULLET_WIDTH(6),
     BULLET_HEIGHT(25),
     BULLET_TRAVEL_SPEED(4),
-    BULLET_FIRE_FREQUENCY(500);
+    BULLET_FIRE_FREQUENCY(500),
+    LOGGED_IN(0); // 0 for false, 1 for true.
 
     private final int value;
 

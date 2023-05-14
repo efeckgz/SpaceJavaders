@@ -5,13 +5,11 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 public class Player extends Character {
-    private int livesLeft = 3;
     private final BufferedImage asset;
-
     // The parent of this component should be GamePanel
     // This is passed to the bullet object.
     private final JPanel parent;
-
+    private int livesLeft = 3;
     // Variables for player movement
     private boolean moveUp = false;
     private boolean moveDown = false;
@@ -23,12 +21,6 @@ public class Player extends Character {
 
     public Player(JPanel parent) {
         this.parent = parent;
-
-//        try {
-//            asset = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Assets/player.png")));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
         asset = ImageManager.load("Assets/player.png");
 
         setPosition(new Point2D.Double(
@@ -36,14 +28,10 @@ public class Player extends Character {
                 GameConstants.SCREEN_HEIGHT.getValue() - this.getAsset().getHeight()
         ));
 
-        // fireBullet();
-
         if (isDead()) {
             this.livesLeft -= 1;
             resetHp();
         }
-
-        if (Main.debug) takeDamage(100); // Test this!
 
         // Fire bullets automatically
         new Timer(GameConstants.BULLET_FIRE_FREQUENCY.getValue(), e -> fireBullet()).start();
@@ -121,6 +109,10 @@ public class Player extends Character {
         return livesLeft;
     }
 
+    public void setLivesLeft(int livesLeft) {
+        this.livesLeft = livesLeft;
+    }
+
     public BufferedImage getAsset() {
         return asset;
     }
@@ -132,21 +124,25 @@ public class Player extends Character {
     }
 
     private void controlKeyPressedActionHandler(KeyEvent e) {
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_W:
-                setMoveUp(true);
-                break;
-            case KeyEvent.VK_S:
-                setMoveDown(true);
-                break;
-            case KeyEvent.VK_A:
-                setMoveLeft(true);
-                break;
-            case KeyEvent.VK_D:
-                setMoveRight(true);
-                break;
-//            case KeyEvent.VK_SPACE:
-//                fireBullet();
+        try {
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_W:
+                    setMoveUp(true);
+                    break;
+                case KeyEvent.VK_S:
+                    setMoveDown(true);
+                    break;
+                case KeyEvent.VK_A:
+                    setMoveLeft(true);
+                    break;
+                case KeyEvent.VK_D:
+                    setMoveRight(true);
+                    break;
+                case KeyEvent.VK_SPACE:
+                    if (Main.debug) setLivesLeft(getLivesLeft() - 1);
+            }
+        } catch (IllegalStateException illegalStateException) {
+            System.err.printf("%s", getLivesLeft());
         }
     }
 

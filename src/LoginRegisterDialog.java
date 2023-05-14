@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 public class LoginRegisterDialog extends JDialog {
+    private static boolean loggedIn = false;
     private final JTextField usernameField;
     private final JPasswordField passwordField;
     private final JCheckBox registerCheckBox;
@@ -59,6 +60,14 @@ public class LoginRegisterDialog extends JDialog {
         setLocationRelativeTo(owner);
     }
 
+    public static boolean getLoggedIn() {
+        return LoginRegisterDialog.loggedIn;
+    }
+
+    public static void setLoggedIn(boolean loggedIn) {
+        LoginRegisterDialog.loggedIn = loggedIn;
+    }
+
     private class SubmitButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -73,10 +82,12 @@ public class LoginRegisterDialog extends JDialog {
                 // Register the user
                 // Add logic to store the username/password as a new user
                 System.out.println("Registering user: " + username);
+                setLoggedIn(true);
             } else {
                 // Login
                 // Check if the inputted username/password combo matches an existing user
                 System.out.println("Logging in user: " + username);
+                setLoggedIn(true);
             }
 
             // Close the dialog

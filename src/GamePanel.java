@@ -18,7 +18,7 @@ public class GamePanel extends JPanel {
         SwingUtilities.invokeLater(() -> {
             starField = new StarField(getWidth(), getHeight());
 
-            new Timer(1000 / GameConstants.GAME_FPS.getValue(), e -> {
+            TimeManager.startTimer(1000 / GameConstants.GAME_FPS.getValue(), e -> {
                 starField.animate(); // Start the star field.
                 player.updatePosition(); // update the players position.
 
@@ -33,7 +33,7 @@ public class GamePanel extends JPanel {
                 // update the component
                 revalidate();
                 repaint();
-            }).start();
+            });
         });
 
         // Handles the user input to control the player.

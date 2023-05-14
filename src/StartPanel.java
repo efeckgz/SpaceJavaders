@@ -1,40 +1,30 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Objects;
 
 public class StartPanel extends JPanel {
+    // this array holds alien assets to be drawn on the screen.
+    private final BufferedImage[] aliens;
     // Initializing title related variables.
     private String titleColor1 = "#f14f50";
     private String titleColor2 = "#50d070";
     private Color active = Color.WHITE;
     private Color inactive = Color.BLACK;
-
     // Initializing the star field.
     private StarField starField;
     private boolean starFieldInitialized = false;
 
-
-    // Set to true if the user is logged in.
-    private boolean loggedIn = false;
-
-    // this array holds alien assets to be drawn on the screen.
-    private final BufferedImage[] aliens;
-
     public StartPanel() {
         setBackground(Color.BLACK); // set background color
-        //FontManager.loadFont(GraphicsEnvironment.getLocalGraphicsEnvironment());
 
         // synchronize title colors
         // handle user not logged in flashing
-        new Timer(1000 / 3, e -> {
+        TimeManager.startTimer(1000 / 3, e -> {
             cycleTitleColors();
-            if (!loggedIn) {
+            if (!LoginRegisterDialog.getLoggedIn()) {
                 cycleLoggedInActive();
             }
-        }).start();
+        });
 
         // Load font
         FontManager.loadFont(GraphicsEnvironment.getLocalGraphicsEnvironment());
@@ -45,7 +35,7 @@ public class StartPanel extends JPanel {
         BufferedImage extraAlien = ImageManager.load("Assets/extra.png");
         BufferedImage yellowALien = ImageManager.load("Assets/yellow.png");
 
-        aliens = new BufferedImage[] {redAlien, greenAlien, extraAlien, yellowALien};
+        aliens = new BufferedImage[]{redAlien, greenAlien, extraAlien, yellowALien};
     }
 
     // method to cycle the title colors - this is called in a timer
@@ -95,8 +85,8 @@ public class StartPanel extends JPanel {
             x += 60;
         }
 
-        String loggedInMessage = loggedIn ? String.format("Logged in as %s.", "efeckgz") : "User not logged in!";
-        int loggedInMessageX = loggedIn ? 274 : 287;
+        String loggedInMessage = LoginRegisterDialog.getLoggedIn() ? String.format("Logged in as %s.", "efeckgz") : "User not logged in!";
+        int loggedInMessageX = LoginRegisterDialog.getLoggedIn() ? 274 : 287;
 
         g.setColor(active);
         g.drawString(loggedInMessage, loggedInMessageX, 625);

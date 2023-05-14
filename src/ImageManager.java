@@ -22,28 +22,26 @@ public class ImageManager {
     // Only called from the paintComponent() method of GamePanel.
     public static BufferedImage loadLivesLeft(Player p) {
         String path;
-        switch (p.getLivesLeft()) {
-            case 3:
-                path = "Assets/livesThree.png";
-                break;
-            case 2:
-                path = "Assets/livesTwo.png";
-                break;
-            case 1:
-                path = "Assets/livesOne.png";
-                break;
-            default:
-                // Unreachable - only there to silence the error.
-                path = "";
-                break;
-        }
-
         try {
-            livesLeftImg = ImageIO.read(Objects.requireNonNull(ImageManager.class.getResource(path)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            switch (p.getLivesLeft()) {
+                case 3:
+                    path = "Assets/livesThree.png";
+                    break;
+                case 2:
+                    path = "Assets/livesTwo.png";
+                    break;
+                case 1:
+                    path = "Assets/livesOne.png";
+                    break;
+                default:
+                    throw new IllegalStateException(String.format("Unexpected value for player remaining lives: %s", p.getLivesLeft()));
 
+            }
+
+            livesLeftImg = ImageManager.load(path);
+        } catch (IllegalStateException illegalStateException) {
+            illegalStateException.printStackTrace();
+        }
         return livesLeftImg;
     }
 }
