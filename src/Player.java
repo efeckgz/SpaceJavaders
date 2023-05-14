@@ -45,8 +45,8 @@ public class Player extends Character {
             resetHp();
         }
 
-        // Fire bullets every 2 seconds
-        new Timer(850, e -> fireBullet()).start();
+        // Fire bullets automatically
+        new Timer(GameConstants.BULLET_FIRE_FREQUENCY.getValue(), e -> fireBullet()).start();
     }
 
     public void setMoveUp(boolean moveUp) {
@@ -71,7 +71,7 @@ public class Player extends Character {
 
     @Override
     public double getTravelSpeed() {
-        return GameConstants.PLAYER_TRAVEL_SPEED.getValue() * TimeManager.getDeltaTime(); // Arbitrary value
+        return GameConstants.PLAYER_TRAVEL_SPEED.getValue() /* TimeManager.getDeltaTime()*/;
     }
     @Override
     public void updatePosition() { // The position of player will be updated according to the user input
@@ -85,7 +85,7 @@ public class Player extends Character {
 
     @Override
     public int getHp() {
-        return 100; // research this
+        return GameConstants.PLAYER_HP.getValue(); // research this
     }
 
     @Override
@@ -94,7 +94,7 @@ public class Player extends Character {
     }
 
     public void resetHp() {
-        hp = 100;
+        hp = GameConstants.PLAYER_HP.getValue();
     }
 
     public int getLivesLeft() {

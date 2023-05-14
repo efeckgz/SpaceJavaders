@@ -1,8 +1,13 @@
 public enum GameConstants {
     SCREEN_WIDTH(919),
     SCREEN_HEIGHT(687),
-    PLAYER_TRAVEL_SPEED(1000),
-    BULLET_TRAVEL_SPEED(300);
+    GAME_FPS(120),
+    PLAYER_TRAVEL_SPEED(10),
+    PLAYER_HP(100),
+    BULLET_WIDTH(6),
+    BULLET_HEIGHT(25),
+    BULLET_TRAVEL_SPEED(4),
+    BULLET_FIRE_FREQUENCY(500);
 
     private final int value;
 

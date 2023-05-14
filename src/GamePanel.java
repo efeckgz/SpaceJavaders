@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
+import java.util.Iterator;
 
 public class GamePanel extends JPanel {
     private final Player player;
@@ -17,10 +19,17 @@ public class GamePanel extends JPanel {
         SwingUtilities.invokeLater(() -> {
             starField = new StarField(getWidth(), getHeight());
 
-            new Timer(1000 / 120, e -> {
+            new Timer(1000 / GameConstants.GAME_FPS.getValue(), e -> {
                 starField.animate(); // Start the star field.
                 player.updatePosition(); // update the players position.
-                for (Bullet bullet : Bullet.getBullets()) bullet.updatePosition();
+
+                // Update the position of each bullet
+                Iterator<Bullet> bulletIterator = Bullet.getBullets().iterator();
+                while (bulletIterator.hasNext()) {
+                    Bullet bullet = bulletIterator.next();
+                    bullet.updatePosition();
+                    if (!bullet.getIsAlive()) bulletIterator.remove();
+                }
 
                 // update the component
                 revalidate();
@@ -43,11 +52,24 @@ public class GamePanel extends JPanel {
         Point2D.Double pos = player.getPosition();
         g.drawImage(player.getAsset(), (int) pos.getX(), (int) pos.getY(), null);
 
+        // Draw player health
+        g.drawImage(LivesLeftManager.getLivesLeftImage(player), 0, 0, null);
+        g.setColor(Color.WHITE);
+        g.setFont(FontManager.getFontText());
+        g.drawString("Lives: ", 100, 100);
+
         // Draw each bullet
         g.setColor(Color.WHITE);
         for (Bullet bullet : Bullet.getBullets()) {
             pos = bullet.getPosition();
-            if (bullet.getIsAlive()) g.fillRect((int) pos.getX(), (int) pos.getY(), 5, 25);
+            if (bullet.getIsAlive()) {
+                g.fillRect(
+                        (int) pos.getX(),
+                        (int) pos.getY(),
+                        GameConstants.BULLET_WIDTH.getValue(),
+                        GameConstants.BULLET_HEIGHT.getValue()
+                );
+            }
         }
     }
 }

@@ -2,16 +2,11 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class StartPanel extends JPanel {
     // Initializing title related variables.
-    private Font font;
-    private Font fontTitle;
-    private Font fontSubtitle;
     private String titleColor1 = "#f14f50";
     private String titleColor2 = "#50d070";
     private Color active = Color.WHITE;
@@ -30,16 +25,19 @@ public class StartPanel extends JPanel {
 
     public StartPanel() {
         setBackground(Color.BLACK); // set background color
+        //FontManager.loadFont(GraphicsEnvironment.getLocalGraphicsEnvironment());
 
         // synchronize title colors
         // handle user not logged in flashing
-        Timer colorTimer = new Timer(1000 / 3, e -> {
+        new Timer(1000 / 3, e -> {
             cycleTitleColors();
             if (!loggedIn) {
                 cycleLoggedInActive();
             }
-        });
-        colorTimer.start();
+        }).start();
+
+        // Load font
+        FontManager.loadFont(GraphicsEnvironment.getLocalGraphicsEnvironment());
 
         // load alien assets and add them to the ArrayList
         BufferedImage redAlien, greenAlien, extraAlien, yellowALien;
@@ -53,20 +51,6 @@ public class StartPanel extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // load font
-        try {
-            //  FIX THE PATH!!!!!!!
-            font = Font.createFont(Font.TRUETYPE_FONT, new File("/Users/efeacikgoz/projects/SpaceJavaders/src/Assets/upheavtt.ttf"));
-            // font = Font.createFont(Font.TRUETYPE_FONT, new File("Assets/upheavtt.ttf"));
-            fontTitle = font.deriveFont(100f);
-            fontSubtitle = font.deriveFont(32f);
-        } catch (IOException | FontFormatException e) {
-            e.printStackTrace();
-        }
-
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        if (font != null) ge.registerFont(font);
     }
 
     // method to cycle the title colors - this is called in a timer
@@ -102,11 +86,11 @@ public class StartPanel extends JPanel {
 
         // titles
         g.setColor(Color.decode(titleColor1));
-        g.setFont(fontTitle);
+        g.setFont(FontManager.getFontTitle());
         g.drawString("Space Javaders", getWidth() / 16, 300);
 
         g.setColor(Color.decode(titleColor2));
-        g.setFont(fontSubtitle);
+        g.setFont(FontManager.getFontSubtitle());
         g.drawString("Bytecode Battle", 315, 350);
 
         // draws the aliens

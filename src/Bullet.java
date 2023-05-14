@@ -12,8 +12,8 @@ public class Bullet extends GameItem {
         this.isAlive = true;
 
         setPosition(new Point2D.Double(
-                (player.getPosition().getX() + (double) player.getAsset().getWidth() / 2) - 2,
-                player.getPosition().getY() - 5
+                (player.getPosition().getX() + (double) player.getAsset().getWidth() / 2) - (double) GameConstants.BULLET_WIDTH.getValue() / 2,
+                player.getPosition().getY() - player.getAsset().getHeight()
         ));
 
         if (Main.debug) {
@@ -38,7 +38,7 @@ public class Bullet extends GameItem {
 
     @Override
     public double getTravelSpeed() {
-        return GameConstants.BULLET_TRAVEL_SPEED.getValue() * TimeManager.getDeltaTime(); // Arbitrary value
+        return GameConstants.BULLET_TRAVEL_SPEED.getValue() /* TimeManager.getDeltaTime()*/;
     }
 
     public static ArrayList<Bullet> getBullets() {
@@ -47,14 +47,15 @@ public class Bullet extends GameItem {
 
     @Override
     public void updatePosition() {
-        if (getPosition().y < 1) {
+        getPosition().y -= getTravelSpeed();
+        if (getPosition().y <= 0) {
             setIsAlive(false);
 //            if (Main.debug) System.out.printf("Bullet %s died.\n", Bullet.bullets.indexOf(this));
         }
-
-        if (getIsAlive()) {
-            getPosition().y -= getTravelSpeed();
-        }
+//
+//        if (getIsAlive()) {
+//            getPosition().y -= getTravelSpeed();
+//        }
     }
 
     public boolean getIsAlive() {
