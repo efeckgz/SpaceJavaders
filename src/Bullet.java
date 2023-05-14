@@ -52,10 +52,6 @@ public class Bullet extends GameItem {
             setIsAlive(false);
 //            if (Main.debug) System.out.printf("Bullet %s died.\n", Bullet.bullets.indexOf(this));
         }
-//
-//        if (getIsAlive()) {
-//            getPosition().y -= getTravelSpeed();
-//        }
     }
 
     public boolean getIsAlive() {

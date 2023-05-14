@@ -21,7 +21,7 @@ public class StartPanel extends JPanel {
     private boolean loggedIn = false;
 
     // this array holds alien assets to be drawn on the screen.
-    private BufferedImage[] aliens;
+    private final BufferedImage[] aliens;
 
     public StartPanel() {
         setBackground(Color.BLACK); // set background color
@@ -40,17 +40,12 @@ public class StartPanel extends JPanel {
         FontManager.loadFont(GraphicsEnvironment.getLocalGraphicsEnvironment());
 
         // load alien assets and add them to the ArrayList
-        BufferedImage redAlien, greenAlien, extraAlien, yellowALien;
-        try {
-            redAlien = ImageIO.read(Objects.requireNonNull(getClass().getResource("Assets/red.png")));
-            greenAlien = ImageIO.read(Objects.requireNonNull(getClass().getResource("Assets/green.png")));
-            extraAlien = ImageIO.read(Objects.requireNonNull(getClass().getResource("Assets/extra.png")));
-            yellowALien = ImageIO.read(Objects.requireNonNull(getClass().getResource("Assets/yellow.png")));
+        BufferedImage redAlien = ImageManager.load("Assets/red.png");
+        BufferedImage greenAlien = ImageManager.load("Assets/green.png");
+        BufferedImage extraAlien = ImageManager.load("Assets/extra.png");
+        BufferedImage yellowALien = ImageManager.load("Assets/yellow.png");
 
-            aliens = new BufferedImage[]{redAlien, greenAlien, extraAlien, yellowALien};
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        aliens = new BufferedImage[] {redAlien, greenAlien, extraAlien, yellowALien};
     }
 
     // method to cycle the title colors - this is called in a timer

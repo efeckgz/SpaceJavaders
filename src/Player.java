@@ -1,15 +1,12 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Objects;
 
 public class Player extends Character {
     private int livesLeft = 3;
-    private BufferedImage asset;
+    private final BufferedImage asset;
 
     // The parent of this component should be GamePanel
     // This is passed to the bullet object.
@@ -27,11 +24,12 @@ public class Player extends Character {
     public Player(JPanel parent) {
         this.parent = parent;
 
-        try {
-            asset = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Assets/player.png")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            asset = ImageIO.read(Objects.requireNonNull(getClass().getResource("/Assets/player.png")));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        asset = ImageManager.load("Assets/player.png");
 
         setPosition(new Point2D.Double(
                 (double) GameConstants.SCREEN_WIDTH.getValue() / 2 - (double) asset.getWidth() / 2,
@@ -44,6 +42,8 @@ public class Player extends Character {
             this.livesLeft -= 1;
             resetHp();
         }
+
+        if (Main.debug) takeDamage(100); // Test this!
 
         // Fire bullets automatically
         new Timer(GameConstants.BULLET_FIRE_FREQUENCY.getValue(), e -> fireBullet()).start();

@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class LoginRegisterDialog extends JDialog {
     private final JTextField usernameField;
@@ -64,6 +65,9 @@ public class LoginRegisterDialog extends JDialog {
             String username = usernameField.getText();
             String password = new String(passwordField.getPassword());
             boolean register = registerCheckBox.isSelected();
+
+            //JSONObject users = new JSONObject();
+            File file = new File("users.json");
 
             if (register) {
                 // Register the user

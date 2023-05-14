@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
 import java.util.Iterator;
 
 public class GamePanel extends JPanel {
@@ -53,10 +52,10 @@ public class GamePanel extends JPanel {
         g.drawImage(player.getAsset(), (int) pos.getX(), (int) pos.getY(), null);
 
         // Draw player health
-        g.drawImage(LivesLeftManager.getLivesLeftImage(player), 0, 0, null);
         g.setColor(Color.WHITE);
         g.setFont(FontManager.getFontText());
-        g.drawString("Lives: ", 100, 100);
+        g.drawString("Lives: ", 15, 30);
+        g.drawImage(ImageManager.loadLivesLeft(player), 70, 15, null);
 
         // Draw each bullet
         g.setColor(Color.WHITE);
