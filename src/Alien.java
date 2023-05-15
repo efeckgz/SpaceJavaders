@@ -35,7 +35,7 @@ public class Alien extends Character {
 
     @Override
     public double getTravelSpeed() {
-        return 5; // I will try to make the aliens move with the background
+        return 5;
     }
 
     @Override
