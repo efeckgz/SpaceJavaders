@@ -1,12 +1,13 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Objects;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class WindowManager extends JFrame {
     public WindowManager() {
+        // Loading the start screen
+        StartPanel startPanel = new StartPanel();
+        add(startPanel);
+
         // setting window properties
         setTitle("Space Javaders: Bytecode Battle");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -17,12 +18,7 @@ public class WindowManager extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
-        try { // this doesn't work as expected
-            Image icon = ImageIO.read(Objects.requireNonNull(getClass().getResource("Assets/red.png")));
-            setIconImage(icon);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        setIconImage(ImageManager.load("Assets/red.png")); // This does not work.
 
         // The file menu
         JMenu fileMenu = new JMenu("File");
@@ -45,10 +41,6 @@ public class WindowManager extends JFrame {
         // setting the frames menu bar
         setJMenuBar(menuBar);
 
-        // Loading the start screen
-        StartPanel startPanel = new StartPanel();
-        add(startPanel);
-
         // Adding action listeners for menu bar items
         playGameItem.addActionListener(e -> {
             GamePanel gamePanel = new GamePanel();
@@ -70,18 +62,13 @@ public class WindowManager extends JFrame {
         });
 
         aboutItem.addActionListener(e -> {
-            try {
-                BufferedImage img = ImageIO.read(Objects.requireNonNull(Main.class.getResource("Assets/red.png")));
-                JOptionPane.showMessageDialog(
-                        null,
-                        "Space Javaders: Bytecode Battle\nCreated by: Efe Açıkgöz\n20210702094",
-                        "About",
-                        JOptionPane.INFORMATION_MESSAGE,
-                        new ImageIcon(img)
-                );
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Space Javaders: Bytecode Battle\nCreated by: Efe Açıkgöz\n20210702094",
+                    "About",
+                    JOptionPane.INFORMATION_MESSAGE,
+                    new ImageIcon(ImageManager.load("Assets/red.png"))
+            );
         });
     }
 }

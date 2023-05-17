@@ -7,7 +7,7 @@ public class GamePanel extends JPanel {
     private final Player player;
     private StarField starField;
 
-    private Alien[][] aliens;
+    private final Alien[][] aliens;
 
     public GamePanel() {
         setFocusable(true);
@@ -88,7 +88,7 @@ public class GamePanel extends JPanel {
         g.setFont(FontManager.getFontText());
         g.drawString("Lives: ", 15, 30);
         if (player.getLivesLeft() > 0) {
-            // The check is there for the debug mode
+            // The check is relevant in debug mode
             g.drawImage(ImageManager.loadLivesLeft(player), 70, 15, null);
         }
 
