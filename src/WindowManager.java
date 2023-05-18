@@ -38,7 +38,7 @@ public class WindowManager extends JFrame {
         // setting the frames menu bar
         setJMenuBar(menuBar);
 
-//         Handling click actions on the menu bar items
+        // Handling click actions on the menu bar items
         playGameItem.addActionListener(e -> playGameItemActionHandler(startPanel));
         backToStartItem.addActionListener(e -> backToStartItemActionHandler());
         loginRegisterItem.addActionListener(e -> loginRegisterItemActionHandler());

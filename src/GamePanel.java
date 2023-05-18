@@ -97,10 +97,8 @@ public class GamePanel extends JPanel {
             for (int j = 0; j < aliens[i].length; j++) {
                 Alien alien = aliens[i][j];
                 if (alien != null) {
-                    // Calculate position based on grid index
-                    int x = j * (GameConstants.ALIEN_WIDTH.getValue() + GameConstants.ALIEN_PADDING.getValue());
-                    int y = i * (GameConstants.ALIEN_HEIGHT.getValue() + GameConstants.ALIEN_PADDING.getValue());
-                    g.drawImage(alien.getAsset(), x, y, null);
+                    Point2D.Double alienPos = alien.getPosition();
+                    g.drawImage(alien.getAsset(), (int) alienPos.getX(), (int) alienPos.getY(), null);
                 }
             }
         }
