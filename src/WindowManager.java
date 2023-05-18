@@ -1,6 +1,4 @@
 import javax.swing.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 public class WindowManager extends JFrame {
     public WindowManager() {
@@ -12,14 +10,13 @@ public class WindowManager extends JFrame {
         setTitle("Space Javaders: Bytecode Battle");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
-        JMenuBar menuBar = new JMenuBar();
-        setJMenuBar(menuBar);
         setSize(GameConstants.SCREEN_WIDTH.getValue(), GameConstants.SCREEN_HEIGHT.getValue());
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
         setIconImage(ImageManager.load("Assets/red.png")); // This does not work.
 
+        JMenuBar menuBar = new JMenuBar();
         // The file menu
         JMenu fileMenu = new JMenu("File");
 
@@ -41,34 +38,38 @@ public class WindowManager extends JFrame {
         // setting the frames menu bar
         setJMenuBar(menuBar);
 
-        // Adding action listeners for menu bar items
-        playGameItem.addActionListener(e -> {
-            GamePanel gamePanel = new GamePanel();
-            remove(startPanel);
-            add(gamePanel);
-            setVisible(true);
-            revalidate();
-            repaint();
-            gamePanel.requestFocusInWindow();
-        });
+//         Handling click actions on the menu bar items
+        playGameItem.addActionListener(e -> playGameItemActionHandler(startPanel));
+        backToStartItem.addActionListener(e -> backToStartItemActionHandler());
+        loginRegisterItem.addActionListener(e -> loginRegisterItemActionHandler());
+        aboutItem.addActionListener(e -> aboutItemActionHandler());
+    }
 
-        backToStartItem.addActionListener(e -> {
-            // frame.remove();
-        });
+    private void playGameItemActionHandler(JPanel startPanel) {
+        GamePanel gamePanel = new GamePanel();
+        remove(startPanel);
+        add(gamePanel);
+        setVisible(true);
+        revalidate();
+        repaint();
+        gamePanel.requestFocusInWindow();
+    }
 
-        loginRegisterItem.addActionListener(e -> {
-            LoginRegisterDialog loginRegisterDialog = new LoginRegisterDialog(this);
-            loginRegisterDialog.setVisible(true);
-        });
+    private void backToStartItemActionHandler() {
+    }
 
-        aboutItem.addActionListener(e -> {
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Space Javaders: Bytecode Battle\nCreated by: Efe Açıkgöz\n20210702094",
-                    "About",
-                    JOptionPane.INFORMATION_MESSAGE,
-                    new ImageIcon(ImageManager.load("Assets/red.png"))
-            );
-        });
+    private void loginRegisterItemActionHandler() {
+        LoginRegisterDialog loginRegisterDialog = new LoginRegisterDialog(this);
+        loginRegisterDialog.setVisible(true);
+    }
+
+    private void aboutItemActionHandler() {
+        JOptionPane.showMessageDialog(
+                null,
+                "Space Javaders: Bytecode Battle\nCreated by: Efe Açıkgöz\n20210702094",
+                "About",
+                JOptionPane.INFORMATION_MESSAGE,
+                new ImageIcon(ImageManager.load("Assets/red.png"))
+        );
     }
 }

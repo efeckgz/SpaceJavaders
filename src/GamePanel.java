@@ -50,7 +50,7 @@ public class GamePanel extends JPanel {
                 while (bulletIterator.hasNext()) {
                     Bullet bullet = bulletIterator.next();
                     bullet.updatePosition();
-                    if (!bullet.getIsAlive()) bulletIterator.remove();
+                    if (!bullet.getIsAlive()) bulletIterator.remove(); // Remove the bullet that dies
                 }
 
                 // Update the position of each alien
