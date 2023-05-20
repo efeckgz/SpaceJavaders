@@ -5,7 +5,7 @@ public class Alien extends Character {
     private final boolean isStrong;
     private BufferedImage asset;
 
-    private static boolean movingRight = true;
+    private int direction = 1; // 1 for right, -1 for left
 
     public Alien(boolean isStrong) {
         this.isStrong = isStrong;
@@ -41,15 +41,15 @@ public class Alien extends Character {
     @Override
     public void updatePosition() {
         Point2D.Double pos = getPosition();
-        double newX = pos.getX() + (movingRight ? getTravelSpeed() : -getTravelSpeed());
+        double newX = pos.getX() + direction * getTravelSpeed();
         double newY = pos.getY();
 
-        // Check if the group of aliens needs to move down and switch direction
-        if (movingRight && newX > GameConstants.SCREEN_WIDTH.getValue() - getWidth()) {
-            movingRight = false;
+        // Check if the alien needs to move down and switch direction
+        if (direction == 1 && newX > GameConstants.SCREEN_WIDTH.getValue() - getWidth()) {
+            direction = -1;
             newY += getHeight(); // move down by the height of an alien
-        } else if (!movingRight && newX < 0) {
-            movingRight = true;
+        } else if (direction == -1 && newX < 0) {
+            direction = 1;
             newY += getHeight(); // move down by the height of an alien
         }
 

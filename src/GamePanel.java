@@ -35,6 +35,10 @@ public class GamePanel extends JPanel {
                         aliens[i][j] = new Alien.ExtraAlien(false);
                         break;
                 }
+                // Assign initial position
+                int x = j * (GameConstants.ALIEN_WIDTH.getValue() + GameConstants.ALIEN_PADDING.getValue());
+                int y = i * (GameConstants.ALIEN_HEIGHT.getValue() + GameConstants.ALIEN_PADDING.getValue());
+                aliens[i][j].setPosition(new Point2D.Double(x, y));
             }
         }
 
@@ -93,9 +97,8 @@ public class GamePanel extends JPanel {
         }
 
         // Draw each alien
-        for (int i = 0; i < aliens.length; i++) {
-            for (int j = 0; j < aliens[i].length; j++) {
-                Alien alien = aliens[i][j];
+        for (Alien[] row : aliens) {
+            for (Alien alien : row) {
                 if (alien != null) {
                     Point2D.Double alienPos = alien.getPosition();
                     g.drawImage(alien.getAsset(), (int) alienPos.getX(), (int) alienPos.getY(), null);
