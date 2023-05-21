@@ -13,8 +13,7 @@ public class GamePanel extends JPanel implements GameConstants {
         requestFocusInWindow();
         setBackground(Color.BLACK);
 
-        player = new Player(this);
-        player.setPosition(new Point2D.Double(420, 620));
+        player = new Player();
 
         int[][] level1 = Levels.getLevel1();
         aliens = new Alien[level1.length][level1[0].length];

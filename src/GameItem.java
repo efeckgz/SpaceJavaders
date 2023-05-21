@@ -3,7 +3,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public abstract class GameItem extends JPanel implements GameConstants {
-    // Every game object must extend this abstract class. The abstract class includes the position of the Item
+    // Every game object must extend this abstract class. The abstract class includes the position of the item
     // and methods to update it. This abstract class may get bigger in the future.
 
     // This is an arraylist that holds every item in the game.
@@ -11,7 +11,7 @@ public abstract class GameItem extends JPanel implements GameConstants {
     // In the main game loop, this arraylist will be iterated over and
     // Its value's "updatePosition()" method will be called.
     private static final ArrayList<GameItem> gameItems = new ArrayList<>(); // made final to silence warning
-    // A Point2D instance holds the position of each GameItem. THis one here uses the double data type.
+    // A Point2D instance holds the position of each GameItem. This one here uses the double data type.
     Point2D.Double position = new Point2D.Double();
 
     public GameItem() {

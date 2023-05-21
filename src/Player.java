@@ -1,14 +1,11 @@
-import javax.swing.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 public class Player extends Character {
     private final BufferedImage asset;
     // The parent of this component should be GamePanel
     // This is passed to the bullet object.
-    private final JPanel parent;
     private int livesLeft = 3;
     // Variables for player movement
     private boolean moveUp = false;
@@ -16,19 +13,17 @@ public class Player extends Character {
     private boolean moveLeft = false;
     private boolean moveRight = false;
 
-    // Variable for bullet firing logic
-    private boolean bulletFired = false;
-
-    public Player(JPanel parent) {
-        this.parent = parent;
+    public Player() {
         asset = ImageManager.load(PLAYER_ASSET_PATH);
 
-        setPosition(new Point2D.Double(
-                (double) SCREEN_WIDTH / 2 - (double) asset.getWidth() / 2,
-                SCREEN_HEIGHT - this.getAsset().getHeight()
-        ));
+//        setPosition(new Point2D.Double(
+//                (double) SCREEN_WIDTH / 2 - (double) asset.getWidth() / 2,
+//                SCREEN_HEIGHT - this.getAsset().getHeight()
+//        ));
 
-        // Move this out of herej
+        setPosition(PLAYER_STARTING_POSITION); // 420, 620
+
+        // Move this out of here!
         if (isDead()) {
             this.livesLeft -= 1;
             resetHp();
@@ -54,9 +49,9 @@ public class Player extends Character {
         this.moveRight = moveRight;
     }
 
-    public void setBulletFired(boolean bulletFired) {
-        this.bulletFired = bulletFired;
-    }
+//    public void setBulletFired(boolean bulletFired) {
+//        this.bulletFired = bulletFired;
+//    }
 
     @Override
     public double getTravelSpeed() {
@@ -113,8 +108,7 @@ public class Player extends Character {
 
     public void fireBullet() {
         // fire bullets here
-        Bullet bullet = new Bullet(this);
-        setBulletFired(true);
+        new Bullet(this);
     }
 
     private void controlKeyPressedActionHandler(KeyEvent e) {

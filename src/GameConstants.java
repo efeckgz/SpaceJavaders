@@ -1,3 +1,5 @@
+import java.awt.geom.Point2D;
+
 public interface GameConstants {
     // This interface provides all kinds of constant values necessary in the program. Every class
     // implement this interface either directly or via its super class so that there is no need to
@@ -16,6 +18,7 @@ public interface GameConstants {
     String PLAYER_LIVES_THREE_ASSET_PATH = "Assets/livesThree.png";
     String PLAYER_LIVES_TWO_ASSET_PATH = "Assets/livesTwo.png";
     String PLAYER_LIVES_ONE_ASSET_PATH = "Assets/livesOne.png";
+    Point2D.Double PLAYER_STARTING_POSITION = new Point2D.Double(420, 620);
 
     // Bullet constants
     int BULLET_WIDTH = 6;
