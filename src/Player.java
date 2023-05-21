@@ -24,8 +24,8 @@ public class Player extends Character {
         asset = ImageManager.load("Assets/player.png");
 
         setPosition(new Point2D.Double(
-                (double) GameConstants.SCREEN_WIDTH.getValue() / 2 - (double) asset.getWidth() / 2,
-                GameConstants.SCREEN_HEIGHT.getValue() - this.getAsset().getHeight()
+                (double) GameConstants.SCREEN_WIDTH / 2 - (double) asset.getWidth() / 2,
+                GameConstants.SCREEN_HEIGHT - this.getAsset().getHeight()
         ));
 
         if (isDead()) {
@@ -34,7 +34,7 @@ public class Player extends Character {
         }
 
         // Fire bullets automatically
-        new Timer(GameConstants.BULLET_FIRE_FREQUENCY.getValue(), e -> fireBullet()).start();
+        TimeManager.startTimer(GameConstants.BULLET_FIRE_FREQUENCY, e -> fireBullet());
     }
 
     public void setMoveUp(boolean moveUp) {
@@ -59,18 +59,18 @@ public class Player extends Character {
 
     @Override
     public double getTravelSpeed() {
-        return GameConstants.PLAYER_TRAVEL_SPEED.getValue() /* TimeManager.getDeltaTime()*/;
+        return GameConstants.PLAYER_TRAVEL_SPEED /* TimeManager.getDeltaTime()*/;
     }
 
     @Override
     public void updatePosition() { // The position of player will be updated according to the user input
         double speed = getTravelSpeed();
 
-        if (moveUp && getPosition().y - speed >= (double) GameConstants.SCREEN_HEIGHT.getValue() / 2) {
+        if (moveUp && getPosition().y - speed >= (double) GameConstants.SCREEN_HEIGHT / 2) {
             getPosition().y -= speed;
         }
 
-        if (moveDown && getPosition().y + speed + asset.getHeight() <= GameConstants.SCREEN_HEIGHT.getValue() - this.getAsset().getHeight()) {
+        if (moveDown && getPosition().y + speed + asset.getHeight() <= GameConstants.SCREEN_HEIGHT - this.getAsset().getHeight()) {
             getPosition().y += speed;
         }
 
@@ -78,7 +78,7 @@ public class Player extends Character {
             getPosition().x -= speed;
         }
 
-        if (moveRight && getPosition().x + speed + asset.getWidth() <= GameConstants.SCREEN_WIDTH.getValue()) {
+        if (moveRight && getPosition().x + speed + asset.getWidth() <= GameConstants.SCREEN_WIDTH) {
             getPosition().x += speed;
         }
     }
@@ -86,7 +86,7 @@ public class Player extends Character {
 
     @Override
     public int getHp() {
-        return GameConstants.PLAYER_HP.getValue(); // research this
+        return GameConstants.PLAYER_HP; // research this
     }
 
     @Override
@@ -95,7 +95,7 @@ public class Player extends Character {
     }
 
     public void resetHp() {
-        hp = GameConstants.PLAYER_HP.getValue();
+        hp = GameConstants.PLAYER_HP;
     }
 
     public int getLivesLeft() {

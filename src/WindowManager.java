@@ -10,7 +10,7 @@ public class WindowManager extends JFrame {
         setTitle("Space Javaders: Bytecode Battle");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
-        setSize(GameConstants.SCREEN_WIDTH.getValue(), GameConstants.SCREEN_HEIGHT.getValue());
+        setSize(GameConstants.SCREEN_WIDTH, GameConstants.SCREEN_HEIGHT);
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);

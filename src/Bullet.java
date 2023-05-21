@@ -12,7 +12,7 @@ public class Bullet extends GameItem {
         this.isAlive = true;
 
         setPosition(new Point2D.Double(
-                (player.getPosition().getX() + (double) player.getAsset().getWidth() / 2) - (double) GameConstants.BULLET_WIDTH.getValue() / 2,
+                (player.getPosition().getX() + (double) player.getAsset().getWidth() / 2) - (double) GameConstants.BULLET_WIDTH / 2,
                 player.getPosition().getY() - player.getAsset().getHeight()
         ));
 
@@ -42,7 +42,7 @@ public class Bullet extends GameItem {
 
     @Override
     public double getTravelSpeed() {
-        return GameConstants.BULLET_TRAVEL_SPEED.getValue() /* TimeManager.getDeltaTime()*/;
+        return GameConstants.BULLET_TRAVEL_SPEED /* TimeManager.getDeltaTime()*/;
     }
 
     @Override

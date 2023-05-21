@@ -5,9 +5,8 @@ import java.util.Iterator;
 
 public class GamePanel extends JPanel {
     private final Player player;
-    private StarField starField;
-
     private final Alien[][] aliens;
+    private StarField starField;
 
     public GamePanel() {
         setFocusable(true);
@@ -21,31 +20,40 @@ public class GamePanel extends JPanel {
         aliens = new Alien[level1.length][level1[0].length];
         for (int i = 0; i < level1.length; i++) {
             for (int j = 0; j < level1[i].length; j++) {
+                Alien alienToCreate = null;  // Initialize to null
                 switch (level1[i][j]) {
                     case 1:
-                        aliens[i][j] = new Alien.RedAlien(false);
+                        alienToCreate = new Alien.RedAlien(false);
                         break;
                     case 2:
-                        aliens[i][j] = new Alien.GreenAlien(false);
+                        alienToCreate = new Alien.GreenAlien(false);
                         break;
                     case 3:
-                        aliens[i][j] = new Alien.YellowAlien(false);
+                        alienToCreate = new Alien.YellowAlien(false);
                         break;
                     case 4:
-                        aliens[i][j] = new Alien.ExtraAlien(false);
+                        alienToCreate = new Alien.ExtraAlien(false);
+                        break;
+                    case 0:
                         break;
                 }
+                // Assign the created alien back to the array
+                aliens[i][j] = alienToCreate;
+
                 // Assign initial position
-                int x = j * (GameConstants.ALIEN_WIDTH.getValue() + GameConstants.ALIEN_PADDING.getValue());
-                int y = i * (GameConstants.ALIEN_HEIGHT.getValue() + GameConstants.ALIEN_PADDING.getValue());
-                aliens[i][j].setPosition(new Point2D.Double(x, y));
+                if (alienToCreate != null) {
+                    int x = j * (GameConstants.ALIEN_WIDTH + GameConstants.ALIEN_PADDING);
+                    int y = i * (GameConstants.ALIEN_HEIGHT + GameConstants.ALIEN_PADDING);
+                    alienToCreate.setPosition(new Point2D.Double(x, y));
+                }
             }
         }
+
 
         SwingUtilities.invokeLater(() -> {
             starField = new StarField(getWidth(), getHeight());
 
-            TimeManager.startTimer(1000 / GameConstants.GAME_FPS.getValue(), e -> {
+            TimeManager.startTimer(1000 / GameConstants.GAME_FPS, e -> {
                 starField.animate(); // Start the star field.
                 player.updatePosition(); // update the players position.
 
@@ -114,8 +122,8 @@ public class GamePanel extends JPanel {
                 g.fillRect(
                         (int) pos.getX(),
                         (int) pos.getY(),
-                        GameConstants.BULLET_WIDTH.getValue(),
-                        GameConstants.BULLET_HEIGHT.getValue()
+                        GameConstants.BULLET_WIDTH,
+                        GameConstants.BULLET_HEIGHT
                 );
             }
         }

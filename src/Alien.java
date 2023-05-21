@@ -3,9 +3,8 @@ import java.awt.image.BufferedImage;
 
 public class Alien extends Character {
     private final boolean isStrong;
+    private final int direction = 1; // 1 for right, -1 for left
     private BufferedImage asset;
-
-    private int direction = 1; // 1 for right, -1 for left
 
     public Alien(boolean isStrong) {
         this.isStrong = isStrong;
@@ -23,6 +22,7 @@ public class Alien extends Character {
         this.asset = asset;
     }
 
+
     @Override
     public int getHp() {
         return getIsStrong() ? 20 : 10;
@@ -35,25 +35,15 @@ public class Alien extends Character {
 
     @Override
     public double getTravelSpeed() {
-        return 5;
+        return GameConstants.ALIEN_TRAVEL_SPEED;
     }
 
     @Override
     public void updatePosition() {
         Point2D.Double pos = getPosition();
-        double newX = pos.getX() + direction * getTravelSpeed();
-        double newY = pos.getY();
+        double newY = pos.getY() + getTravelSpeed();  // Just move down
 
-        // Check if the alien needs to move down and switch direction
-        if (direction == 1 && newX > GameConstants.SCREEN_WIDTH.getValue() - getWidth()) {
-            direction = -1;
-            newY += getHeight(); // move down by the height of an alien
-        } else if (direction == -1 && newX < 0) {
-            direction = 1;
-            newY += getHeight(); // move down by the height of an alien
-        }
-
-        setPosition(new Point2D.Double(newX, newY));
+        setPosition(new Point2D.Double(pos.getX(), newY));
     }
 
     public static class RedAlien extends Alien {

@@ -59,7 +59,7 @@ public class StartPanel extends JPanel {
         if (!starFieldInitialized) {
             starField = new StarField(getWidth(), getHeight());
 
-            TimeManager.startTimer(1000 / GameConstants.GAME_FPS.getValue(), e -> {
+            TimeManager.startTimer(1000 / GameConstants.GAME_FPS, e -> {
                 starField.animate();
                 repaint();
             });
