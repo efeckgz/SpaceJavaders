@@ -21,13 +21,14 @@ public class Player extends Character {
 
     public Player(JPanel parent) {
         this.parent = parent;
-        asset = ImageManager.load("Assets/player.png");
+        asset = ImageManager.load(GameConstants.PLAYER_ASSET_PATH);
 
         setPosition(new Point2D.Double(
                 (double) GameConstants.SCREEN_WIDTH / 2 - (double) asset.getWidth() / 2,
                 GameConstants.SCREEN_HEIGHT - this.getAsset().getHeight()
         ));
 
+        // Move this out of herej
         if (isDead()) {
             this.livesLeft -= 1;
             resetHp();

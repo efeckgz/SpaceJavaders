@@ -49,28 +49,28 @@ public class Alien extends Character {
     public static class RedAlien extends Alien {
         public RedAlien(boolean isStrong) {
             super(isStrong);
-            setAsset(ImageManager.load("Assets/red.png"));
+            setAsset(ImageManager.load(GameConstants.RED_ALIEN_ASSET_PATH));
         }
     }
 
     public static class GreenAlien extends Alien {
         public GreenAlien(boolean isStrong) {
             super(isStrong);
-            setAsset(ImageManager.load("Assets/green.png"));
+            setAsset(ImageManager.load(GameConstants.GREEN_ALIEN_ASSET_PATH));
         }
     }
 
     public static class YellowAlien extends Alien {
         public YellowAlien(boolean isStrong) {
             super(isStrong);
-            setAsset(ImageManager.load("Assets/yellow.png"));
+            setAsset(ImageManager.load(GameConstants.YELLOW_ALIEN_ASSET_PATH));
         }
     }
 
     public static class ExtraAlien extends Alien {
         public ExtraAlien(boolean isStrong) {
             super(isStrong);
-            setAsset(ImageManager.load("Assets/extra.png"));
+            setAsset(ImageManager.load(GameConstants.EXTRA_ALIEN_ASSET_PATH));
         }
     }
 }
