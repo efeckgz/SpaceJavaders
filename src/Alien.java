@@ -1,9 +1,7 @@
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
 
 public class Alien extends Character implements GameConstants {
     private final boolean isStrong;
-    private BufferedImage asset;
 
     public Alien(boolean isStrong) {
         this.isStrong = isStrong;
@@ -12,15 +10,6 @@ public class Alien extends Character implements GameConstants {
     public boolean getIsStrong() {
         return isStrong;
     }
-
-    public BufferedImage getAsset() {
-        return asset;
-    }
-
-    public void setAsset(BufferedImage asset) {
-        this.asset = asset;
-    }
-
 
     @Override
     public int getHp() {

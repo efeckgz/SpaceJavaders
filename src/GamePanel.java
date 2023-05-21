@@ -48,7 +48,6 @@ public class GamePanel extends JPanel implements GameConstants {
             }
         }
 
-
         SwingUtilities.invokeLater(() -> {
             starField = new StarField(getWidth(), getHeight());
 
@@ -67,9 +66,7 @@ public class GamePanel extends JPanel implements GameConstants {
                 // Update the position of each alien
                 for (Alien[] row : aliens) {
                     for (Alien alien : row) {
-                        if (alien != null) {
-                            alien.updatePosition();
-                        }
+                        if (alien != null) alien.updatePosition();
                     }
                 }
 

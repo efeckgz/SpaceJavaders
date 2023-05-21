@@ -1,9 +1,7 @@
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 
 public class Player extends Character {
-    private final BufferedImage asset;
     // The parent of this component should be GamePanel
     // This is passed to the bullet object.
     private int livesLeft = 3;
@@ -14,20 +12,8 @@ public class Player extends Character {
     private boolean moveRight = false;
 
     public Player() {
-        asset = ImageManager.load(PLAYER_ASSET_PATH);
-
-//        setPosition(new Point2D.Double(
-//                (double) SCREEN_WIDTH / 2 - (double) asset.getWidth() / 2,
-//                SCREEN_HEIGHT - this.getAsset().getHeight()
-//        ));
-
+        setAsset(ImageManager.load(PLAYER_ASSET_PATH));
         setPosition(PLAYER_STARTING_POSITION); // 420, 620
-
-        // Move this out of here!
-        if (isDead()) {
-            this.livesLeft -= 1;
-            resetHp();
-        }
 
         // Fire bullets automatically
         TimeManager.startTimer(BULLET_FIRE_FREQUENCY, e -> fireBullet());
@@ -48,10 +34,6 @@ public class Player extends Character {
     public void setMoveRight(boolean moveRight) {
         this.moveRight = moveRight;
     }
-
-//    public void setBulletFired(boolean bulletFired) {
-//        this.bulletFired = bulletFired;
-//    }
 
     @Override
     public double getTravelSpeed() {
@@ -102,12 +84,7 @@ public class Player extends Character {
         this.livesLeft = livesLeft;
     }
 
-    public BufferedImage getAsset() {
-        return asset;
-    }
-
     public void fireBullet() {
-        // fire bullets here
         new Bullet(this);
     }
 
