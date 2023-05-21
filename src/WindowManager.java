@@ -1,6 +1,6 @@
 import javax.swing.*;
 
-public class WindowManager extends JFrame {
+public class WindowManager extends JFrame implements GameConstants {
     public WindowManager() {
         // Loading the start screen
         StartPanel startPanel = new StartPanel();
@@ -10,7 +10,7 @@ public class WindowManager extends JFrame {
         setTitle("Space Javaders: Bytecode Battle");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
-        setSize(GameConstants.SCREEN_WIDTH, GameConstants.SCREEN_HEIGHT);
+        setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);

@@ -1,9 +1,8 @@
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
-public class Alien extends Character {
+public class Alien extends Character implements GameConstants {
     private final boolean isStrong;
-    private final int direction = 1; // 1 for right, -1 for left
     private BufferedImage asset;
 
     public Alien(boolean isStrong) {
@@ -35,7 +34,7 @@ public class Alien extends Character {
 
     @Override
     public double getTravelSpeed() {
-        return GameConstants.ALIEN_TRAVEL_SPEED;
+        return ALIEN_TRAVEL_SPEED;
     }
 
     @Override
@@ -49,28 +48,28 @@ public class Alien extends Character {
     public static class RedAlien extends Alien {
         public RedAlien(boolean isStrong) {
             super(isStrong);
-            setAsset(ImageManager.load(GameConstants.RED_ALIEN_ASSET_PATH));
+            setAsset(ImageManager.load(RED_ALIEN_ASSET_PATH));
         }
     }
 
     public static class GreenAlien extends Alien {
         public GreenAlien(boolean isStrong) {
             super(isStrong);
-            setAsset(ImageManager.load(GameConstants.GREEN_ALIEN_ASSET_PATH));
+            setAsset(ImageManager.load(GREEN_ALIEN_ASSET_PATH));
         }
     }
 
     public static class YellowAlien extends Alien {
         public YellowAlien(boolean isStrong) {
             super(isStrong);
-            setAsset(ImageManager.load(GameConstants.YELLOW_ALIEN_ASSET_PATH));
+            setAsset(ImageManager.load(YELLOW_ALIEN_ASSET_PATH));
         }
     }
 
     public static class ExtraAlien extends Alien {
         public ExtraAlien(boolean isStrong) {
             super(isStrong);
-            setAsset(ImageManager.load(GameConstants.EXTRA_ALIEN_ASSET_PATH));
+            setAsset(ImageManager.load(EXTRA_ALIEN_ASSET_PATH));
         }
     }
 }

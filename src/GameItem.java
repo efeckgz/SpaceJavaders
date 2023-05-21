@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-public abstract class GameItem extends JPanel {
+public abstract class GameItem extends JPanel implements GameConstants {
     // Every game object must extend this abstract class. The abstract class includes the position of the Item
     // and methods to update it. This abstract class may get bigger in the future.
 

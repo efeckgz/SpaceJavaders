@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.Iterator;
 
-public class GamePanel extends JPanel {
+public class GamePanel extends JPanel implements GameConstants {
     private final Player player;
     private final Alien[][] aliens;
     private StarField starField;
@@ -42,8 +42,8 @@ public class GamePanel extends JPanel {
 
                 // Assign initial position
                 if (alienToCreate != null) {
-                    int x = j * (GameConstants.ALIEN_WIDTH + GameConstants.ALIEN_PADDING);
-                    int y = i * (GameConstants.ALIEN_HEIGHT + GameConstants.ALIEN_PADDING);
+                    int x = j * (ALIEN_WIDTH + ALIEN_PADDING);
+                    int y = i * (ALIEN_HEIGHT + ALIEN_PADDING);
                     alienToCreate.setPosition(new Point2D.Double(x, y));
                 }
             }
@@ -53,7 +53,7 @@ public class GamePanel extends JPanel {
         SwingUtilities.invokeLater(() -> {
             starField = new StarField(getWidth(), getHeight());
 
-            TimeManager.startTimer(1000 / GameConstants.GAME_FPS, e -> {
+            TimeManager.startTimer(1000 / GAME_FPS, e -> {
                 starField.animate(); // Start the star field.
                 player.updatePosition(); // update the players position.
 
@@ -119,12 +119,7 @@ public class GamePanel extends JPanel {
         for (Bullet bullet : Bullet.getBullets()) {
             pos = bullet.getPosition();
             if (bullet.getIsAlive()) {
-                g.fillRect(
-                        (int) pos.getX(),
-                        (int) pos.getY(),
-                        GameConstants.BULLET_WIDTH,
-                        GameConstants.BULLET_HEIGHT
-                );
+                g.fillRect((int) pos.getX(), (int) pos.getY(), BULLET_WIDTH, BULLET_HEIGHT);
             }
         }
     }

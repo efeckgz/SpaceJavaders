@@ -2,7 +2,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.Objects;
 
-public class FontManager {
+public class FontManager implements GameConstants {
     private static Font font;
     private static Font fontTitle;
     private static Font fontSubtitle;
@@ -11,10 +11,10 @@ public class FontManager {
     // load font
     public static void loadFont(GraphicsEnvironment ge) {
         try {
-            font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(FontManager.class.getResourceAsStream(GameConstants.FONT_PATH)));
-            fontTitle = font.deriveFont(100f);
-            fontSubtitle = font.deriveFont(32f);
-            fontText = font.deriveFont(16f);
+            font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(FontManager.class.getResourceAsStream(FONT_PATH)));
+            fontTitle = font.deriveFont(FONT_TITLE_SIZE);
+            fontSubtitle = font.deriveFont(FONT_SUBTITLE_SIZE);
+            fontText = font.deriveFont(FONT_TEXT_SIZE);
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
@@ -22,11 +22,6 @@ public class FontManager {
         if (font != null) {
             ge.registerFont(font);
         }
-    }
-
-
-    public static Font getFont() {
-        return font;
     }
 
     public static Font getFontSubtitle() {

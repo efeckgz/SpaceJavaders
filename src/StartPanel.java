@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class StartPanel extends JPanel {
+public class StartPanel extends JPanel implements GameConstants {
     // this array holds alien assets to be drawn on the screen.
     private final BufferedImage[] aliens;
     // Initializing title related variables.
@@ -59,7 +59,7 @@ public class StartPanel extends JPanel {
         if (!starFieldInitialized) {
             starField = new StarField(getWidth(), getHeight());
 
-            TimeManager.startTimer(1000 / GameConstants.GAME_FPS, e -> {
+            TimeManager.startTimer(1000 / GAME_FPS, e -> {
                 starField.animate();
                 repaint();
             });

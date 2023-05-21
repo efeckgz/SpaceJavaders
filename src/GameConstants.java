@@ -1,30 +1,36 @@
-public class GameConstants {
+public interface GameConstants {
     // Window constants
-    public static final int SCREEN_WIDTH = 919;
-    public static final int SCREEN_HEIGHT = 687;
-    public static final int GAME_FPS = 120;
+    int SCREEN_WIDTH = 919;
+    int SCREEN_HEIGHT = 687;
+    int GAME_FPS = 120;
 
     // Player constants
-    public static final int PLAYER_TRAVEL_SPEED = 10;
-    public static final int PLAYER_HP = 100;
-    public static final String PLAYER_ASSET_PATH = "Assets/player.png";
+    int PLAYER_TRAVEL_SPEED = 10;
+    int PLAYER_HP = 100;
+    String PLAYER_ASSET_PATH = "Assets/player.png";
+    String PLAYER_LIVES_THREE_ASSET_PATH = "Assets/livesThree.png";
+    String PLAYER_LIVES_TWO_ASSET_PATH = "Assets/livesTwo.png";
+    String PLAYER_LIVES_ONE_ASSET_PATH = "Assets/livesOne.png";
 
     // Bullet constants
-    public static final int BULLET_WIDTH = 6;
-    public static final int BULLET_HEIGHT = 25;
-    public static final int BULLET_TRAVEL_SPEED = 4;
-    public static final int BULLET_FIRE_FREQUENCY = 500;
+    int BULLET_WIDTH = 6;
+    int BULLET_HEIGHT = 25;
+    int BULLET_TRAVEL_SPEED = 4;
+    int BULLET_FIRE_FREQUENCY = 500;
 
     // Alien constants
-    public static final int ALIEN_WIDTH = 35;
-    public static final int ALIEN_HEIGHT = 55;
-    public static final int ALIEN_PADDING = 50;
-    public static final int ALIEN_TRAVEL_SPEED = 1;
-    public static final String RED_ALIEN_ASSET_PATH = "Assets/red.png";
-    public static final String GREEN_ALIEN_ASSET_PATH = "Assets/green.png";
-    public static final String YELLOW_ALIEN_ASSET_PATH = "Assets/yellow.png";
-    public static final String EXTRA_ALIEN_ASSET_PATH = "Assets/extra.png";
+    int ALIEN_WIDTH = 35;
+    int ALIEN_HEIGHT = 55;
+    int ALIEN_PADDING = 50;
+    int ALIEN_TRAVEL_SPEED = 1;
+    String RED_ALIEN_ASSET_PATH = "Assets/red.png";
+    String GREEN_ALIEN_ASSET_PATH = "Assets/green.png";
+    String YELLOW_ALIEN_ASSET_PATH = "Assets/yellow.png";
+    String EXTRA_ALIEN_ASSET_PATH = "Assets/extra.png";
 
     // Font
-    public static final String FONT_PATH = "Assets/upheavtt.ttf";
+    String FONT_PATH = "Assets/upheavtt.ttf";
+    float FONT_TITLE_SIZE = 100;
+    float FONT_SUBTITLE_SIZE = 32;
+    float FONT_TEXT_SIZE = 16;
 }

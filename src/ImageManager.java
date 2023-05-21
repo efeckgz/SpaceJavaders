@@ -3,7 +3,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 
-public class ImageManager {
+public class ImageManager implements GameConstants {
     // Class to make loading images easier.
     private static BufferedImage img;
     private static BufferedImage livesLeftImg;
@@ -25,13 +25,13 @@ public class ImageManager {
         try {
             switch (p.getLivesLeft()) {
                 case 3:
-                    path = "Assets/livesThree.png";
+                    path = PLAYER_LIVES_THREE_ASSET_PATH;
                     break;
                 case 2:
-                    path = "Assets/livesTwo.png";
+                    path = PLAYER_LIVES_TWO_ASSET_PATH;
                     break;
                 case 1:
-                    path = "Assets/livesOne.png";
+                    path = PLAYER_LIVES_ONE_ASSET_PATH;
                     break;
                 default:
                     throw new IllegalStateException(String.format("Unexpected value for player remaining lives: %s", p.getLivesLeft()));
