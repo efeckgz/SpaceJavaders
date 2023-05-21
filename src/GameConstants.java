@@ -1,8 +1,13 @@
 public interface GameConstants {
+    // This interface provides all kinds of constant values necessary in the program. Every class
+    // implement this interface either directly or via its super class so that there is no need to
+    // make a call to the GameConstants namespace all the time.
+
     // Window constants
     int SCREEN_WIDTH = 919;
     int SCREEN_HEIGHT = 687;
     int GAME_FPS = 120;
+    String WINDOW_TITLE = "Space Javaders: Bytecode Battle";
 
     // Player constants
     int PLAYER_TRAVEL_SPEED = 10;
