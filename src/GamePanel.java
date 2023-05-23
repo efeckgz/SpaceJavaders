@@ -3,9 +3,9 @@ import java.awt.*;
 
 public class GamePanel extends JPanel implements GameConstants {
     private final Player player;
-    //    private final Alien[][] aliens;
-//    private final StarField starField;
     private final GameUpdateThread gameUpdateThread;
+    //    private final Alien[][] aliens;
+    private StarField starField;
 
     public GamePanel() {
         setFocusable(true);
@@ -13,15 +13,32 @@ public class GamePanel extends JPanel implements GameConstants {
         setBackground(Color.BLACK);
 
         player = new Player();
-//        starField = new StarField(getWidth(), getHeight());
+//        starField = new StarField(SCREEN_WIDTH, SCREEN_HEIGHT);
         gameUpdateThread = new GameUpdateThread(this);
         gameUpdateThread.start();
+        boolean canInitStarField = getWidth() != 0 && getHeight() != 0;
 
+//        addComponentListener(new ComponentAdapter() {
+//            // Initialize StarField everytime the component gets resized. This way the getWidth()
+//            // and getHeight() methods have a nonzero value
+//
+//            @Override
+//            public void componentResized(ComponentEvent e) {
+//                super.componentResized(e);
+//                starField = new StarField(getWidth(), getHeight());
+//            }
+//        });
 
         SwingUtilities.invokeLater(() -> addKeyListener(player.handleUserInput()));
     }
 
-//    public GamePanel() {
+//    @Override
+//    public void addNotify() {
+//        super.addNotify();
+//        starField = new StarField(SCREEN_WIDTH, SCREEN_HEIGHT);
+//    }
+
+    //    public GamePanel() {
 //        setFocusable(true);
 //        requestFocusInWindow();
 //        setBackground(Color.BLACK);
@@ -98,6 +115,7 @@ public class GamePanel extends JPanel implements GameConstants {
 
     public void updateGame(long deltaTime) {
         player.updatePosition(deltaTime);
+        starField.animate(deltaTime);
     }
 
     @Override
