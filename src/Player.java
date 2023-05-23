@@ -66,7 +66,6 @@ public class Player extends Character {
         return false;
     }
 
-
     @Override
     public int getHp() {
         return PLAYER_HP; // research this
@@ -88,7 +87,6 @@ public class Player extends Character {
     public void setLivesLeft(int livesLeft) {
         this.livesLeft = livesLeft;
     }
-
 
     public void fireBullet() {
         new Bullet(this);

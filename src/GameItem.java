@@ -39,6 +39,16 @@ public abstract class GameItem extends JPanel implements GameConstants {
     abstract boolean intersects(GameItem item);
 
     public void draw(Graphics g) {
+        if (this instanceof Bullet) {
+            Bullet b = (Bullet) this;
+            if (b.getIsAlive()) {
+                // Bullets are of rectangular shape, so fillRect() is used.
+                g.fillRect((int) getPosition().getX(), (int) getPosition().getY(), BULLET_WIDTH, BULLET_HEIGHT);
+            }
+
+            return;
+        }
+
         g.drawImage(getAsset(), (int) getPosition().getX(), (int) getPosition().getY(), null);
     }
 }
