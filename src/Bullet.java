@@ -46,12 +46,17 @@ public class Bullet extends GameItem {
     }
 
     @Override
-    public void updatePosition() {
-        getPosition().y -= getTravelSpeed();
+    public void updatePosition(float deltaTime) {
+        getPosition().y -= getTravelSpeed() * deltaTime;
         if (getPosition().y <= 0) {
             setIsAlive(false);
 //            if (Main.debug) System.out.printf("Bullet %s died.\n", Bullet.bullets.indexOf(this));
         }
+    }
+
+    @Override
+    boolean intersects(GameItem item) {
+        return false;
     }
 
     public boolean getIsAlive() {

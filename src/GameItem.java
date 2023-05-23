@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
@@ -32,5 +33,12 @@ public abstract class GameItem extends JPanel implements GameConstants {
     public abstract double getTravelSpeed();
 
     // Calculate the changes in items position and update it accordingly using setPosition.
-    abstract void updatePosition();
+    abstract void updatePosition(float deltaTime);
+
+    // Method for collision detection.
+    abstract boolean intersects(GameItem item);
+
+    public void draw(Graphics g) {
+        g.drawImage(getAsset(), (int) getPosition().getX(), (int) getPosition().getY(), null);
+    }
 }

@@ -31,8 +31,8 @@ public class StarField {
         return starField;
     }
 
-    public void animate() {
-        yOffset -= 1;
+    public void animate(float deltaTime) {
+        yOffset -= 1 * deltaTime;
         if (yOffset < 0) yOffset = starField.getHeight();
     }
 

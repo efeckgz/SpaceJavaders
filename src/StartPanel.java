@@ -60,7 +60,9 @@ public class StartPanel extends JPanel implements GameConstants {
             starField = new StarField(getWidth(), getHeight());
 
             TimeManager.startTimer(1000 / GAME_FPS, e -> {
-                starField.animate();
+                float deltaTime = TimeManager.getDeltaTime();
+
+                starField.animate(deltaTime);
                 repaint();
             });
 

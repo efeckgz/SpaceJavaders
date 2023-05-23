@@ -27,11 +27,16 @@ public class Alien extends Character implements GameConstants {
     }
 
     @Override
-    public void updatePosition() {
+    public void updatePosition(float deltaTime) {
         Point2D.Double pos = getPosition();
-        double newY = pos.getY() + getTravelSpeed();  // Just move down
+        double newY = pos.getY() + getTravelSpeed() * deltaTime;
 
         setPosition(new Point2D.Double(pos.getX(), newY));
+    }
+
+    @Override
+    boolean intersects(GameItem item) {
+        return false;
     }
 
     public static class RedAlien extends Alien {

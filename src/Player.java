@@ -41,24 +41,29 @@ public class Player extends Character {
     }
 
     @Override
-    public void updatePosition() { // The position of player will be updated according to the user input
+    public void updatePosition(float deltaTime) { // The position of player will be updated according to the user input
         double speed = getTravelSpeed();
 
         if (moveUp && getPosition().y - speed >= (double) SCREEN_HEIGHT / 2) {
-            getPosition().y -= speed;
+            getPosition().y -= speed * deltaTime;
         }
 
         if (moveDown && getPosition().y + speed + asset.getHeight() <= SCREEN_HEIGHT - this.getAsset().getHeight()) {
-            getPosition().y += speed;
+            getPosition().y += speed * deltaTime;
         }
 
         if (moveLeft && getPosition().x - speed >= 0) {
-            getPosition().x -= speed;
+            getPosition().x -= speed * deltaTime;
         }
 
         if (moveRight && getPosition().x + speed + asset.getWidth() <= SCREEN_WIDTH) {
-            getPosition().x += speed;
+            getPosition().x += speed * deltaTime;
         }
+    }
+
+    @Override
+    boolean intersects(GameItem item) {
+        return false;
     }
 
 
@@ -83,6 +88,7 @@ public class Player extends Character {
     public void setLivesLeft(int livesLeft) {
         this.livesLeft = livesLeft;
     }
+
 
     public void fireBullet() {
         new Bullet(this);

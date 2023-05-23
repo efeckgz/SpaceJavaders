@@ -52,21 +52,24 @@ public class GamePanel extends JPanel implements GameConstants {
             starField = new StarField(getWidth(), getHeight());
 
             TimeManager.startTimer(1000 / GAME_FPS, e -> {
-                starField.animate(); // Start the star field.
-                player.updatePosition(); // update the players position.
+                float deltaTime = TimeManager.getDeltaTime();
+                System.out.printf("Delta time: %f\n", deltaTime);
+
+                starField.animate(deltaTime); // Start the star field.
+                player.updatePosition(deltaTime); // update the players position.
 
                 // Update the position of each bullet
                 Iterator<Bullet> bulletIterator = Bullet.getBullets().iterator();
                 while (bulletIterator.hasNext()) {
                     Bullet bullet = bulletIterator.next();
-                    bullet.updatePosition();
+                    bullet.updatePosition(deltaTime);
                     if (!bullet.getIsAlive()) bulletIterator.remove(); // Remove the bullet that dies
                 }
 
                 // Update the position of each alien
                 for (Alien[] row : aliens) {
                     for (Alien alien : row) {
-                        if (alien != null) alien.updatePosition();
+                        if (alien != null) alien.updatePosition(deltaTime);
                     }
                 }
 
@@ -88,8 +91,9 @@ public class GamePanel extends JPanel implements GameConstants {
         starField.draw(g, 0, 0);
 
         // Draw the player
-        Point2D.Double pos = player.getPosition();
-        g.drawImage(player.getAsset(), (int) pos.getX(), (int) pos.getY(), null);
+//        Point2D.Double pos = player.getPosition();
+//        g.drawImage(player.getAsset(), (int) pos.getX(), (int) pos.getY(), null);
+        player.draw(g);
 
         // Draw player health
         g.setColor(Color.WHITE);
@@ -113,7 +117,7 @@ public class GamePanel extends JPanel implements GameConstants {
         // Draw each bullet
         g.setColor(Color.WHITE);
         for (Bullet bullet : Bullet.getBullets()) {
-            pos = bullet.getPosition();
+            Point2D.Double pos = bullet.getPosition();
             if (bullet.getIsAlive()) {
                 g.fillRect((int) pos.getX(), (int) pos.getY(), BULLET_WIDTH, BULLET_HEIGHT);
             }
