@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class GamePanel extends JPanel implements GameConstants {
     private final Player player;
@@ -13,21 +15,17 @@ public class GamePanel extends JPanel implements GameConstants {
         setBackground(Color.BLACK);
 
         player = new Player();
-//        starField = new StarField(SCREEN_WIDTH, SCREEN_HEIGHT);
         gameUpdateThread = new GameUpdateThread(this);
         gameUpdateThread.start();
-        boolean canInitStarField = getWidth() != 0 && getHeight() != 0;
 
-//        addComponentListener(new ComponentAdapter() {
-//            // Initialize StarField everytime the component gets resized. This way the getWidth()
-//            // and getHeight() methods have a nonzero value
-//
-//            @Override
-//            public void componentResized(ComponentEvent e) {
-//                super.componentResized(e);
-//                starField = new StarField(getWidth(), getHeight());
-//            }
-//        });
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                if (starField == null) {
+                    starField = new StarField(getWidth(), getHeight());
+                }
+            }
+        });
 
         SwingUtilities.invokeLater(() -> addKeyListener(player.handleUserInput()));
     }
@@ -114,15 +112,16 @@ public class GamePanel extends JPanel implements GameConstants {
 //    }
 
     public void updateGame(long deltaTime) {
-        player.updatePosition(deltaTime);
         starField.animate(deltaTime);
+        player.updatePosition(deltaTime);
+        for (Bullet bullet : Bullet.getBullets()) bullet.updatePosition(deltaTime);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-//        starField.draw(g, 0, 0);
+        starField.draw(g, 0, 0);
         player.draw(g);
         ImageManager.displayLivesLeft(player, g);
 //

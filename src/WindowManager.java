@@ -9,12 +9,11 @@ public class WindowManager extends JFrame implements GameConstants {
         // setting window properties
         setTitle(WINDOW_TITLE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        pack();
         setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
-        setIconImage(ImageManager.load(RED_ALIEN_ASSET_PATH)); // This does not work.
+        setIconImage(ImageManager.load(RED_ALIEN_ASSET_PATH));
 
         JMenuBar menuBar = new JMenuBar();
         // The file menu

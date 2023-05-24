@@ -2,7 +2,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-public class StarField {
+public class StarField implements GameConstants {
     private final BufferedImage starField;
     private int yOffset;
 
@@ -19,10 +19,8 @@ public class StarField {
         g.setColor(Color.WHITE);
         Random random = new Random();
 
-        int step = 30;
-        int offset = 7;
-        for (int i = offset; i < width - offset; i += step) {
-            for (int j = step; j < height - offset; j += step) {
+        for (int i = STAR_FIELD_OFFSET; i < width - STAR_FIELD_OFFSET; i += STAR_FIELD_STEP) {
+            for (int j = STAR_FIELD_STEP; j < height - STAR_FIELD_OFFSET; j += STAR_FIELD_STEP) {
                 if (random.nextFloat() < 0.3) g.fillOval(i, j, 3, 3);
             }
         }
@@ -32,7 +30,7 @@ public class StarField {
     }
 
     public void animate(float deltaTime) {
-        yOffset -= 1 * deltaTime;
+        yOffset -= STAR_FIELD_SPEED * deltaTime;
         if (yOffset < 0) yOffset = starField.getHeight();
     }
 
