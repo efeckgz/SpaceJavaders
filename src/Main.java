@@ -11,6 +11,6 @@ public class Main {
         } catch (Exception ignored) {
         }
 
-        SwingUtilities.invokeLater(WindowManager::new);
+        SwingUtilities.invokeLater(WindowManager::new); // berhiv
     }
 }
