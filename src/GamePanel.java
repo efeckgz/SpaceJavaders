@@ -25,9 +25,15 @@ public class GamePanel extends JPanel implements GameConstants {
             public void componentResized(ComponentEvent e) {
                 // The null check prevents the star field from re-initializing if the panel gets resized again.
                 // The panel is of fixed size in this case, but it is a good check to have.
-                if (starField == null) starField = new StarField(getWidth(), getHeight());
+                if (starField == null) {
+                    starField = new StarField(getWidth(), getHeight());
+                    starField.start(); // Start the StarField thread
+                }
             }
         });
+
+//        WORK IN PROGRESS!!!
+//        addComponentListener(StarField.starFieldComponentListener(this));
 
         // Levels
         int[][] level1 = Levels.getLevel1();
@@ -68,7 +74,6 @@ public class GamePanel extends JPanel implements GameConstants {
     }
 
     public void updateGame(long deltaTime) {
-        starField.animate(deltaTime); // update the star field
         GameItem.updateAllPositions(deltaTime); // updates all the game items at once
     }
 
@@ -91,8 +96,6 @@ public class GamePanel extends JPanel implements GameConstants {
 
         // Draw each bullet
         g.setColor(Color.WHITE);
-        for (Bullet bullet : Bullet.getBullets()) {
-            bullet.draw(g);
-        }
+        for (Bullet bullet : Bullet.getBullets()) bullet.draw(g);
     }
 }

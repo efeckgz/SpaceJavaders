@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 
 public class StartPanel extends JPanel implements GameConstants {
@@ -10,9 +12,7 @@ public class StartPanel extends JPanel implements GameConstants {
     private String titleColor2 = "#50d070";
     private Color active = Color.WHITE;
     private Color inactive = Color.BLACK;
-    // Initializing the star field.
     private StarField starField;
-    private boolean starFieldInitialized = false;
 
     public StartPanel() {
         setBackground(Color.BLACK); // set background color
@@ -26,6 +26,20 @@ public class StartPanel extends JPanel implements GameConstants {
             }
         });
 
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                if (starField == null) {
+                    starField = new StarField(getWidth(), getHeight());
+                    starField.start();
+                }
+            }
+        });
+
+//        WORK IN PROGRESS!!!
+//        addComponentListener(StarField.starFieldComponentListener(this));
+
         // Load font
         FontManager.loadFont(GraphicsEnvironment.getLocalGraphicsEnvironment());
 
@@ -36,6 +50,8 @@ public class StartPanel extends JPanel implements GameConstants {
         BufferedImage yellowALien = ImageManager.load(YELLOW_ALIEN_ASSET_PATH);
 
         aliens = new BufferedImage[]{redAlien, greenAlien, extraAlien, yellowALien};
+
+        TimeManager.startTimer(1000 / GAME_FPS, e1 -> repaint());
     }
 
     // method to cycle the title colors - this is called in a timer
@@ -55,19 +71,19 @@ public class StartPanel extends JPanel implements GameConstants {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // Initialize the StarField the first time paintComponent is called
-        if (!starFieldInitialized) {
-            starField = new StarField(getWidth(), getHeight());
-
-            TimeManager.startTimer(1000 / GAME_FPS, e -> {
-                float deltaTime = TimeManager.getDeltaTime();
-
-                starField.animate(deltaTime);
-                repaint();
-            });
-
-            starFieldInitialized = true;
-        }
+//        // Initialize the StarField the first time paintComponent is called
+//        if (!starFieldInitialized) {
+//            starField = new StarField(getWidth(), getHeight());
+//
+//            TimeManager.startTimer(1000 / GAME_FPS, e -> {
+//                float deltaTime = TimeManager.getDeltaTime();
+//
+//                starField.animate(deltaTime);
+//                repaint();
+//            });
+//
+//            starFieldInitialized = true;
+//        }
 
         starField.draw(g, 0, 0); // draws the star field
 

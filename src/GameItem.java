@@ -22,7 +22,8 @@ public abstract class GameItem extends JPanel implements GameConstants {
     }
 
     public static void updateAllPositions(float deltaTime) {
-        for (GameItem item : GameItem.getItems()) item.updatePosition(deltaTime);
+        if (!GameItem.getItems().isEmpty())
+            for (GameItem item : GameItem.getItems()) item.updatePosition(deltaTime);
     }
 
     public static ArrayList<GameItem> getItems() {
