@@ -36,7 +36,7 @@ public class GamePanel extends JPanel implements GameConstants {
 //        addComponentListener(StarField.starFieldComponentListener(this));
 
         // Levels
-        int[][] level1 = Levels.getLevel1();
+        int[][] level1 = Levels.LEVEL_ONE;
         aliens = new Alien[level1.length][level1[0].length];
         for (int i = 0; i < level1.length; i++) {
             for (int j = 0; j < level1[i].length; j++) {
@@ -73,29 +73,16 @@ public class GamePanel extends JPanel implements GameConstants {
         SwingUtilities.invokeLater(() -> addKeyListener(player.handleUserInput()));
     }
 
-    public void updateGame(long deltaTime) {
-        GameItem.updateAllPositions(deltaTime); // updates all the game items at once
-    }
+    // Deprecated
+//    public void updateGame(long deltaTime) {
+//        GameItem.updateAllPositions(deltaTime); // updates all the game items at once
+//    }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         starField.draw(g, 0, 0);
-        player.draw(g);
+        GameItem.drawALlItems(g);
         ImageManager.displayLivesLeft(player, g);
-
-        // Draw each alien
-        for (Alien[] row : aliens) {
-            for (Alien alien : row) {
-                if (alien != null) {
-                    alien.draw(g);
-                }
-            }
-        }
-
-        // Draw each bullet
-        g.setColor(Color.WHITE);
-        for (Bullet bullet : Bullet.getBullets()) bullet.draw(g);
     }
 }

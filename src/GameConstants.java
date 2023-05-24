@@ -30,7 +30,7 @@ public interface GameConstants {
     // Alien constants
     int ALIEN_WIDTH = 35;
     int ALIEN_HEIGHT = 55;
-    int ALIEN_PADDING = 50;
+    int ALIEN_PADDING = 35;
     double ALIEN_TRAVEL_SPEED = 0.035;
     String RED_ALIEN_ASSET_PATH = "Assets/red.png";
     String GREEN_ALIEN_ASSET_PATH = "Assets/green.png";

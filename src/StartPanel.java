@@ -71,20 +71,6 @@ public class StartPanel extends JPanel implements GameConstants {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-//        // Initialize the StarField the first time paintComponent is called
-//        if (!starFieldInitialized) {
-//            starField = new StarField(getWidth(), getHeight());
-//
-//            TimeManager.startTimer(1000 / GAME_FPS, e -> {
-//                float deltaTime = TimeManager.getDeltaTime();
-//
-//                starField.animate(deltaTime);
-//                repaint();
-//            });
-//
-//            starFieldInitialized = true;
-//        }
-
         starField.draw(g, 0, 0); // draws the star field
 
         // titles

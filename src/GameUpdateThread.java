@@ -30,7 +30,8 @@ public class GameUpdateThread implements Runnable, GameConstants {
             if (deltaTime >= GAME_UPDATE_RATE) {
                 // If the time between the last two updates is greater than or equal to the desired
                 // update rate, it is time to update the game.
-                gamePanel.updateGame(deltaTime);
+//                gamePanel.updateGame(deltaTime);
+                GameItem.updateAllPositions(deltaTime);
                 lastUpdateTime = now;
             } else {
                 // If not, the game was updated recently enough so wait until it is time to update

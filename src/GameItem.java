@@ -1,15 +1,14 @@
-import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public abstract class GameItem extends JPanel implements GameConstants {
+public abstract class GameItem implements GameConstants {
     // Every game object must extend this abstract class. The abstract class includes the position of the item
     // and methods to update it. This abstract class may get bigger in the future.
 
     // ArrayList that holds all the game items in it. Loop over this ArrayList and run
-    // updatePosition() on everything.
+    // updatePosition() and draw() methods on everything.
     private static final ArrayList<GameItem> items = new ArrayList<>();
 
     // A Point2D instance holds the position of each GameItem. This one here uses the double data type.
@@ -24,6 +23,11 @@ public abstract class GameItem extends JPanel implements GameConstants {
     public static void updateAllPositions(float deltaTime) {
         if (!GameItem.getItems().isEmpty())
             for (GameItem item : GameItem.getItems()) item.updatePosition(deltaTime);
+    }
+
+    public static void drawALlItems(Graphics g) {
+        if (!GameItem.getItems().isEmpty())
+            for (GameItem item : GameItem.getItems()) item.draw(g);
     }
 
     public static ArrayList<GameItem> getItems() {
@@ -57,14 +61,13 @@ public abstract class GameItem extends JPanel implements GameConstants {
     public void draw(Graphics g) {
         if (this instanceof Bullet) {
             Bullet b = (Bullet) this;
+            g.setColor(Color.WHITE);
             if (b.getIsAlive()) {
                 // Bullets are of rectangular shape, so fillRect() is used.
                 g.fillRect((int) getPosition().getX(), (int) getPosition().getY(), BULLET_WIDTH, BULLET_HEIGHT);
             }
-
-            return;
+        } else {
+            g.drawImage(getAsset(), (int) getPosition().getX(), (int) getPosition().getY(), null);
         }
-
-        g.drawImage(getAsset(), (int) getPosition().getX(), (int) getPosition().getY(), null);
     }
 }

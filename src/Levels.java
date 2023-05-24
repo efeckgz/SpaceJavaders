@@ -6,14 +6,10 @@ public class Levels {
 
     // (1 -> red, 2 -> green, 3 -> yellow, 4 -> extra, 0 -> no alien)
 
-    private static final int[][] level1 = {
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+    public static final int[][] LEVEL_ONE = {
+            {1, 1, 1, 1, 1, 1},
+            {0, 0, 0, 0, 0, 0},
+            {1, 1, 1, 1, 1, 1},
+            {0, 0, 0, 0, 0, 0}
     };
-
-    public static int[][] getLevel1() {
-        return level1;
-    }
 }
