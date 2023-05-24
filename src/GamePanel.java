@@ -69,13 +69,7 @@ public class GamePanel extends JPanel implements GameConstants {
 
     public void updateGame(long deltaTime) {
         starField.animate(deltaTime); // update the star field
-        player.updatePosition(deltaTime); // update the player
-        for (Bullet bullet : Bullet.getBullets()) bullet.updatePosition(deltaTime); // update the bullets
-        for (Alien[] row : aliens) {
-            for (Alien alien : row) {
-                if (alien != null) alien.updatePosition(deltaTime); // update the aliens in the level
-            }
-        }
+        GameItem.updateAllPositions(deltaTime); // updates all the game items at once
     }
 
     @Override

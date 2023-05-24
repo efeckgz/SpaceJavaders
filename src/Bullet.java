@@ -8,6 +8,7 @@ public class Bullet extends GameItem {
     private boolean isAlive;
 
     public Bullet(Player player) {
+        super();
         this.player = player;
         this.isAlive = true;
 

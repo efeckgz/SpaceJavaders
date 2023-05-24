@@ -4,6 +4,7 @@ public class Alien extends Character implements GameConstants {
     private final boolean isStrong;
 
     public Alien(boolean isStrong) {
+        super();
         this.isStrong = isStrong;
     }
 

@@ -12,6 +12,7 @@ public class Player extends Character {
     private boolean moveRight = false;
 
     public Player() {
+        super();
         setAsset(ImageManager.load(PLAYER_ASSET_PATH));
         setPosition(PLAYER_STARTING_POSITION); // 420, 620
 
