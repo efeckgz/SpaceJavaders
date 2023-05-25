@@ -32,9 +32,6 @@ public class GamePanel extends JPanel implements GameConstants {
             }
         });
 
-//        WORK IN PROGRESS!!!
-//        addComponentListener(StarField.starFieldComponentListener(this));
-
         // Levels
         int[][] level1 = Levels.LEVEL_ONE;
         aliens = new Alien[level1.length][level1[0].length];

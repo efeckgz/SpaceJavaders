@@ -1,7 +1,4 @@
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -14,21 +11,6 @@ public class StarField implements Runnable, GameConstants {
     public StarField(int width, int height) {
         starField = createStarField(width, height);
         yOffset = starField.getHeight();
-    }
-
-
-    // WORK IN PROGRESS!!!
-    public static ComponentAdapter starFieldComponentListener(JPanel parent) {
-        return new ComponentAdapter() {
-            // Creation of a StarField object depends on the panels width and height, however they need to be
-            // nonzero. When the component gets created, it gets "resized" from 0x0 to the correct width and
-            // height. That is why the star field is initialized in the componentResized() method.
-            @Override
-            public void componentResized(ComponentEvent e) {
-                StarField starField = new StarField(parent.getWidth(), parent.getHeight());
-                starField.start(); // Start the StarField thread
-            }
-        };
     }
 
     public void start() {

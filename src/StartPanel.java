@@ -37,9 +37,6 @@ public class StartPanel extends JPanel implements GameConstants {
             }
         });
 
-//        WORK IN PROGRESS!!!
-//        addComponentListener(StarField.starFieldComponentListener(this));
-
         // Load font
         FontManager.loadFont(GraphicsEnvironment.getLocalGraphicsEnvironment());
 
