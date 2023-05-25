@@ -73,6 +73,10 @@ public class GamePanel extends JPanel implements GameConstants {
         SwingUtilities.invokeLater(() -> addKeyListener(player.handleUserInput()));
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+
     public void stopGameThread() {
         if (gameUpdateThread != null) gameUpdateThread.stop();
     }

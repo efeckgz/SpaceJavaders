@@ -21,6 +21,8 @@ public class GameUpdateThread implements Runnable, GameConstants {
     }
 
     public void detectCollisions() {
+        Player player = gamePanel.getPlayer();
+
         for (Alien alien : Alien.getAliens()) {
             if (alien != null) {
                 // Alien exists, check collision
@@ -28,6 +30,11 @@ public class GameUpdateThread implements Runnable, GameConstants {
                     if (alien.intersects(bullet)) {
                         System.out.print("Shot!\n");
                         bullet.setIsAlive(false);
+                    }
+
+                    if (alien.intersects(player)) {
+                        System.out.print("ouch!\n");
+                        player.setLivesLeft(player.getLivesLeft() - 1);
                     }
                 }
             }
