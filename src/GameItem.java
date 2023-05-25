@@ -1,7 +1,7 @@
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class GameItem implements GameConstants {
     // Every game object must extend this abstract class. The abstract class includes the position of the item
@@ -9,7 +9,7 @@ public abstract class GameItem implements GameConstants {
 
     // ArrayList that holds all the game items in it. Loop over this ArrayList and run
     // updatePosition() and draw() methods on everything.
-    private static final ArrayList<GameItem> items = new ArrayList<>();
+    private static final CopyOnWriteArrayList<GameItem> items = new CopyOnWriteArrayList<>();
 
     // A Point2D instance holds the position of each GameItem. This one here uses the double data type.
     protected Point2D.Double position = new Point2D.Double();
@@ -30,8 +30,12 @@ public abstract class GameItem implements GameConstants {
             for (GameItem item : GameItem.getItems()) item.draw(g);
     }
 
-    public static ArrayList<GameItem> getItems() {
+    public static CopyOnWriteArrayList<GameItem> getItems() {
         return items;
+    }
+
+    public static void clearItems() {
+        items.clear();
     }
 
     public Point2D.Double getPosition() {

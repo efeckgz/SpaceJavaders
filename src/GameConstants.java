@@ -8,7 +8,7 @@ public interface GameConstants {
     // Window constants
     int SCREEN_WIDTH = 919;
     int SCREEN_HEIGHT = 687;
-    int GAME_FPS = 120;
+    int GAME_FPS = 60;
     long GAME_UPDATE_RATE = 1000 / GAME_FPS;
     String WINDOW_TITLE = "Space Javaders: Bytecode Battle";
 

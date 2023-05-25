@@ -1,6 +1,8 @@
 import javax.swing.*;
 
 public class WindowManager extends JFrame implements GameConstants {
+    private final JMenuItem backToStartItem;
+
     public WindowManager() {
         // Loading the start screen
         StartPanel startPanel = new StartPanel();
@@ -26,7 +28,7 @@ public class WindowManager extends JFrame implements GameConstants {
         fileMenu.add(playGameItem);
         JMenuItem highScoresItem = new JMenuItem("High Scores");
         fileMenu.add(highScoresItem);
-        JMenuItem backToStartItem = new JMenuItem("Back to Start");
+        backToStartItem = new JMenuItem("Back to Start");
         fileMenu.add(backToStartItem);
         JMenuItem aboutItem = new JMenuItem("About");
         fileMenu.add(aboutItem);
@@ -42,24 +44,45 @@ public class WindowManager extends JFrame implements GameConstants {
         backToStartItem.addActionListener(e -> backToStartItemActionHandler());
         loginRegisterItem.addActionListener(e -> loginRegisterItemActionHandler());
         aboutItem.addActionListener(e -> aboutItemActionHandler());
+
+        updateMenuItems();
+    }
+
+    // This method gets called after a menu items is clicked to make sure the correct menu items are displayed.
+    private void updateMenuItems() {
+        backToStartItem.setVisible(!(getContentPane().getComponent(0) instanceof StartPanel));
     }
 
     private void playGameItemActionHandler(JPanel startPanel) {
-        GamePanel gamePanel = new GamePanel();
-        remove(startPanel);
-        add(gamePanel);
-        setVisible(true);
-        revalidate();
-        repaint();
-        gamePanel.requestFocusInWindow();
+        JPanel current = (JPanel) getContentPane().getComponent(0);
+        if (current instanceof StartPanel) {
+            remove(current);
+            GamePanel gamePanel = new GamePanel();
+            add(gamePanel);
+            gamePanel.requestFocusInWindow();
+            updateMenuItems();
+            revalidate(); // Tell Swing that the component hierarchy has changed
+            repaint(); // Ask Swing to repaint the entire JFrame
+        }
     }
 
     private void backToStartItemActionHandler() {
+        JPanel current = (JPanel) getContentPane().getComponent(0);
+        if (current instanceof GamePanel) {
+            ((GamePanel) current).stopGameThread();
+            remove(current);
+            StartPanel startPanel = new StartPanel();
+            add(startPanel);
+            updateMenuItems();
+            revalidate(); // Tell Swing that the component hierarchy has changed
+            repaint(); // Ask Swing to repaint the entire JFrame
+        }
     }
 
     private void loginRegisterItemActionHandler() {
         LoginRegisterDialog loginRegisterDialog = new LoginRegisterDialog(this);
         loginRegisterDialog.setVisible(true);
+        updateMenuItems();
     }
 
     private void aboutItemActionHandler() {
@@ -70,5 +93,6 @@ public class WindowManager extends JFrame implements GameConstants {
                 JOptionPane.INFORMATION_MESSAGE,
                 new ImageIcon(ImageManager.load("Assets/red.png"))
         );
+        updateMenuItems();
     }
 }

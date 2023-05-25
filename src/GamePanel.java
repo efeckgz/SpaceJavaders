@@ -7,6 +7,7 @@ import java.awt.geom.Point2D;
 public class GamePanel extends JPanel implements GameConstants {
     private final Player player;
     private final Alien[][] aliens;
+    private final GameUpdateThread gameUpdateThread;
     private StarField starField;
 
     public GamePanel() {
@@ -14,8 +15,10 @@ public class GamePanel extends JPanel implements GameConstants {
         requestFocusInWindow();
         setBackground(Color.BLACK);
 
+        GameItem.clearItems(); // clear game items from the previous game
+
         player = new Player();
-        GameUpdateThread gameUpdateThread = new GameUpdateThread(this);
+        gameUpdateThread = new GameUpdateThread(this);
 
         addComponentListener(new ComponentAdapter() {
             // Creation of a StarField object depends on the panels width and height, however they need to be
@@ -70,10 +73,9 @@ public class GamePanel extends JPanel implements GameConstants {
         SwingUtilities.invokeLater(() -> addKeyListener(player.handleUserInput()));
     }
 
-    // Deprecated
-//    public void updateGame(long deltaTime) {
-//        GameItem.updateAllPositions(deltaTime); // updates all the game items at once
-//    }
+    public void stopGameThread() {
+        if (gameUpdateThread != null) gameUpdateThread.stop();
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
