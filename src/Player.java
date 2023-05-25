@@ -11,6 +11,8 @@ public class Player extends Character {
     private boolean moveLeft = false;
     private boolean moveRight = false;
 
+    private long lastHitTime = 0;
+
     public Player() {
         super();
         setAsset(ImageManager.load(PLAYER_ASSET_PATH));
@@ -34,6 +36,13 @@ public class Player extends Character {
 
     public void setMoveRight(boolean moveRight) {
         this.moveRight = moveRight;
+    }
+
+    public void hit() {
+        if (System.currentTimeMillis() - lastHitTime > 2000) {
+            setLivesLeft(getLivesLeft() - 1);
+            lastHitTime = System.currentTimeMillis();
+        }
     }
 
     @Override

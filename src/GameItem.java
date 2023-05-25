@@ -78,6 +78,8 @@ public abstract class GameItem implements GameConstants {
 //    }
 
     public boolean intersects(GameItem other) {
+        if (this == null || other == null) return false; // does not work
+
         int thisX = (int) this.getPosition().x;
         int thisY = (int) this.getPosition().y;
         int thisWidth, thisHeight;

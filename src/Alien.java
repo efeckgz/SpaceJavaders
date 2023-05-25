@@ -4,6 +4,7 @@ import java.util.ArrayList;
 public class Alien extends Character implements GameConstants {
     private static final ArrayList<Alien> aliens = new ArrayList<>();
     private final boolean isStrong;
+    private boolean isAlive = true;
 
     public Alien(boolean isStrong) {
         super();
@@ -13,6 +14,14 @@ public class Alien extends Character implements GameConstants {
 
     public static ArrayList<Alien> getAliens() {
         return aliens;
+    }
+
+    public boolean getIsAlive() {
+        return this.isAlive;
+    }
+
+    public void setIsAlive(boolean isAlive) {
+        this.isAlive = isAlive;
     }
 
     public boolean getIsStrong() {
