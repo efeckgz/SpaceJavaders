@@ -4,6 +4,7 @@ import java.util.ArrayList;
 public class Alien extends Character implements GameConstants {
     private static final ArrayList<Alien> aliens = new ArrayList<>();
     private final boolean isStrong;
+    private boolean canCollide = true;
     private boolean isAlive = true;
 
     public Alien(boolean isStrong) {
@@ -14,6 +15,14 @@ public class Alien extends Character implements GameConstants {
 
     public static ArrayList<Alien> getAliens() {
         return aliens;
+    }
+
+    public boolean getCanCollide() {
+        return this.canCollide;
+    }
+
+    public void setCanCollide(boolean canCollide) {
+        this.canCollide = canCollide;
     }
 
     public boolean getIsAlive() {

@@ -78,8 +78,6 @@ public abstract class GameItem implements GameConstants {
 //    }
 
     public boolean intersects(GameItem other) {
-        if (this == null || other == null) return false; // does not work
-
         int thisX = (int) this.getPosition().x;
         int thisY = (int) this.getPosition().y;
         int thisWidth, thisHeight;
@@ -116,6 +114,11 @@ public abstract class GameItem implements GameConstants {
             if (b.getIsAlive()) {
                 // Bullets are of rectangular shape, so fillRect() is used.
                 g.fillRect((int) getPosition().getX(), (int) getPosition().getY(), BULLET_WIDTH, BULLET_HEIGHT);
+            }
+        } else if (this instanceof Alien) {
+            Alien alien = (Alien) this;
+            if (alien.getCanCollide()) {
+                g.drawImage(getAsset(), (int) getPosition().getX(), (int) getPosition().getY(), null);
             }
         } else {
             g.drawImage(getAsset(), (int) getPosition().getX(), (int) getPosition().getY(), null);

@@ -5,12 +5,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Bullet extends GameItem {
     private static final CopyOnWriteArrayList<Bullet> bullets = new CopyOnWriteArrayList<>();
     private final Player player;
-    private boolean isAlive;
+    private boolean isAlive = true;
+    private boolean canCollide = true;
 
     public Bullet(Player player) {
         super();
         this.player = player;
-        this.isAlive = true;
 
         setPosition(new Point2D.Double(
                 (player.getPosition().getX() + (double) player.getAsset().getWidth() / 2) - (double) BULLET_WIDTH / 2,
@@ -37,13 +37,21 @@ public class Bullet extends GameItem {
         return bullets;
     }
 
+    public boolean getCanCollide() {
+        return this.canCollide;
+    }
+
+    public void setCanCollide(boolean canCollide) {
+        this.canCollide = canCollide;
+    }
+
     public Player getPlayer() {
         return player;
     }
 
     @Override
     public double getTravelSpeed() {
-        return BULLET_TRAVEL_SPEED /* TimeManager.getDeltaTime()*/;
+        return BULLET_TRAVEL_SPEED;
     }
 
     @Override
