@@ -63,11 +63,6 @@ public class Player extends Character {
     }
 
     @Override
-    boolean intersects(GameItem item) {
-        return false;
-    }
-
-    @Override
     public int getHp() {
         return PLAYER_HP; // research this
     }

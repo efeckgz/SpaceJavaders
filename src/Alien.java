@@ -1,11 +1,18 @@
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 public class Alien extends Character implements GameConstants {
+    private static final ArrayList<Alien> aliens = new ArrayList<>();
     private final boolean isStrong;
 
     public Alien(boolean isStrong) {
         super();
         this.isStrong = isStrong;
+        aliens.add(this);
+    }
+
+    public static ArrayList<Alien> getAliens() {
+        return aliens;
     }
 
     public boolean getIsStrong() {
@@ -33,11 +40,6 @@ public class Alien extends Character implements GameConstants {
         double newY = pos.getY() + getTravelSpeed() * deltaTime;
 
         setPosition(new Point2D.Double(pos.getX(), newY));
-    }
-
-    @Override
-    boolean intersects(GameItem item) {
-        return false;
     }
 
     public static class RedAlien extends Alien {

@@ -40,7 +40,7 @@ public class WindowManager extends JFrame implements GameConstants {
         setJMenuBar(menuBar);
 
         // Handling click actions on the menu bar items
-        playGameItem.addActionListener(e -> playGameItemActionHandler(startPanel));
+        playGameItem.addActionListener(e -> playGameItemActionHandler());
         backToStartItem.addActionListener(e -> backToStartItemActionHandler());
         loginRegisterItem.addActionListener(e -> loginRegisterItemActionHandler());
         aboutItem.addActionListener(e -> aboutItemActionHandler());
@@ -53,7 +53,7 @@ public class WindowManager extends JFrame implements GameConstants {
         backToStartItem.setVisible(!(getContentPane().getComponent(0) instanceof StartPanel));
     }
 
-    private void playGameItemActionHandler(JPanel startPanel) {
+    private void playGameItemActionHandler() {
         JPanel current = (JPanel) getContentPane().getComponent(0);
         if (current instanceof StartPanel) {
             remove(current);

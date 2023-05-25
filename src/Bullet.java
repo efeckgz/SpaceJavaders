@@ -1,9 +1,9 @@
 import javax.swing.*;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Bullet extends GameItem {
-    private static final ArrayList<Bullet> bullets = new ArrayList<>();
+    private static final CopyOnWriteArrayList<Bullet> bullets = new CopyOnWriteArrayList<>();
     private final Player player;
     private boolean isAlive;
 
@@ -33,7 +33,7 @@ public class Bullet extends GameItem {
         bullets.add(this);
     }
 
-    public static ArrayList<Bullet> getBullets() {
+    public static CopyOnWriteArrayList<Bullet> getBullets() {
         return bullets;
     }
 
@@ -49,15 +49,11 @@ public class Bullet extends GameItem {
     @Override
     public void updatePosition(float deltaTime) {
         getPosition().y -= getTravelSpeed() * deltaTime;
+
         if (getPosition().y <= 0) {
             setIsAlive(false);
 //            if (Main.debug) System.out.printf("Bullet %s died.\n", Bullet.bullets.indexOf(this));
         }
-    }
-
-    @Override
-    boolean intersects(GameItem item) {
-        return false;
     }
 
     public boolean getIsAlive() {

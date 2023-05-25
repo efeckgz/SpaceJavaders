@@ -20,6 +20,20 @@ public class GameUpdateThread implements Runnable, GameConstants {
         running.set(false);
     }
 
+    public void detectCollisions() {
+        for (Alien alien : Alien.getAliens()) {
+            if (alien != null) {
+                // Alien exists, check collision
+                for (Bullet bullet : Bullet.getBullets()) {
+                    if (alien.intersects(bullet)) {
+                        System.out.print("Shot!\n");
+                        bullet.setIsAlive(false);
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     public void run() {
         long lastUpdateTime = System.currentTimeMillis();
@@ -31,6 +45,7 @@ public class GameUpdateThread implements Runnable, GameConstants {
                 // If the time between the last two updates is greater than or equal to the desired
                 // update rate, it is time to update the game.
                 GameItem.updateAllPositions(deltaTime);
+                detectCollisions();
                 lastUpdateTime = now;
             } else {
                 // If not, the game was updated recently enough so wait until it is time to update
