@@ -1,17 +1,15 @@
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class Player extends Character {
-    // The parent of this component should be GamePanel
-    // This is passed to the bullet object.
+public class Player extends GameItem {
     private int livesLeft = 3;
+    private int score = 0;
+
     // Variables for player movement
     private boolean moveUp = false;
     private boolean moveDown = false;
     private boolean moveLeft = false;
     private boolean moveRight = false;
-
-    private long lastHitTime = 0;
 
     public Player() {
         super();
@@ -38,16 +36,9 @@ public class Player extends Character {
         this.moveRight = moveRight;
     }
 
-    public void hit() {
-        if (System.currentTimeMillis() - lastHitTime > 2000) {
-            setLivesLeft(getLivesLeft() - 1);
-            lastHitTime = System.currentTimeMillis();
-        }
-    }
-
     @Override
     public double getTravelSpeed() {
-        return PLAYER_TRAVEL_SPEED /* TimeManager.getDeltaTime()*/;
+        return PLAYER_TRAVEL_SPEED;
     }
 
     @Override
@@ -71,26 +62,20 @@ public class Player extends Character {
         }
     }
 
-    @Override
-    public int getHp() {
-        return PLAYER_HP; // research this
-    }
-
-    @Override
-    public boolean getIsEnemy() {
-        return false;
-    }
-
-    public void resetHp() {
-        hp = PLAYER_HP;
-    }
-
     public int getLivesLeft() {
         return livesLeft;
     }
 
     public void setLivesLeft(int livesLeft) {
         this.livesLeft = livesLeft;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public void fireBullet() {

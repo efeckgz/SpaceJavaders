@@ -1,12 +1,10 @@
-import javax.swing.*;
 import java.awt.geom.Point2D;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.ArrayList;
 
 public class Bullet extends GameItem {
-    private static final CopyOnWriteArrayList<Bullet> bullets = new CopyOnWriteArrayList<>();
+    private static final ArrayList<Bullet> bullets = new ArrayList<>();
     private final Player player;
     private boolean isAlive = true;
-    private boolean canCollide = true;
 
     public Bullet(Player player) {
         super();
@@ -18,7 +16,7 @@ public class Bullet extends GameItem {
         ));
 
         if (Main.debug) {
-            new Timer(1000, e -> {
+            TimeManager.startTimer(1000, e -> {
                 if (getIsAlive()) {
                     System.out.printf(
                             "Bullet %s location (x, y): %.2f, %.2f\n",
@@ -27,26 +25,14 @@ public class Bullet extends GameItem {
                             getPosition().getY()
                     );
                 }
-            }).start();
+            });
         }
 
         bullets.add(this);
     }
 
-    public static CopyOnWriteArrayList<Bullet> getBullets() {
+    public static ArrayList<Bullet> getBullets() {
         return bullets;
-    }
-
-    public boolean getCanCollide() {
-        return this.canCollide;
-    }
-
-    public void setCanCollide(boolean canCollide) {
-        this.canCollide = canCollide;
-    }
-
-    public Player getPlayer() {
-        return player;
     }
 
     @Override

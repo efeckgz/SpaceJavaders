@@ -24,22 +24,22 @@ public class GameUpdateThread implements Runnable, GameConstants {
         Player player = gamePanel.getPlayer();
 
         for (Alien alien : Alien.getAliens()) {
-            if (alien != null && alien.getCanCollide()) {
+            if (alien != null && alien.getIsAlive()) {
                 // Alien exists, check collision
                 if (alien.intersects(player)) {
-                    System.out.print("ouch!\n");
+                    System.err.print("ouch!\n");
                     if (player.getLivesLeft() > 0) {
                         player.setLivesLeft(player.getLivesLeft() - 1);
-                        alien.setCanCollide(false);
+                        alien.setIsAlive(false);
                     }
                 }
 
                 for (Bullet bullet : Bullet.getBullets()) {
-                    if (bullet.getCanCollide() && alien.intersects(bullet)) {
-                        System.out.print("Shot!\n");
+                    if (bullet.getIsAlive() && alien.intersects(bullet)) {
                         bullet.setIsAlive(false);
-                        bullet.setCanCollide(false);
-                        alien.setCanCollide(false);
+                        alien.setIsAlive(false);
+                        player.setScore(player.getScore() + 1);
+                        System.out.printf("Score: %d\n", player.getScore());
                     }
                 }
             }

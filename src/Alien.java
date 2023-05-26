@@ -1,10 +1,9 @@
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-public class Alien extends Character implements GameConstants {
+public class Alien extends GameItem implements GameConstants {
     private static final ArrayList<Alien> aliens = new ArrayList<>();
     private final boolean isStrong;
-    private boolean canCollide = true;
     private boolean isAlive = true;
 
     public Alien(boolean isStrong) {
@@ -17,14 +16,6 @@ public class Alien extends Character implements GameConstants {
         return aliens;
     }
 
-    public boolean getCanCollide() {
-        return this.canCollide;
-    }
-
-    public void setCanCollide(boolean canCollide) {
-        this.canCollide = canCollide;
-    }
-
     public boolean getIsAlive() {
         return this.isAlive;
     }
@@ -33,19 +24,6 @@ public class Alien extends Character implements GameConstants {
         this.isAlive = isAlive;
     }
 
-    public boolean getIsStrong() {
-        return isStrong;
-    }
-
-    @Override
-    public int getHp() {
-        return getIsStrong() ? 20 : 10;
-    }
-
-    @Override
-    public boolean getIsEnemy() {
-        return true;
-    }
 
     @Override
     public double getTravelSpeed() {

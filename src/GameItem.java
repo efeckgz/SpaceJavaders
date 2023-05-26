@@ -117,7 +117,7 @@ public abstract class GameItem implements GameConstants {
             }
         } else if (this instanceof Alien) {
             Alien alien = (Alien) this;
-            if (alien.getCanCollide()) {
+            if (alien.getIsAlive()) {
                 g.drawImage(getAsset(), (int) getPosition().getX(), (int) getPosition().getY(), null);
             }
         } else {

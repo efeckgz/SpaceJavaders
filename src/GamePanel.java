@@ -61,7 +61,7 @@ public class GamePanel extends JPanel implements GameConstants {
                 aliens[i][j] = alienToCreate;
 
                 // Assign initial position
-                if (alienToCreate != null) {
+                if (alienToCreate != null && alienToCreate.getIsAlive()) {
                     int x = j * (ALIEN_WIDTH + ALIEN_PADDING);
                     int y = i * (ALIEN_HEIGHT + ALIEN_PADDING);
                     alienToCreate.setPosition(new Point2D.Double(x, y));
@@ -87,5 +87,7 @@ public class GamePanel extends JPanel implements GameConstants {
         starField.draw(g, 0, 0);
         GameItem.drawALlItems(g);
         ImageManager.displayLivesLeft(player, g);
+
+        g.drawString(String.format("Score: %d", player.getScore()), getWidth() - 75, 25);
     }
 }
