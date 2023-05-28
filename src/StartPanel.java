@@ -36,9 +36,6 @@ public class StartPanel extends JPanel implements GameConstants {
             }
         });
 
-        // Load font
-        FontManager.loadFont(GraphicsEnvironment.getLocalGraphicsEnvironment());
-
         // load alien assets and add them to the ArrayList
         BufferedImage redAlien = ImageManager.load(RED_ALIEN_ASSET_PATH);
         BufferedImage greenAlien = ImageManager.load(GREEN_ALIEN_ASSET_PATH);

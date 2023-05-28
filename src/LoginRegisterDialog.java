@@ -5,19 +5,15 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 public class LoginRegisterDialog extends JDialog {
     public static boolean LOGGED_IN = false;
     private static File USER_DATA_FILE;
     private static String currentUsername = null;
-    private final JTextField usernameField;
-    private final JPasswordField passwordField;
-    private final JCheckBox registerCheckBox;
 
-    public LoginRegisterDialog(JFrame owner) {
-        super(owner, "Login/Register", true);
-        setLayout(new BorderLayout());
-
+    static {
         try {
             String path = LoginRegisterDialog.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
             File jarDir = new File(path).getParentFile();
@@ -42,6 +38,15 @@ public class LoginRegisterDialog extends JDialog {
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
+    }
+
+    private final JTextField usernameField;
+    private final JPasswordField passwordField;
+    private final JCheckBox registerCheckBox;
+
+    public LoginRegisterDialog(JFrame owner) {
+        super(owner, "Login/Register", true);
+        setLayout(new BorderLayout());
 
         usernameField = new JTextField(20);
         passwordField = new JPasswordField(20);
@@ -89,19 +94,39 @@ public class LoginRegisterDialog extends JDialog {
         return currentUsername;
     }
 
-    public static int getHighScoreForUser(String username) {
+    public static void traverseUsers(Consumer<String[]> action) {
         try (BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length == 3 && parts[0].equals(username)) {
-                    return Integer.parseInt(parts[2]);
+                if (parts.length == 3) {
+                    action.accept(parts);
                 }
             }
         } catch (IOException ignored) {
-        }
 
-        return 0; // This won't happen.
+        }
+    }
+
+    public static int getHighScoreForUser(String username) {
+        AtomicInteger highScore = new AtomicInteger();
+        LoginRegisterDialog.traverseUsers(user -> {
+            highScore.set(Integer.parseInt(user[2]));
+        });
+
+        return highScore.get();
+//        try (BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE))) {
+//            String line;
+//            while ((line = reader.readLine()) != null) {
+//                String[] parts = line.split(",");
+//                if (parts.length == 3 && parts[0].equals(username)) {
+//                    return Integer.parseInt(parts[2]);
+//                }
+//            }
+//        } catch (IOException ignored) {
+//        }
+//
+//        return 0; // This won't happen.
     }
 
     public static void saveHighScore(Player player) {

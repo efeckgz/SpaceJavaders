@@ -1,18 +1,25 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class WindowManager extends JFrame implements GameConstants {
     private final JMenuItem backToStartItem;
     private final JMenuItem playGameItem;
 
     public WindowManager() {
+        // Load the game font
+        FontManager.loadFont(GraphicsEnvironment.getLocalGraphicsEnvironment());
+
         // Loading the start screen
         StartPanel startPanel = new StartPanel();
         add(startPanel);
 
-        if (Main.debug) {
-            HighScoresPanel highScoresPanel = new HighScoresPanel();
-            add(highScoresPanel);
-        }
+
+//        HighScoresPanel hsp = new HighScoresPanel();
+//        add(hsp);
+
+        LoginRegisterDialog.traverseUsers(user -> {
+            System.out.printf("username: %s high score: %s\n", user[0], user[2]);
+        });
 
         // setting window properties
         setTitle(WINDOW_TITLE);
@@ -50,6 +57,7 @@ public class WindowManager extends JFrame implements GameConstants {
         backToStartItem.addActionListener(e -> backToStartItemActionHandler());
         loginRegisterItem.addActionListener(e -> loginRegisterItemActionHandler());
         aboutItem.addActionListener(e -> aboutItemActionHandler());
+        highScoresItem.addActionListener(e -> highScoresItemActionHandler());
 
         updateMenuItems();
     }
@@ -93,6 +101,10 @@ public class WindowManager extends JFrame implements GameConstants {
 
     private void backToStartItemActionHandler() {
         switchToPanel(new StartPanel());
+    }
+
+    private void highScoresItemActionHandler() {
+        switchToPanel(new HighScoresPanel());
     }
 
     private void loginRegisterItemActionHandler() {
