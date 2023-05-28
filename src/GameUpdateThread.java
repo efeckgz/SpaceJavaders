@@ -28,7 +28,7 @@ public class GameUpdateThread implements Runnable, GameConstants {
         running.set(false);
     }
 
-    public void detectCollisions() {
+    private void detectCollisions() {
         Player player = gamePanel.getPlayer();
 
         for (Alien alien : Alien.getAliens()) {
@@ -47,13 +47,8 @@ public class GameUpdateThread implements Runnable, GameConstants {
                         bullet.setIsAlive(false); // kill the bullet
                         alien.setIsAlive(false); // kill the alien
                         player.setScore(player.getScore() + 1); // increment score
-                        player.setCurrentHighScore(() -> {
-                            if (player.getCurrentHighScore() <= player.getScore()) {
-                                return player.getCurrentHighScore() + 1;
-                            } else {
-                                return player.getCurrentHighScore();
-                            }
-                        });
+                        // The maximum of the current high score and the score should be the high score
+                        player.setCurrentHighScore(Math.max(player.getCurrentHighScore(), player.getScore()));
                     }
                 }
             }

@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 
 public class LoginRegisterDialog extends JDialog {
     public static boolean LOGGED_IN = false;
@@ -23,7 +24,20 @@ public class LoginRegisterDialog extends JDialog {
             USER_DATA_FILE = new File(jarDir, "users.txt");
 
             if (!USER_DATA_FILE.exists()) {
-                USER_DATA_FILE.createNewFile();
+                if (!USER_DATA_FILE.createNewFile()) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Failed to create users file",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                } else {
+                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE, true))) {
+                        writer.write("admin,123,0"); // Add admin user
+                        writer.newLine();
+                        writer.flush(); // flush the changes immediately.
+                    }
+                }
             }
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
@@ -75,9 +89,50 @@ public class LoginRegisterDialog extends JDialog {
         return currentUsername;
     }
 
-    public static void saveHighScore(String username) {
-        // Read the file to find the username and append the high score to the end of the appropriate line.
+    public static int getHighScoreForUser(String username) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 3 && parts[0].equals(username)) {
+                    return Integer.parseInt(parts[2]);
+                }
+            }
+        } catch (IOException ignored) {
+        }
 
+        return 0; // This won't happen.
+    }
+
+    public static void saveHighScore(Player player) {
+        // Read the file to find the username and append the high score to the end of the appropriate line.
+        // Add all the lines to a List and reconstruct the file from that list to keep it updated.
+
+        String playerUsername = player.getUsername();
+        String playerHighScoreStr = Integer.toString(player.getCurrentHighScore());
+        ArrayList<String> lines = new ArrayList<>(); // read files into this
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 3 && parts[0].equals(playerUsername)) {
+                    parts[2] = playerHighScoreStr;
+                    line = String.join(",", parts);
+                }
+                lines.add(line); // reconstruct the file as lines into this ArrayList
+            }
+        } catch (IOException ignored) {
+        }
+
+        // Reconstruct the file using the ArrayList
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE, false))) {
+            for (String line : lines) {
+                writer.write(line);
+                writer.newLine();
+            }
+        } catch (IOException ignored) {
+        }
     }
 
     private class SubmitButtonListener implements ActionListener {
@@ -127,6 +182,7 @@ public class LoginRegisterDialog extends JDialog {
                         if (parts.length == 3 && parts[0].equals(username) && parts[1].equals(password)) {
                             LoginRegisterDialog.LOGGED_IN = true;
                             LoginRegisterDialog.currentUsername = username;
+                            if (username.equals("admin")) Main.debug = true; // Enable debug mode for admin
                             break;
                         }
                     }

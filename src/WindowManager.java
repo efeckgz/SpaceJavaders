@@ -9,6 +9,11 @@ public class WindowManager extends JFrame implements GameConstants {
         StartPanel startPanel = new StartPanel();
         add(startPanel);
 
+        if (Main.debug) {
+            HighScoresPanel highScoresPanel = new HighScoresPanel();
+            add(highScoresPanel);
+        }
+
         // setting window properties
         setTitle(WINDOW_TITLE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -57,9 +62,15 @@ public class WindowManager extends JFrame implements GameConstants {
 
     private void switchToPanel(JPanel panel) {
         JPanel current = (JPanel) getContentPane().getComponent(0);
-        if (current instanceof GamePanel) ((GamePanel) current).stopGameThread();
-        remove(current);
-        add(panel);
+        if (current instanceof GamePanel) {
+            // If the player is switching from GamePanel, save their game progress and stop the game loop
+            GamePanel gp = (GamePanel) current;
+            LoginRegisterDialog.saveHighScore(gp.getPlayer());
+            gp.stopGameThread();
+        }
+
+        remove(current); // Remove the current panel
+        add(panel); // add the desired panel
         panel.requestFocusInWindow();
 
         updateMenuItems();
@@ -73,7 +84,7 @@ public class WindowManager extends JFrame implements GameConstants {
             GameUpdateThread gameUpdateThread = gamePanel.getGameUpdateThread();
             gameUpdateThread.setGameOverAction(() -> {
                 gameUpdateThread.stop();
-                LoginRegisterDialog.saveHighScore(gamePanel.getPlayer().getUsername());
+                LoginRegisterDialog.saveHighScore(gamePanel.getPlayer());
                 switchToPanel(new GameOverPanel(gamePanel.getPlayer()));
             });
             switchToPanel(gamePanel);

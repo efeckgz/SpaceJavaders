@@ -20,7 +20,7 @@ public class Player extends GameItem {
         super();
 
         this.username = username;
-        this.currentHighScore = 0;
+        this.currentHighScore = LoginRegisterDialog.getHighScoreForUser(username);
 
         setAsset(ImageManager.load(PLAYER_ASSET_PATH));
         setPosition(PLAYER_STARTING_POSITION); // 420, 620
@@ -34,8 +34,8 @@ public class Player extends GameItem {
         return currentHighScore;
     }
 
-    public void setCurrentHighScore(Supplier<Integer> currentHighScoreSupplier) {
-        this.currentHighScore = currentHighScoreSupplier.get();
+    public void setCurrentHighScore(int currentHighScoreSupplier) {
+        this.currentHighScore = currentHighScoreSupplier;
     }
 
 
