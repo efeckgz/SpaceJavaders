@@ -3,9 +3,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GameUpdateThread implements Runnable, GameConstants {
     private final GamePanel gamePanel;
-
     // AtomicBoolean was used to control the running state across threads safely.
     private final AtomicBoolean running = new AtomicBoolean(false);
+    private Runnable gameOverAction;
 
     public GameUpdateThread(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
@@ -14,6 +14,14 @@ public class GameUpdateThread implements Runnable, GameConstants {
     public void start() {
         running.set(true);
         new Thread(this).start();
+    }
+
+    public Runnable getGameOverAction() {
+        return gameOverAction;
+    }
+
+    public void setGameOverAction(Runnable gameOverAction) {
+        this.gameOverAction = gameOverAction;
     }
 
     public void stop() {
@@ -27,19 +35,18 @@ public class GameUpdateThread implements Runnable, GameConstants {
             if (alien != null && alien.getIsAlive()) {
                 // Alien exists, check collision
                 if (alien.intersects(player)) {
-                    System.err.print("ouch!\n");
-                    if (player.getLivesLeft() > 0) {
-                        player.setLivesLeft(player.getLivesLeft() - 1);
-                        alien.setIsAlive(false);
-                    }
+                    if (Main.debug) System.err.print("ouch!\n");
+                    player.setLivesLeft(player.getLivesLeft() - 1);
+                    player.setIsAlive(() -> player.getLivesLeft() > 0); // kill the player if their lives are gone.
+                    alien.setIsAlive(false);
+                    if (!player.getIsAlive() && gameOverAction != null) gameOverAction.run();
                 }
 
                 for (Bullet bullet : Bullet.getBullets()) {
                     if (bullet.getIsAlive() && alien.intersects(bullet)) {
-                        bullet.setIsAlive(false);
-                        alien.setIsAlive(false);
-                        player.setScore(player.getScore() + 1);
-                        System.out.printf("Score: %d\n", player.getScore());
+                        bullet.setIsAlive(false); // kill the bullet
+                        alien.setIsAlive(false); // kill the alien
+                        player.setScore(player.getScore() + 1); // increment score
                     }
                 }
             }
@@ -69,7 +76,7 @@ public class GameUpdateThread implements Runnable, GameConstants {
                 }
             }
 
-            SwingUtilities.invokeLater(gamePanel::repaint);
+            SwingUtilities.invokeLater(gamePanel::updateComponent);
         }
     }
 }

@@ -1,9 +1,14 @@
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.function.Supplier;
 
 public class Player extends GameItem {
+    private final String username;
+    private final int highScore;
+
     private int livesLeft = 3;
     private int score = 0;
+    private boolean isAlive = true;
 
     // Variables for player movement
     private boolean moveUp = false;
@@ -11,13 +16,22 @@ public class Player extends GameItem {
     private boolean moveLeft = false;
     private boolean moveRight = false;
 
-    public Player() {
+    public Player(String username) {
         super();
+
+        this.username = username;
+        this.highScore = 0;
+
         setAsset(ImageManager.load(PLAYER_ASSET_PATH));
         setPosition(PLAYER_STARTING_POSITION); // 420, 620
+    }
 
-        // Fire bullets automatically
-        TimeManager.startTimer(BULLET_FIRE_FREQUENCY, e -> fireBullet());
+    public boolean getIsAlive() {
+        return isAlive;
+    }
+
+    public void setIsAlive(Supplier<Boolean> supplier) {
+        this.isAlive = supplier.get(); // set the isAlive property with a lambda expression.
     }
 
     public void setMoveUp(boolean moveUp) {
@@ -78,8 +92,8 @@ public class Player extends GameItem {
         this.score = score;
     }
 
-    public void fireBullet() {
-        new Bullet(this);
+    public void fireBullets() {
+        TimeManager.startTimer(BULLET_FIRE_FREQUENCY, e -> new Bullet(this), () -> !getIsAlive());
     }
 
     private void controlKeyPressedActionHandler(KeyEvent e) {

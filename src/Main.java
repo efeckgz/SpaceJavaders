@@ -4,10 +4,9 @@ public class Main {
     public static boolean debug = false;
 
     public static void main(String[] args) {
-        // Use native macOS menu bar if possible
         try {
-            System.setProperty("apple.awt.application.name", "Space Javaders");
-            System.setProperty("apple.laf.useScreenMenuBar", "true");
+            System.setProperty("apple.awt.application.name", "Space Javaders"); // Change the macOS menu bar application name
+            System.setProperty("apple.laf.useScreenMenuBar", "true"); // Use native macOS menu bar if possible
         } catch (Exception ignored) {
         }
 

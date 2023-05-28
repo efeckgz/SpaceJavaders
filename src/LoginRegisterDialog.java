@@ -2,10 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.io.*;
+import java.net.URISyntaxException;
 
 public class LoginRegisterDialog extends JDialog {
-    private static boolean loggedIn = false;
+    public static boolean LOGGED_IN = false;
+    private static File USER_DATA_FILE;
+    private static String currentUsername = null;
     private final JTextField usernameField;
     private final JPasswordField passwordField;
     private final JCheckBox registerCheckBox;
@@ -14,6 +17,18 @@ public class LoginRegisterDialog extends JDialog {
         super(owner, "Login/Register", true);
         setLayout(new BorderLayout());
 
+        try {
+            String path = LoginRegisterDialog.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+            File jarDir = new File(path).getParentFile();
+            USER_DATA_FILE = new File(jarDir, "users.txt");
+
+            if (!USER_DATA_FILE.exists()) {
+                USER_DATA_FILE.createNewFile();
+            }
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+
         usernameField = new JTextField(20);
         passwordField = new JPasswordField(20);
         registerCheckBox = new JCheckBox("Register");
@@ -21,7 +36,6 @@ public class LoginRegisterDialog extends JDialog {
         JButton submitButton = new JButton("Submit");
         JButton cancelButton = new JButton("Cancel");
 
-        // Create the input panel
         JPanel inputPanel = new JPanel(new GridBagLayout());
         inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -29,7 +43,6 @@ public class LoginRegisterDialog extends JDialog {
         constraints.anchor = GridBagConstraints.WEST;
         constraints.insets = new Insets(10, 10, 10, 10);
 
-        // Add components to the input panel
         constraints.gridx = 0;
         constraints.gridy = 0;
         inputPanel.add(new JLabel("Username: "), constraints);
@@ -44,13 +57,11 @@ public class LoginRegisterDialog extends JDialog {
         constraints.gridx = 1;
         inputPanel.add(passwordField, constraints);
 
-        // Create the button panel
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(registerCheckBox);
         buttonPanel.add(submitButton);
         buttonPanel.add(cancelButton);
 
-        // Add action listeners to buttons
         submitButton.addActionListener(new SubmitButtonListener());
         cancelButton.addActionListener(e -> dispose());
 
@@ -60,12 +71,8 @@ public class LoginRegisterDialog extends JDialog {
         setLocationRelativeTo(owner);
     }
 
-    public static boolean getLoggedIn() {
-        return LoginRegisterDialog.loggedIn;
-    }
-
-    public static void setLoggedIn(boolean loggedIn) {
-        LoginRegisterDialog.loggedIn = loggedIn;
+    public static String getCurrentUsername() {
+        return currentUsername;
     }
 
     private class SubmitButtonListener implements ActionListener {
@@ -75,26 +82,56 @@ public class LoginRegisterDialog extends JDialog {
             String password = new String(passwordField.getPassword());
             boolean register = registerCheckBox.isSelected();
 
-            //JSONObject users = new JSONObject();
-            File file = new File("users.json");
+            if (register) { // Register
+                boolean canRegister = false;
+                // Open the file for reading to check if the entered credentials already exist
+                try (BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        String[] parts = line.split(",");
+                        if (parts.length == 2 && parts[0].equals(username)) {
+                            JOptionPane.showMessageDialog(
+                                    null,
+                                    String.format("The username %s already exists!", username),
+                                    "Error", JOptionPane.ERROR_MESSAGE
+                            );
+                            return; // If the username already exists return
+                        } else {
+                            canRegister = true;
+                        }
+                    }
+                } catch (IOException ignored) {
 
-            if (register) {
-                // Register the user
-                // Add logic to store the username/password as a new user
-                System.out.println("Registering user: " + username);
-                setLoggedIn(true);
-            } else {
-                // Login
-                // Check if the inputted username/password combo matches an existing user
-                System.out.println("Logging in user: " + username);
-                setLoggedIn(true);
+                }
 
-                // Enable debug mode for the user admin
-                if (username.equalsIgnoreCase("admin")) Main.debug = true;
+                // Open the file for writing to Register if registering is allowed
+                if (canRegister) {
+                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE, true))) {
+                        writer.write(username + "," + password);
+                        writer.newLine();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            } else { // Login
+                // Open the file for reading when Logging in
+                try (BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) { // Read the lines until there is no line to read
+                        String[] parts = line.split(",");
+                        if (parts.length == 2 && parts[0].equals(username) && parts[1].equals(password)) {
+                            LoginRegisterDialog.LOGGED_IN = true;
+                            LoginRegisterDialog.currentUsername = username;
+                            break;
+                        }
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
 
-            // Close the dialog
             dispose();
         }
     }
 }
+

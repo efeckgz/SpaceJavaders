@@ -45,8 +45,7 @@ public class ImageManager implements GameConstants {
             g.setFont(FontManager.getFontText());
             g.drawString("Lives: ", 15, 30);
             g.drawImage(livesLeftImg, 70, 15, null);
-        } catch (IllegalStateException illegalStateException) {
-            illegalStateException.printStackTrace();
+        } catch (IllegalStateException ignored) {
         }
     }
 }

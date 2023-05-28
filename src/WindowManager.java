@@ -8,6 +8,7 @@ public class WindowManager extends JFrame implements GameConstants {
         StartPanel startPanel = new StartPanel();
         add(startPanel);
 
+
         // setting window properties
         setTitle(WINDOW_TITLE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,30 +54,32 @@ public class WindowManager extends JFrame implements GameConstants {
         backToStartItem.setVisible(!(getContentPane().getComponent(0) instanceof StartPanel));
     }
 
-    private void playGameItemActionHandler() {
+    private void switchToPanel(JPanel panel) {
         JPanel current = (JPanel) getContentPane().getComponent(0);
-        if (current instanceof StartPanel) {
-            remove(current);
+        if (current instanceof GamePanel) ((GamePanel) current).stopGameThread();
+        remove(current);
+        add(panel);
+        panel.requestFocusInWindow();
+
+        updateMenuItems();
+        revalidate();
+        repaint();
+    }
+
+    private void playGameItemActionHandler() {
+        if (LoginRegisterDialog.LOGGED_IN) {
             GamePanel gamePanel = new GamePanel();
-            add(gamePanel);
-            gamePanel.requestFocusInWindow();
-            updateMenuItems();
-            revalidate(); // Tell Swing that the component hierarchy has changed
-            repaint(); // Ask Swing to repaint the entire JFrame
+            GameUpdateThread gameUpdateThread = gamePanel.getGameUpdateThread();
+            gameUpdateThread.setGameOverAction(() -> {
+                gameUpdateThread.stop();
+                switchToPanel(new GameOverPanel(gamePanel.getPlayer()));
+            });
+            switchToPanel(gamePanel);
         }
     }
 
     private void backToStartItemActionHandler() {
-        JPanel current = (JPanel) getContentPane().getComponent(0);
-        if (current instanceof GamePanel) {
-            ((GamePanel) current).stopGameThread();
-            remove(current);
-            StartPanel startPanel = new StartPanel();
-            add(startPanel);
-            updateMenuItems();
-            revalidate(); // Tell Swing that the component hierarchy has changed
-            repaint(); // Ask Swing to repaint the entire JFrame
-        }
+        switchToPanel(new StartPanel());
     }
 
     private void loginRegisterItemActionHandler() {

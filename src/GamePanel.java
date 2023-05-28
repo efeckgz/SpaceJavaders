@@ -17,7 +17,8 @@ public class GamePanel extends JPanel implements GameConstants {
 
         GameItem.clearItems(); // clear game items from the previous game
 
-        player = new Player();
+        player = new Player(LoginRegisterDialog.getCurrentUsername());
+        player.fireBullets();
         gameUpdateThread = new GameUpdateThread(this);
 
         addComponentListener(new ComponentAdapter() {
@@ -77,8 +78,17 @@ public class GamePanel extends JPanel implements GameConstants {
         return player;
     }
 
+    public GameUpdateThread getGameUpdateThread() {
+        return gameUpdateThread;
+    }
+
     public void stopGameThread() {
         if (gameUpdateThread != null) gameUpdateThread.stop();
+    }
+
+    public void updateComponent() {
+        revalidate();
+        repaint();
     }
 
     @Override
