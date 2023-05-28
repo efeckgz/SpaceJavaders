@@ -2,11 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.util.HashMap;
+import java.awt.image.BufferedImage;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class HighScoresPanel extends JPanel implements GameConstants {
-    private final HashMap<String, Integer> usernameScoreMap = new HashMap<>();
+    private final BufferedImage userScoresImg;
     private StarField starField;
 
     public HighScoresPanel() {
@@ -21,6 +21,25 @@ public class HighScoresPanel extends JPanel implements GameConstants {
                 }
             }
         });
+
+        int imageHeight = LoginRegisterDialog.getUserCount() * 60;
+
+        BufferedImage img = new BufferedImage(SCREEN_WIDTH, imageHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = img.createGraphics();
+
+        g.setFont(FontManager.getFontSubtitle());
+        AtomicInteger index = new AtomicInteger(0);
+        LoginRegisterDialog.forEach(user -> {
+            String username = user[0];
+            String userHighScoreStr = user[2];
+            String usernameHighScorePairing = String.format("%s %s", username, userHighScoreStr);
+            int usernameHighScorePairingWidth = g.getFontMetrics().stringWidth(usernameHighScorePairing);
+            g.drawString(usernameHighScorePairing, SCREEN_WIDTH / 2 - usernameHighScorePairingWidth / 2, (index.getAndIncrement() + 1) * 60);
+        }, true);
+
+        g.dispose();
+
+        this.userScoresImg = img;
 
         TimeManager.startTimer(1000 / GAME_FPS, e -> updateComponent());
     }
@@ -43,19 +62,23 @@ public class HighScoresPanel extends JPanel implements GameConstants {
         int highScoresWidth = g.getFontMetrics().stringWidth(highScores);
         g.drawString(highScores, getWidth() / 2 - highScoresWidth / 2, 150);
 
-        g.setFont(FontManager.getFontSubtitle());
-        AtomicInteger y = new AtomicInteger(getHeight() / 2); // Atomic variable used to be able to use in Consumer
-        LoginRegisterDialog.traverseUsers(user -> {
-            String username = user[0];
-            String userHighScoreStr = user[2];
+        if (userScoresImg != null) {
+            int x = (getWidth() - userScoresImg.getWidth()) / 2;
+            int y = (getHeight() - userScoresImg.getHeight()) / 2;
+            g.drawImage(userScoresImg, x, y, null);
+        }
 
-            if (!username.equals("admin")) { // Don't show admin because they are not a real player
-                String usernameHighScorePairing = String.format("%s %s\n", username, userHighScoreStr);
-                int usernameHighScorePairingWidth = g.getFontMetrics().stringWidth(usernameHighScorePairing);
-
-                g.drawString(usernameHighScorePairing, getWidth() / 2 - usernameHighScorePairingWidth / 2, y.get());
-                y.addAndGet(60);
-            }
-        });
+//        g.setFont(FontManager.getFontSubtitle());
+//        AtomicInteger y = new AtomicInteger(getHeight() / 2); // Atomic variable used to be able to use in Consumer
+//        LoginRegisterDialog.forEach(user -> {
+//            String username = user[0];
+//            String userHighScoreStr = user[2];
+//
+//            String usernameHighScorePairing = String.format("%s %s\n", username, userHighScoreStr);
+//            int usernameHighScorePairingWidth = g.getFontMetrics().stringWidth(usernameHighScorePairing);
+//
+//            g.drawString(usernameHighScorePairing, getWidth() / 2 - usernameHighScorePairingWidth / 2, y.get());
+//            y.addAndGet(60);
+//        }, true);
     }
 }

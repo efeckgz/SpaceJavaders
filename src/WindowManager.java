@@ -17,7 +17,7 @@ public class WindowManager extends JFrame implements GameConstants {
 //        HighScoresPanel hsp = new HighScoresPanel();
 //        add(hsp);
 
-        LoginRegisterDialog.traverseUsers(user -> {
+        LoginRegisterDialog.forEach(user -> {
             System.out.printf("username: %s high score: %s\n", user[0], user[2]);
         });
 

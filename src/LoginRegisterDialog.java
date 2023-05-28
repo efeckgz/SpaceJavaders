@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
@@ -94,24 +95,49 @@ public class LoginRegisterDialog extends JDialog {
         return currentUsername;
     }
 
-    public static void traverseUsers(Consumer<String[]> action) {
+    // forEach method for the users
+    // This method reads the users.txt file line by line, splits each line into 3 parts and puts them into a
+    // String[] where indices 0, 1, 2 are username, password, high score. The method takes a
+    // Consumer<String[]> as an argument, which represents the user array. This method will be called
+    // with a lambda expression that will run for each user that is registered (except for admin).
+    // The overloaded version gets a parameter for sorting prior to performing the action.
+    public static void forEach(Consumer<String[]> action) {
         try (BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length == 3) {
+                if (parts.length == 3 && !parts[0].equals("admin")) {
                     action.accept(parts);
                 }
             }
-        } catch (IOException ignored) {
-
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
+
+    public static void forEach(Consumer<String[]> action, boolean sorted) {
+        if (sorted) {
+            ArrayList<String[]> usersToSort = new ArrayList<>();
+            forEach(usersToSort::add);
+            usersToSort.sort(Comparator.comparingInt((String[] user) -> -Integer.parseInt(user[2])));
+            usersToSort.forEach(action);
+        } else {
+            forEach(action);
+        }
+    }
+
+    public static int getUserCount() {
+        AtomicInteger count = new AtomicInteger();
+        LoginRegisterDialog.forEach(u -> count.getAndIncrement());
+        return count.get();
     }
 
     public static int getHighScoreForUser(String username) {
         AtomicInteger highScore = new AtomicInteger();
-        LoginRegisterDialog.traverseUsers(user -> {
-            highScore.set(Integer.parseInt(user[2]));
+        LoginRegisterDialog.forEach(user -> {
+            if (user[0].equals(username)) {
+                highScore.set(Integer.parseInt(user[2]));
+            }
         });
 
         return highScore.get();
@@ -199,21 +225,13 @@ public class LoginRegisterDialog extends JDialog {
                     }
                 }
             } else { // Login
-                // Open the file for reading when Logging in
-                try (BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE))) {
-                    String line;
-                    while ((line = reader.readLine()) != null) { // Read the lines until there is no line to read
-                        String[] parts = line.split(",");
-                        if (parts.length == 3 && parts[0].equals(username) && parts[1].equals(password)) {
-                            LoginRegisterDialog.LOGGED_IN = true;
-                            LoginRegisterDialog.currentUsername = username;
-                            if (username.equals("admin")) Main.debug = true; // Enable debug mode for admin
-                            break;
-                        }
+                if (username.equals("admin")) Main.debug = true; // Enable debug mode for admin user
+                LoginRegisterDialog.forEach(user -> {
+                    if (user[0].equals(username) && user[1].equals(password)) {
+                        LoginRegisterDialog.LOGGED_IN = true;
+                        LoginRegisterDialog.currentUsername = username;
                     }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+                });
             }
 
             dispose();
