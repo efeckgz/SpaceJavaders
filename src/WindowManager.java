@@ -2,12 +2,12 @@ import javax.swing.*;
 
 public class WindowManager extends JFrame implements GameConstants {
     private final JMenuItem backToStartItem;
+    private final JMenuItem playGameItem;
 
     public WindowManager() {
         // Loading the start screen
         StartPanel startPanel = new StartPanel();
         add(startPanel);
-
 
         // setting window properties
         setTitle(WINDOW_TITLE);
@@ -25,7 +25,7 @@ public class WindowManager extends JFrame implements GameConstants {
         // Adding the sub-menu items to the file menu
         JMenuItem loginRegisterItem = new JMenuItem("Login/Register");
         fileMenu.add(loginRegisterItem);
-        JMenuItem playGameItem = new JMenuItem("Play Game");
+        playGameItem = new JMenuItem("Play Game");
         fileMenu.add(playGameItem);
         JMenuItem highScoresItem = new JMenuItem("High Scores");
         fileMenu.add(highScoresItem);
@@ -52,6 +52,7 @@ public class WindowManager extends JFrame implements GameConstants {
     // This method gets called after a menu items is clicked to make sure the correct menu items are displayed.
     private void updateMenuItems() {
         backToStartItem.setVisible(!(getContentPane().getComponent(0) instanceof StartPanel));
+        playGameItem.setVisible(LoginRegisterDialog.LOGGED_IN);
     }
 
     private void switchToPanel(JPanel panel) {
@@ -72,6 +73,7 @@ public class WindowManager extends JFrame implements GameConstants {
             GameUpdateThread gameUpdateThread = gamePanel.getGameUpdateThread();
             gameUpdateThread.setGameOverAction(() -> {
                 gameUpdateThread.stop();
+                LoginRegisterDialog.saveHighScore(gamePanel.getPlayer().getUsername());
                 switchToPanel(new GameOverPanel(gamePanel.getPlayer()));
             });
             switchToPanel(gamePanel);

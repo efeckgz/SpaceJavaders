@@ -5,7 +5,7 @@ public class GameUpdateThread implements Runnable, GameConstants {
     private final GamePanel gamePanel;
     // AtomicBoolean was used to control the running state across threads safely.
     private final AtomicBoolean running = new AtomicBoolean(false);
-    private Runnable gameOverAction;
+    private Runnable gameOverAction; // This runs when the player dies.
 
     public GameUpdateThread(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
@@ -47,6 +47,13 @@ public class GameUpdateThread implements Runnable, GameConstants {
                         bullet.setIsAlive(false); // kill the bullet
                         alien.setIsAlive(false); // kill the alien
                         player.setScore(player.getScore() + 1); // increment score
+                        player.setCurrentHighScore(() -> {
+                            if (player.getCurrentHighScore() <= player.getScore()) {
+                                return player.getCurrentHighScore() + 1;
+                            } else {
+                                return player.getCurrentHighScore();
+                            }
+                        });
                     }
                 }
             }
@@ -76,7 +83,7 @@ public class GameUpdateThread implements Runnable, GameConstants {
                 }
             }
 
-            SwingUtilities.invokeLater(gamePanel::updateComponent);
+            SwingUtilities.invokeLater(gamePanel::updateComponent); // render the game after every update has completed.
         }
     }
 }

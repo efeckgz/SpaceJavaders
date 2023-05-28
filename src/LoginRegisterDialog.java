@@ -75,6 +75,11 @@ public class LoginRegisterDialog extends JDialog {
         return currentUsername;
     }
 
+    public static void saveHighScore(String username) {
+        // Read the file to find the username and append the high score to the end of the appropriate line.
+
+    }
+
     private class SubmitButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -89,7 +94,7 @@ public class LoginRegisterDialog extends JDialog {
                     String line;
                     while ((line = reader.readLine()) != null) {
                         String[] parts = line.split(",");
-                        if (parts.length == 2 && parts[0].equals(username)) {
+                        if (parts.length == 3 && parts[0].equals(username)) {
                             JOptionPane.showMessageDialog(
                                     null,
                                     String.format("The username %s already exists!", username),
@@ -107,7 +112,7 @@ public class LoginRegisterDialog extends JDialog {
                 // Open the file for writing to Register if registering is allowed
                 if (canRegister) {
                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE, true))) {
-                        writer.write(username + "," + password);
+                        writer.write(username + "," + password + "," + 0);
                         writer.newLine();
                     } catch (IOException ex) {
                         ex.printStackTrace();
@@ -119,7 +124,7 @@ public class LoginRegisterDialog extends JDialog {
                     String line;
                     while ((line = reader.readLine()) != null) { // Read the lines until there is no line to read
                         String[] parts = line.split(",");
-                        if (parts.length == 2 && parts[0].equals(username) && parts[1].equals(password)) {
+                        if (parts.length == 3 && parts[0].equals(username) && parts[1].equals(password)) {
                             LoginRegisterDialog.LOGGED_IN = true;
                             LoginRegisterDialog.currentUsername = username;
                             break;

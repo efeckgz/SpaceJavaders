@@ -99,5 +99,6 @@ public class GamePanel extends JPanel implements GameConstants {
         ImageManager.displayLivesLeft(player, g);
 
         g.drawString(String.format("Score: %d", player.getScore()), getWidth() - 75, 25);
+        g.drawString(String.format("High score: %d", player.getCurrentHighScore()), getWidth() - 118, 35);
     }
 }

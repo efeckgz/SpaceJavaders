@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 public class Player extends GameItem {
     private final String username;
-    private final int highScore;
+    private int currentHighScore;
 
     private int livesLeft = 3;
     private int score = 0;
@@ -20,11 +20,24 @@ public class Player extends GameItem {
         super();
 
         this.username = username;
-        this.highScore = 0;
+        this.currentHighScore = 0;
 
         setAsset(ImageManager.load(PLAYER_ASSET_PATH));
         setPosition(PLAYER_STARTING_POSITION); // 420, 620
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public int getCurrentHighScore() {
+        return currentHighScore;
+    }
+
+    public void setCurrentHighScore(Supplier<Integer> currentHighScoreSupplier) {
+        this.currentHighScore = currentHighScoreSupplier.get();
+    }
+
 
     public boolean getIsAlive() {
         return isAlive;
