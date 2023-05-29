@@ -1,3 +1,10 @@
+package models;
+
+import abstracts.GameItem;
+import ui.LoginRegisterDialog;
+import utils.ImageManager;
+import utils.TimeManager;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.function.Supplier;
@@ -151,7 +158,7 @@ public class Player extends GameItem {
         // Only run in debug mode
         if (Main.debug) {
             System.out.printf(
-                    "Player location (x, y): %.2f, %.2f\n",
+                    "models.Player location (x, y): %.2f, %.2f\n",
                     getPosition().getX(),
                     getPosition().getY()
             );

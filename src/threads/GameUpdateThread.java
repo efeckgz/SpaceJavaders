@@ -1,14 +1,23 @@
+package threads;
+
+import abstracts.GameItem;
+import constants.GameConstants;
+import models.Alien;
+import models.Bullet;
+import models.Player;
+import ui.GameScreen;
+
 import javax.swing.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GameUpdateThread implements Runnable, GameConstants {
-    private final GamePanel gamePanel;
+    private final GameScreen gameScreen;
     // AtomicBoolean was used to control the running state across threads safely.
     private final AtomicBoolean running = new AtomicBoolean(false);
     private Runnable gameOverAction; // This runs when the player dies.
 
-    public GameUpdateThread(GamePanel gamePanel) {
-        this.gamePanel = gamePanel;
+    public GameUpdateThread(GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
     }
 
     public void start() {
@@ -29,11 +38,11 @@ public class GameUpdateThread implements Runnable, GameConstants {
     }
 
     private void detectCollisions() {
-        Player player = gamePanel.getPlayer();
+        Player player = gameScreen.getPlayer();
 
         for (Alien alien : Alien.getAliens()) {
             if (alien != null && alien.getIsAlive()) {
-                // Alien exists, check collision
+                // models.Alien exists, check collision
                 if (alien.intersects(player)) {
                     if (Main.debug) System.err.print("ouch!\n");
                     player.setLivesLeft(player.getLivesLeft() - 1);
@@ -78,7 +87,7 @@ public class GameUpdateThread implements Runnable, GameConstants {
                 }
             }
 
-            SwingUtilities.invokeLater(gamePanel::updateComponent); // render the game after every update has completed.
+            SwingUtilities.invokeLater(gameScreen::updateComponent); // render the game after every update has completed.
         }
     }
 }

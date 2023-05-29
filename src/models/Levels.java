@@ -1,3 +1,5 @@
+package models;
+
 public class Levels {
     // A class to hold the game levels. Each level is a two-dimensional array. The first dimension is the
     // rows at which the aliens are going to be spawned. In the second dimension, the aliens are represented

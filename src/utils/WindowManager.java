@@ -1,3 +1,9 @@
+package utils;
+
+import constants.GameConstants;
+import threads.GameUpdateThread;
+import ui.*;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,8 +16,8 @@ public class WindowManager extends JFrame implements GameConstants {
         FontManager.loadFont(GraphicsEnvironment.getLocalGraphicsEnvironment());
 
         // Loading the start screen
-        StartPanel startPanel = new StartPanel();
-        add(startPanel);
+        StartScreen startScreen = new StartScreen();
+        add(startScreen);
 
 
 //        HighScoresPanel hsp = new HighScoresPanel();
@@ -64,15 +70,15 @@ public class WindowManager extends JFrame implements GameConstants {
 
     // This method gets called after a menu items is clicked to make sure the correct menu items are displayed.
     private void updateMenuItems() {
-        backToStartItem.setVisible(!(getContentPane().getComponent(0) instanceof StartPanel));
+        backToStartItem.setVisible(!(getContentPane().getComponent(0) instanceof StartScreen));
         playGameItem.setVisible(LoginRegisterDialog.LOGGED_IN);
     }
 
     private void switchToPanel(JPanel panel) {
         JPanel current = (JPanel) getContentPane().getComponent(0);
-        if (current instanceof GamePanel) {
+        if (current instanceof GameScreen) {
             // If the player is switching from GamePanel, save their game progress and stop the game loop
-            GamePanel gp = (GamePanel) current;
+            GameScreen gp = (GameScreen) current;
             LoginRegisterDialog.saveHighScore(gp.getPlayer());
             gp.stopGameThread();
         }
@@ -88,23 +94,23 @@ public class WindowManager extends JFrame implements GameConstants {
 
     private void playGameItemActionHandler() {
         if (LoginRegisterDialog.LOGGED_IN) {
-            GamePanel gamePanel = new GamePanel();
-            GameUpdateThread gameUpdateThread = gamePanel.getGameUpdateThread();
+            GameScreen gameScreen = new GameScreen();
+            GameUpdateThread gameUpdateThread = gameScreen.getGameUpdateThread();
             gameUpdateThread.setGameOverAction(() -> {
                 gameUpdateThread.stop();
-                LoginRegisterDialog.saveHighScore(gamePanel.getPlayer());
-                switchToPanel(new GameOverPanel(gamePanel.getPlayer()));
+                LoginRegisterDialog.saveHighScore(gameScreen.getPlayer());
+                switchToPanel(new GameOverScreen(gameScreen.getPlayer()));
             });
-            switchToPanel(gamePanel);
+            switchToPanel(gameScreen);
         }
     }
 
     private void backToStartItemActionHandler() {
-        switchToPanel(new StartPanel());
+        switchToPanel(new StartScreen());
     }
 
     private void highScoresItemActionHandler() {
-        switchToPanel(new HighScoresPanel());
+        switchToPanel(new HighScoresScreen());
     }
 
     private void loginRegisterItemActionHandler() {

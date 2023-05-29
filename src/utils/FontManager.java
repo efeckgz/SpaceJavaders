@@ -1,3 +1,7 @@
+package utils;
+
+import constants.GameConstants;
+
 import java.awt.*;
 import java.io.IOException;
 import java.util.Objects;
@@ -11,10 +15,10 @@ public class FontManager implements GameConstants {
     // load font
     public static void loadFont(GraphicsEnvironment ge) {
         try {
-            font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(FontManager.class.getResourceAsStream(FONT_PATH)));
-            fontTitle = font.deriveFont(FONT_TITLE_SIZE);
-            fontSubtitle = font.deriveFont(FONT_SUBTITLE_SIZE);
-            fontText = font.deriveFont(FONT_TEXT_SIZE);
+            font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(FontManager.class.getResourceAsStream(GameConstants.FONT_PATH)));
+            fontTitle = font.deriveFont(GameConstants.FONT_TITLE_SIZE);
+            fontSubtitle = font.deriveFont(GameConstants.FONT_SUBTITLE_SIZE);
+            fontText = font.deriveFont(GameConstants.FONT_TEXT_SIZE);
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }

@@ -1,20 +1,18 @@
-import javax.swing.*;
+package ui;
+
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
-public class StartPanel extends JPanel implements GameConstants {
+public class StartScreen extends GameView implements GameConstants {
     private final BufferedImage allAliens;
     private String titleColor1 = "#f14f50";
     private String titleColor2 = "#50d070";
     private Color active = Color.WHITE;
     private Color inactive = Color.BLACK;
-    private StarField starField;
 
-    public StartPanel() {
-        setBackground(Color.BLACK); // set background color
+    public StartScreen() {
+        super();
 
         // synchronize title colors
         // handle user not logged in flashing
@@ -25,26 +23,12 @@ public class StartPanel extends JPanel implements GameConstants {
             }
         });
 
-        addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                super.componentResized(e);
-                if (starField == null) {
-                    starField = new StarField(getWidth(), getHeight());
-                    starField.start();
-                }
-            }
-        });
-
-        // load alien assets and add them to the ArrayList
-        BufferedImage redAlien = ImageManager.load(RED_ALIEN_ASSET_PATH);
-        BufferedImage greenAlien = ImageManager.load(GREEN_ALIEN_ASSET_PATH);
-        BufferedImage extraAlien = ImageManager.load(EXTRA_ALIEN_ASSET_PATH);
-        BufferedImage yellowALien = ImageManager.load(YELLOW_ALIEN_ASSET_PATH);
-
-        // this array holds alien assets to be drawn on the screen.
+        // load alien assets and add them to the array
+        BufferedImage redAlien = ImageManager.load(GameConstants.RED_ALIEN_ASSET_PATH);
+        BufferedImage greenAlien = ImageManager.load(GameConstants.GREEN_ALIEN_ASSET_PATH);
+        BufferedImage extraAlien = ImageManager.load(GameConstants.EXTRA_ALIEN_ASSET_PATH);
+        BufferedImage yellowALien = ImageManager.load(GameConstants.YELLOW_ALIEN_ASSET_PATH);
         BufferedImage[] aliens = new BufferedImage[]{redAlien, greenAlien, extraAlien, yellowALien};
-
 
         // Use the aliens array to create a BufferedImage that contains all the aliens assets
         // with a horizontal distance of 60 pixels.
@@ -67,13 +51,6 @@ public class StartPanel extends JPanel implements GameConstants {
             currentX += alien.getWidth() + 30; // move to next position
         }
         g2.dispose(); // Always dispose of Graphics objects when you're done with them
-
-        TimeManager.startTimer(1000 / GAME_FPS, e1 -> updateComponent());
-    }
-
-    private void updateComponent() {
-        revalidate();
-        repaint();
     }
 
     // method to cycle the title colors - this is called in a timer
@@ -90,11 +67,7 @@ public class StartPanel extends JPanel implements GameConstants {
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-        starField.draw(g, 0, 0); // draws the star field
-
+    protected void drawItems(Graphics g) {
         // titles
         g.setColor(Color.decode(titleColor1));
         g.setFont(FontManager.getFontTitle());

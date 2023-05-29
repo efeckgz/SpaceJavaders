@@ -1,3 +1,8 @@
+package models;
+
+import abstracts.GameItem;
+import utils.TimeManager;
+
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -18,7 +23,7 @@ public class Bullet extends GameItem {
             TimeManager.startTimer(1000, e -> {
                 if (getIsAlive()) {
                     System.out.printf(
-                            "Bullet %s location (x, y): %.2f, %.2f\n",
+                            "models.Bullet %s location (x, y): %.2f, %.2f\n",
                             Bullet.getBullets().indexOf(this),
                             getPosition().getX(),
                             getPosition().getY()

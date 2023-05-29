@@ -1,3 +1,7 @@
+package threads;
+
+import constants.GameConstants;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;

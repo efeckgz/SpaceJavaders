@@ -1,9 +1,11 @@
+package constants;
+
 import java.awt.geom.Point2D;
 
 public interface GameConstants {
     // This interface provides all kinds of constant values necessary in the program. Every class
     // implement this interface either directly or via its super class so that there is no need to
-    // make a call to the GameConstants namespace all the time.
+    // make a call to the constants.GameConstants namespace all the time.
 
     // Window constants
     int SCREEN_WIDTH = 919;
@@ -12,7 +14,7 @@ public interface GameConstants {
     long GAME_UPDATE_RATE = 1000 / GAME_FPS;
     String WINDOW_TITLE = "Space Javaders: Bytecode Battle";
 
-    // Player constants
+    // models.Player constants
     double PLAYER_TRAVEL_SPEED = 0.8;
     int PLAYER_HP = 100;
     String PLAYER_ASSET_PATH = "Assets/player.png";
@@ -21,13 +23,13 @@ public interface GameConstants {
     String PLAYER_LIVES_ONE_ASSET_PATH = "Assets/livesOne.png";
     Point2D.Double PLAYER_STARTING_POSITION = new Point2D.Double(420, 620);
 
-    // Bullet constants
+    // models.Bullet constants
     int BULLET_WIDTH = 6;
     int BULLET_HEIGHT = 25;
     int BULLET_TRAVEL_SPEED = 1;
     int BULLET_FIRE_FREQUENCY = 300;
 
-    // Alien constants
+    // models.Alien constants
     int ALIEN_WIDTH = 35;
     int ALIEN_HEIGHT = 55;
     int ALIEN_PADDING = 35;

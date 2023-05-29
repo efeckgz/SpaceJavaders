@@ -1,3 +1,5 @@
+import utils.WindowManager;
+
 import javax.swing.*;
 
 public class Main {

@@ -1,3 +1,9 @@
+package abstracts;
+
+import constants.GameConstants;
+import models.Alien;
+import models.Bullet;
+
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
@@ -13,7 +19,7 @@ public abstract class GameItem implements GameConstants {
     // by making a copy of the ArrayList when dealing with mutative operations such as adding and removing.
     private static final CopyOnWriteArrayList<GameItem> items = new CopyOnWriteArrayList<>();
 
-    // A Point2D instance holds the position of each GameItem. This one here uses the double data type.
+    // A Point2D instance holds the position of each abstracts.GameItem. This one here uses the double data type.
     protected Point2D.Double position = new Point2D.Double();
     // The asset of the item
     protected BufferedImage asset;
@@ -62,7 +68,7 @@ public abstract class GameItem implements GameConstants {
     abstract void updatePosition(float deltaTime);
 
     // Method for collision detection.
-//    public boolean intersects(GameItem other) {
+//    public boolean intersects(abstracts.GameItem other) {
 //        double x1 = this.getPosition().x;
 //        double y1 = this.getPosition().y;
 //        double w1 = this.getAsset().getWidth();

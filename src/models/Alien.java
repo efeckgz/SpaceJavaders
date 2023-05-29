@@ -1,3 +1,9 @@
+package models;
+
+import abstracts.GameItem;
+import constants.GameConstants;
+import utils.ImageManager;
+
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
