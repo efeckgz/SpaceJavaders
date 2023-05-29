@@ -1,5 +1,7 @@
 package ui;
 
+import models.Player;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

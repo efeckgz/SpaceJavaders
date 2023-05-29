@@ -19,10 +19,6 @@ public class WindowManager extends JFrame implements GameConstants {
         StartScreen startScreen = new StartScreen();
         add(startScreen);
 
-
-//        HighScoresPanel hsp = new HighScoresPanel();
-//        add(hsp);
-
         LoginRegisterDialog.forEach(user -> {
             System.out.printf("username: %s high score: %s\n", user[0], user[2]);
         });

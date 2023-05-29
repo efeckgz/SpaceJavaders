@@ -1,5 +1,9 @@
 package ui;
 
+import abstracts.GameView;
+import constants.GameConstants;
+import utils.FontManager;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.atomic.AtomicInteger;

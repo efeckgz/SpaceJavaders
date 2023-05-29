@@ -1,5 +1,10 @@
 package ui;
 
+import abstracts.GameView;
+import constants.GameConstants;
+import models.Player;
+import utils.FontManager;
+
 import java.awt.*;
 
 public class GameOverScreen extends GameView implements GameConstants {

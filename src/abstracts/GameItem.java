@@ -65,7 +65,7 @@ public abstract class GameItem implements GameConstants {
     public abstract double getTravelSpeed();
 
     // Calculate the changes in items position and update it accordingly using setPosition.
-    abstract void updatePosition(float deltaTime);
+    protected abstract void updatePosition(float deltaTime);
 
     // Method for collision detection.
 //    public boolean intersects(abstracts.GameItem other) {

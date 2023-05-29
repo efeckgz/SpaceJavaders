@@ -1,6 +1,7 @@
 package abstracts;
 
 import constants.GameConstants;
+import threads.StarField;
 import utils.TimeManager;
 
 import javax.swing.*;

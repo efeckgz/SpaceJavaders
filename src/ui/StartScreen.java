@@ -1,5 +1,11 @@
 package ui;
 
+import abstracts.GameView;
+import constants.GameConstants;
+import utils.FontManager;
+import utils.ImageManager;
+import utils.TimeManager;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
