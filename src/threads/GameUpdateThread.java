@@ -2,6 +2,7 @@ package threads;
 
 import abstracts.GameItem;
 import constants.GameConstants;
+import main.Main;
 import models.Alien;
 import models.Bullet;
 import models.Player;

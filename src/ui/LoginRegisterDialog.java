@@ -1,5 +1,6 @@
 package ui;
 
+import main.Main;
 import models.Player;
 
 import javax.swing.*;

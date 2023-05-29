@@ -1,6 +1,7 @@
 package models;
 
 import abstracts.GameItem;
+import main.Main;
 import utils.TimeManager;
 
 import java.awt.geom.Point2D;

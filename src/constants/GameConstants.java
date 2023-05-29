@@ -17,10 +17,10 @@ public interface GameConstants {
     // models.Player constants
     double PLAYER_TRAVEL_SPEED = 0.8;
     int PLAYER_HP = 100;
-    String PLAYER_ASSET_PATH = "Assets/player.png";
-    String PLAYER_LIVES_THREE_ASSET_PATH = "Assets/livesThree.png";
-    String PLAYER_LIVES_TWO_ASSET_PATH = "Assets/livesTwo.png";
-    String PLAYER_LIVES_ONE_ASSET_PATH = "Assets/livesOne.png";
+    String PLAYER_ASSET_PATH = "/Assets/player.png";
+    String PLAYER_LIVES_THREE_ASSET_PATH = "/Assets/livesThree.png";
+    String PLAYER_LIVES_TWO_ASSET_PATH = "/Assets/livesTwo.png";
+    String PLAYER_LIVES_ONE_ASSET_PATH = "/Assets/livesOne.png";
     Point2D.Double PLAYER_STARTING_POSITION = new Point2D.Double(420, 620);
 
     // models.Bullet constants
@@ -34,10 +34,10 @@ public interface GameConstants {
     int ALIEN_HEIGHT = 55;
     int ALIEN_PADDING = 35;
     double ALIEN_TRAVEL_SPEED = 0.035;
-    String RED_ALIEN_ASSET_PATH = "Assets/red.png";
-    String GREEN_ALIEN_ASSET_PATH = "Assets/green.png";
-    String YELLOW_ALIEN_ASSET_PATH = "Assets/yellow.png";
-    String EXTRA_ALIEN_ASSET_PATH = "Assets/extra.png";
+    String RED_ALIEN_ASSET_PATH = "/Assets/red.png";
+    String GREEN_ALIEN_ASSET_PATH = "/Assets/green.png";
+    String YELLOW_ALIEN_ASSET_PATH = "/Assets/yellow.png";
+    String EXTRA_ALIEN_ASSET_PATH = "/Assets/extra.png";
 
     // Star field constants
     int STAR_FIELD_STEP = 30;
@@ -45,7 +45,7 @@ public interface GameConstants {
     double STAR_FIELD_SPEED = 0.2;
 
     // Font
-    String FONT_PATH = "Assets/upheavtt.ttf";
+    String FONT_PATH = "/Assets/upheavtt.ttf";
     float FONT_TITLE_SIZE = 100;
     float FONT_SUBTITLE_SIZE = 32;
     float FONT_TEXT_SIZE = 16;

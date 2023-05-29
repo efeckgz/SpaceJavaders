@@ -1,6 +1,7 @@
 package models;
 
 import abstracts.GameItem;
+import main.Main;
 import ui.LoginRegisterDialog;
 import utils.ImageManager;
 import utils.TimeManager;

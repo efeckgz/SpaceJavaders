@@ -54,7 +54,7 @@ public abstract class GameItem implements GameConstants {
         position = p;
     }
 
-    protected BufferedImage getAsset() {
+    public BufferedImage getAsset() {
         return asset;
     }
 

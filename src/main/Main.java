@@ -1,3 +1,5 @@
+package main;
+
 import utils.WindowManager;
 
 import javax.swing.*;
