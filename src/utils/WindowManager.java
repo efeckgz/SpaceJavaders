@@ -1,5 +1,6 @@
 package utils;
 
+import abstracts.Screen;
 import constants.GameConstants;
 import threads.GameUpdateThread;
 import ui.*;
@@ -13,10 +14,11 @@ public class WindowManager extends JFrame implements GameConstants {
 
     public WindowManager() {
         // Load the game font
-        FontManager.loadFont(GraphicsEnvironment.getLocalGraphicsEnvironment());
+        FontManager.initialize(GraphicsEnvironment.getLocalGraphicsEnvironment());
 
         // Loading the start screen
         StartScreen startScreen = new StartScreen();
+        startScreen.startTimer(); // Start the timer of start screen
         add(startScreen);
 
         LoginRegisterDialog.forEach(user -> {
@@ -70,7 +72,7 @@ public class WindowManager extends JFrame implements GameConstants {
         playGameItem.setVisible(LoginRegisterDialog.LOGGED_IN);
     }
 
-    private void switchToPanel(JPanel panel) {
+    private void switchScreens(Screen screen) {
         JPanel current = (JPanel) getContentPane().getComponent(0);
         if (current instanceof GameScreen) {
             // If the player is switching from GamePanel, save their game progress and stop the game loop
@@ -79,9 +81,13 @@ public class WindowManager extends JFrame implements GameConstants {
             gp.stopGameThread();
         }
 
-        remove(current); // Remove the current panel
-        add(panel); // add the desired panel
-        panel.requestFocusInWindow();
+        Screen currentScreen = (Screen) current;
+        currentScreen.stopTimer();
+
+        remove(currentScreen); // Remove the current screen
+        add(screen); // add the desired screen
+        screen.startTimer(); // Start the update timer for the screen to add
+        screen.requestFocusInWindow();
 
         updateMenuItems();
         revalidate();
@@ -95,18 +101,18 @@ public class WindowManager extends JFrame implements GameConstants {
             gameUpdateThread.setGameOverAction(() -> {
                 gameUpdateThread.stop();
                 LoginRegisterDialog.saveHighScore(gameScreen.getPlayer());
-                switchToPanel(new GameOverScreen(gameScreen.getPlayer()));
+                switchScreens(new GameOverScreen(gameScreen.getPlayer()));
             });
-            switchToPanel(gameScreen);
+            switchScreens(gameScreen);
         }
     }
 
     private void backToStartItemActionHandler() {
-        switchToPanel(new StartScreen());
+        switchScreens(new StartScreen());
     }
 
     private void highScoresItemActionHandler() {
-        switchToPanel(new HighScoresScreen());
+        switchScreens(new HighScoresScreen());
     }
 
     private void loginRegisterItemActionHandler() {

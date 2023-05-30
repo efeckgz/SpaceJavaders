@@ -1,5 +1,8 @@
 package constants;
 
+import utils.FontManager;
+
+import java.awt.*;
 import java.awt.geom.Point2D;
 
 public interface GameConstants {
@@ -49,4 +52,7 @@ public interface GameConstants {
     float FONT_TITLE_SIZE = 100;
     float FONT_SUBTITLE_SIZE = 32;
     float FONT_TEXT_SIZE = 16;
+    Font FONT_TITLE = FontManager.getFontTitle();
+    Font FONT_SUBTITLE = FontManager.getFontSubtitle();
+    Font FONT_TEXT = FontManager.getFontText();
 }

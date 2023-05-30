@@ -29,13 +29,11 @@ public abstract class GameItem implements GameConstants {
     }
 
     public static void updateAllPositions(float deltaTime) {
-        if (!GameItem.getItems().isEmpty())
-            for (GameItem item : GameItem.getItems()) item.updatePosition(deltaTime);
+        for (GameItem item : GameItem.getItems()) item.updatePosition(deltaTime);
     }
 
-    public static void drawALlItems(Graphics g) {
-        if (!GameItem.getItems().isEmpty())
-            for (GameItem item : GameItem.getItems()) item.draw(g);
+    public static void drawAllItems(Graphics g) {
+        for (GameItem item : GameItem.getItems()) item.draw(g);
     }
 
     public static CopyOnWriteArrayList<GameItem> getItems() {
@@ -45,6 +43,31 @@ public abstract class GameItem implements GameConstants {
     public static void clearItems() {
         items.clear();
     }
+
+    public double getX() {
+        return this.getPosition().getX();
+    }
+
+    public double getY() {
+        return this.getPosition().getY();
+    }
+
+    public double getWidth() {
+        if (this instanceof Bullet) {
+            return BULLET_WIDTH;
+        } else {
+            return this.getAsset().getWidth();
+        }
+    }
+
+    public double getHeight() {
+        if (this instanceof Bullet) {
+            return BULLET_HEIGHT;
+        } else {
+            return this.getAsset().getHeight();
+        }
+    }
+
 
     public Point2D.Double getPosition() {
         return position;

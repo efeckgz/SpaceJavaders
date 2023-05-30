@@ -1,8 +1,7 @@
 package ui;
 
-import abstracts.GameView;
+import abstracts.Screen;
 import constants.GameConstants;
-import utils.FontManager;
 import utils.ImageManager;
 import utils.TimeManager;
 
@@ -10,7 +9,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
-public class StartScreen extends GameView implements GameConstants {
+public class StartScreen extends Screen implements GameConstants {
     private final BufferedImage allAliens;
     private String titleColor1 = "#f14f50";
     private String titleColor2 = "#50d070";
@@ -76,13 +75,13 @@ public class StartScreen extends GameView implements GameConstants {
     protected void drawItems(Graphics g) {
         // titles
         g.setColor(Color.decode(titleColor1));
-        g.setFont(FontManager.getFontTitle());
+        g.setFont(FONT_TITLE);
         String spaceJavaders = "Space Javaders";
         int spaceJavadersWidth = g.getFontMetrics().stringWidth(spaceJavaders);
         g.drawString(spaceJavaders, getWidth() / 2 - spaceJavadersWidth / 2, 300);
 
         g.setColor(Color.decode(titleColor2));
-        g.setFont(FontManager.getFontSubtitle());
+        g.setFont(FONT_SUBTITLE);
         String bytecodeBattle = "Bytecode Battle";
         int bytecodeBattleWidth = g.getFontMetrics().stringWidth(bytecodeBattle);
         g.drawString(bytecodeBattle, getWidth() / 2 - bytecodeBattleWidth / 2, 350);

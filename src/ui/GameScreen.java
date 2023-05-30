@@ -1,7 +1,7 @@
 package ui;
 
 import abstracts.GameItem;
-import abstracts.GameView;
+import abstracts.Screen;
 import constants.GameConstants;
 import models.Alien;
 import models.Levels;
@@ -13,7 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class GameScreen extends GameView implements GameConstants {
+public class GameScreen extends Screen implements GameConstants {
     private final Alien[][] aliens;
     private final GameUpdateThread gameUpdateThread;
     private final Player player;
@@ -69,7 +69,7 @@ public class GameScreen extends GameView implements GameConstants {
 
     @Override
     protected void drawItems(Graphics g) {
-        GameItem.drawALlItems(g);
+        GameItem.drawAllItems(g);
         ImageManager.displayLivesLeft(player, g);
 
         g.drawString(String.format("Score: %d", player.getScore()), getWidth() - 75, 25);

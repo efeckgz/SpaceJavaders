@@ -12,7 +12,6 @@ import java.util.Objects;
 public class ImageManager implements GameConstants {
     // Class to make loading images easier.
     private static BufferedImage img;
-    private static BufferedImage livesLeftImg;
 
     public static BufferedImage load(String path) {
         try {
@@ -44,10 +43,10 @@ public class ImageManager implements GameConstants {
 
             }
 
-            livesLeftImg = ImageManager.load(path);
+            BufferedImage livesLeftImg = ImageManager.load(path);
 
             g.setColor(Color.WHITE);
-            g.setFont(FontManager.getFontText());
+            g.setFont(FONT_TEXT);
             g.drawString("Lives: ", 15, 30);
             g.drawImage(livesLeftImg, 70, 15, null);
         } catch (IllegalStateException ignored) {

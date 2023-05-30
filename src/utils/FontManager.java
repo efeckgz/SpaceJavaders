@@ -13,7 +13,7 @@ public class FontManager implements GameConstants {
     private static Font fontText;
 
     // load font
-    public static void loadFont(GraphicsEnvironment ge) {
+    public static void initialize(GraphicsEnvironment ge) {
         try {
             font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(FontManager.class.getResourceAsStream(GameConstants.FONT_PATH)));
             fontTitle = font.deriveFont(GameConstants.FONT_TITLE_SIZE);

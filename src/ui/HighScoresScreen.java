@@ -1,14 +1,13 @@
 package ui;
 
-import abstracts.GameView;
+import abstracts.Screen;
 import constants.GameConstants;
-import utils.FontManager;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class HighScoresScreen extends GameView implements GameConstants {
+public class HighScoresScreen extends Screen implements GameConstants {
     private final BufferedImage highScoresImg;
 
     public HighScoresScreen() {
@@ -22,7 +21,7 @@ public class HighScoresScreen extends GameView implements GameConstants {
         BufferedImage img = new BufferedImage(GameConstants.SCREEN_WIDTH, imageHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = img.createGraphics();
 
-        g.setFont(FontManager.getFontSubtitle());
+        g.setFont(FONT_SUBTITLE);
         AtomicInteger index = new AtomicInteger(0);
         LoginRegisterDialog.forEach(user -> {
             String username = user[0];
@@ -40,7 +39,7 @@ public class HighScoresScreen extends GameView implements GameConstants {
     @Override
     protected void drawItems(Graphics g) {
         g.setColor(Color.WHITE);
-        g.setFont(FontManager.getFontTitle());
+        g.setFont(FONT_TITLE);
 
         String highScores = "High Scores";
         int highScoresWidth = g.getFontMetrics().stringWidth(highScores);

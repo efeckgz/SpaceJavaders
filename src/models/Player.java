@@ -117,6 +117,7 @@ public class Player extends GameItem {
         TimeManager.startTimer(BULLET_FIRE_FREQUENCY, e -> new Bullet(this), () -> !getIsAlive());
     }
 
+    // Investigate this
     private void controlKeyPressedActionHandler(KeyEvent e) {
         try {
             switch (e.getKeyCode()) {
@@ -132,11 +133,10 @@ public class Player extends GameItem {
                 case KeyEvent.VK_D:
                     setMoveRight(true);
                     break;
-                case KeyEvent.VK_SPACE:
-                    if (Main.debug) setLivesLeft(getLivesLeft() - 1);
             }
         } catch (IllegalStateException illegalStateException) {
             System.err.printf("%s", getLivesLeft());
+            illegalStateException.printStackTrace();
         }
     }
 
@@ -159,7 +159,7 @@ public class Player extends GameItem {
         // Only run in debug mode
         if (Main.debug) {
             System.out.printf(
-                    "models.Player location (x, y): %.2f, %.2f\n",
+                    "Player location (x, y): %.2f, %.2f\n",
                     getPosition().getX(),
                     getPosition().getY()
             );
