@@ -4,7 +4,9 @@ import abstracts.GameItem;
 import main.Main;
 import utils.TimeManager;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Bullet extends GameItem {
@@ -19,6 +21,8 @@ public class Bullet extends GameItem {
                 (player.getPosition().getX() + (double) player.getAsset().getWidth() / 2) - (double) BULLET_WIDTH / 2,
                 player.getPosition().getY() - player.getAsset().getHeight()
         ));
+
+        setAsset(createBulletAsset());
 
         if (Main.debug) {
             TimeManager.startTimer(1000, e -> {
@@ -40,6 +44,18 @@ public class Bullet extends GameItem {
         return bullets;
     }
 
+    private BufferedImage createBulletAsset() {
+        BufferedImage asset = new BufferedImage(BULLET_WIDTH, BULLET_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = asset.createGraphics();
+
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, asset.getWidth(), asset.getHeight());
+
+        g.dispose();
+
+        return asset;
+    }
+
     @Override
     public double getTravelSpeed() {
         return BULLET_TRAVEL_SPEED;
@@ -49,6 +65,13 @@ public class Bullet extends GameItem {
     public void updatePosition(float deltaTime) {
         getPosition().y -= getTravelSpeed() * deltaTime;
         setIsAlive(getPosition().y > 0);
+    }
+
+    @Override
+    protected void draw(Graphics g) {
+        if (getIsAlive()) {
+            g.drawImage(getAsset(), (int) getPosition().getX(), (int) getPosition().getY(), null);
+        }
     }
 
     public boolean getIsAlive() {

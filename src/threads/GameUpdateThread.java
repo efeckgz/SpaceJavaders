@@ -92,6 +92,8 @@ public class GameUpdateThread implements Runnable, GameConstants {
                     if (bullet.getIsAlive() && alien.intersects(bullet)) {
                         bullet.setIsAlive(false); // kill the bullet
                         alien.setIsAlive(false); // kill the alien
+                        GameItem.destroy(alien);
+                        GameItem.destroy(bullet);
                         player.setScore(player.getScore() + 1); // increment score
                         // The maximum of the current high score and the score should be the high score
                         player.setCurrentHighScore(Math.max(player.getCurrentHighScore(), player.getScore()));
@@ -101,6 +103,7 @@ public class GameUpdateThread implements Runnable, GameConstants {
                     player.setLivesLeft(player.getLivesLeft() - 1);
                     player.setIsAlive(() -> player.getLivesLeft() > 0); // kill the player if their lives are gone.
                     alien.setIsAlive(false);
+                    GameItem.destroy(alien);
                     if (!player.getIsAlive() && gameOverAction != null) gameOverAction.run();
                 }
             }

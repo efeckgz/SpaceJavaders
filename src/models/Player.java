@@ -6,6 +6,7 @@ import ui.LoginRegisterDialog;
 import utils.ImageManager;
 import utils.TimeManager;
 
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.function.Supplier;
@@ -95,6 +96,11 @@ public class Player extends GameItem {
         if (moveRight && getPosition().x + speed + asset.getWidth() <= SCREEN_WIDTH) {
             getPosition().x += speed * deltaTime;
         }
+    }
+
+    @Override
+    protected void draw(Graphics g) {
+        g.drawImage(getAsset(), (int) getPosition().getX(), (int) getPosition().getY(), null);
     }
 
     public int getLivesLeft() {

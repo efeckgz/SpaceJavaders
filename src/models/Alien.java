@@ -4,6 +4,7 @@ import abstracts.GameItem;
 import constants.GameConstants;
 import utils.ImageManager;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -42,6 +43,13 @@ public class Alien extends GameItem implements GameConstants {
         double newY = pos.getY() + getTravelSpeed() * deltaTime;
 
         setPosition(new Point2D.Double(pos.getX(), newY));
+    }
+
+    @Override
+    protected void draw(Graphics g) {
+        if (getIsAlive()) {
+            g.drawImage(getAsset(), (int) getPosition().getX(), (int) getPosition().getY(), null);
+        }
     }
 
     public static class RedAlien extends Alien {

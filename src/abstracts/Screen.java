@@ -41,6 +41,7 @@ public abstract class Screen extends JPanel implements GameConstants {
                 }
             }
         });
+
         timer = new Timer((int) GAME_UPDATE_RATE, e -> updateComponent());
     }
 

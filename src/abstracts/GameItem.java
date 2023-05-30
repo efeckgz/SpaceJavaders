@@ -1,13 +1,13 @@
 package abstracts;
 
 import constants.GameConstants;
-import models.Alien;
 import models.Bullet;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class GameItem implements GameConstants {
     // Every game object must extend this abstract class. The abstract class includes the position of the item
@@ -17,26 +17,49 @@ public abstract class GameItem implements GameConstants {
     // updatePosition() and draw() methods on everything.
     // This is a special type of ArrayList that achieves thread safety, at the cost of system resources
     // by making a copy of the ArrayList when dealing with mutative operations such as adding and removing.
-    private static final CopyOnWriteArrayList<GameItem> items = new CopyOnWriteArrayList<>();
+    // private static final CopyOnWriteArrayList<GameItem> items = new CopyOnWriteArrayList<>();
 
-    // A Point2D instance holds the position of each abstracts.GameItem. This one here uses the double data type.
+    private static final List<GameItem> items = new ArrayList<>();
+    private static final List<GameItem> toAdd = new ArrayList<>();
+    private static final List<GameItem> toRemove = new ArrayList<>();
+
+    // A Point2D instance holds the position of each GameItem. This one here uses the double data type.
     protected Point2D.Double position = new Point2D.Double();
+
     // The asset of the item
     protected BufferedImage asset;
 
     public GameItem() {
-        items.add(this);
+        synchronized (items) {
+            items.add(this);
+        }
+    }
+
+    // call this when the item dies
+    public static void destroy(GameItem item) {
+        synchronized (toRemove) {
+            toRemove.add(item);
+        }
     }
 
     public static void updateAllPositions(float deltaTime) {
-        for (GameItem item : GameItem.getItems()) item.updatePosition(deltaTime);
+        synchronized (items) {
+            items.removeAll(toRemove);
+            items.addAll(toAdd);
+            toRemove.clear();
+            toAdd.clear();
+
+            for (GameItem item : items) item.updatePosition(deltaTime);
+        }
+
+//        for (GameItem item : GameItem.getItems()) item.updatePosition(deltaTime);
     }
 
     public static void drawAllItems(Graphics g) {
         for (GameItem item : GameItem.getItems()) item.draw(g);
     }
 
-    public static CopyOnWriteArrayList<GameItem> getItems() {
+    public static List<GameItem> getItems() {
         return items;
     }
 
@@ -91,66 +114,20 @@ public abstract class GameItem implements GameConstants {
     protected abstract void updatePosition(float deltaTime);
 
     // Method for collision detection.
-//    public boolean intersects(abstracts.GameItem other) {
-//        double x1 = this.getPosition().x;
-//        double y1 = this.getPosition().y;
-//        double w1 = this.getAsset().getWidth();
-//        double h1 = this.getAsset().getHeight();
-//
-//        double x2 = other.getPosition().x;
-//        double y2 = other.getPosition().y;
-//        double w2 = other.getAsset().getWidth();
-//        double h2 = other.getAsset().getHeight();
-//
-//        // Check if bounding boxes overlap
-//        return x1 < x2 + w2 && x2 < x1 + w1 && y1 < y2 + h2 && y2 < y1 + h1;
-//    }
-
     public boolean intersects(GameItem other) {
-        int thisX = (int) this.getPosition().x;
-        int thisY = (int) this.getPosition().y;
-        int thisWidth, thisHeight;
+        double x1 = this.getPosition().x;
+        double y1 = this.getPosition().y;
+        double w1 = this.getAsset().getWidth();
+        double h1 = this.getAsset().getHeight();
 
-        if (this instanceof Bullet) {
-            thisWidth = BULLET_WIDTH;
-            thisHeight = BULLET_HEIGHT;
-        } else {
-            thisWidth = this.getAsset().getWidth(null);
-            thisHeight = this.getAsset().getHeight(null);
-        }
+        double x2 = other.getPosition().x;
+        double y2 = other.getPosition().y;
+        double w2 = other.getAsset().getWidth();
+        double h2 = other.getAsset().getHeight();
 
-        int otherX = (int) other.getPosition().x;
-        int otherY = (int) other.getPosition().y;
-        int otherWidth, otherHeight;
-
-        if (other instanceof Bullet) {
-            otherWidth = BULLET_WIDTH;
-            otherHeight = BULLET_HEIGHT;
-        } else {
-            otherWidth = other.getAsset().getWidth(null);
-            otherHeight = other.getAsset().getHeight(null);
-        }
-
-        return thisX < otherX + otherWidth && thisX + thisWidth > otherX
-                && thisY < otherY + otherHeight && thisY + thisHeight > otherY;
+        // Check if bounding boxes overlap
+        return x1 < x2 + w2 && x2 < x1 + w1 && y1 < y2 + h2 && y2 < y1 + h1;
     }
 
-
-    public void draw(Graphics g) {
-        if (this instanceof Bullet) {
-            Bullet b = (Bullet) this;
-            g.setColor(Color.WHITE);
-            if (b.getIsAlive()) {
-                // Bullets are of rectangular shape, so fillRect() is used.
-                g.fillRect((int) getPosition().getX(), (int) getPosition().getY(), BULLET_WIDTH, BULLET_HEIGHT);
-            }
-        } else if (this instanceof Alien) {
-            Alien alien = (Alien) this;
-            if (alien.getIsAlive()) {
-                g.drawImage(getAsset(), (int) getPosition().getX(), (int) getPosition().getY(), null);
-            }
-        } else {
-            g.drawImage(getAsset(), (int) getPosition().getX(), (int) getPosition().getY(), null);
-        }
-    }
+    protected abstract void draw(Graphics g);
 }

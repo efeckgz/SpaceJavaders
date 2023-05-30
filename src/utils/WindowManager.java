@@ -21,10 +21,6 @@ public class WindowManager extends JFrame implements GameConstants {
         startScreen.startTimer(); // Start the timer of start screen
         add(startScreen);
 
-        LoginRegisterDialog.forEach(user -> {
-            System.out.printf("username: %s high score: %s\n", user[0], user[2]);
-        });
-
         // setting window properties
         setTitle(WINDOW_TITLE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
