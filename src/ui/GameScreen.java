@@ -4,6 +4,7 @@ import abstracts.GameItem;
 import abstracts.Screen;
 import constants.GameConstants;
 import models.Alien;
+import models.Bullet;
 import models.Levels;
 import models.Player;
 import threads.GameUpdateThread;
@@ -55,6 +56,36 @@ public class GameScreen extends Screen implements GameConstants {
         SwingUtilities.invokeLater(() -> addKeyListener(player.handleUserInput()));
     }
 
+    public void detectCollisions() {
+        Player player = getPlayer();
+        Runnable gameOverAction = gameUpdateThread.getGameOverAction();
+
+        for (Alien alien : Alien.getAliens()) {
+            if (alien != null && alien.getIsAlive()) {
+                // models.Alien exists, check collision
+                if (alien.intersects(player)) {
+                    player.setLivesLeft(player.getLivesLeft() - 1);
+                    player.setIsAlive(player.getLivesLeft() > 0); // kill the player if their lives are gone.
+                    alien.setIsAlive(false);
+
+                    if (!player.getIsAlive() && gameOverAction != null) gameOverAction.run();
+                }
+
+                for (Bullet bullet : Bullet.getBullets()) {
+                    if (bullet.getIsAlive() && alien.intersects(bullet)) {
+                        bullet.setIsAlive(false); // kill the bullet
+
+                        alien.setIsAlive(false); // kill the alien
+
+                        player.setScore(player.getScore() + 1); // increment score
+                        // The maximum of the current high score and the score should be the high score
+                        player.setCurrentHighScore(Math.max(player.getCurrentHighScore(), player.getScore()));
+                    }
+                }
+            }
+        }
+    }
+
     public Player getPlayer() {
         return player;
     }
@@ -71,7 +102,12 @@ public class GameScreen extends Screen implements GameConstants {
     protected void drawItems(Graphics g) {
         GameItem.drawAllItems(g);
         ImageManager.displayLivesLeft(player, g);
+//
+//        LivesLeftImage livesImage = new LivesLeftImage(getPlayer());
+//        g.drawImage(livesImage, 0, 0, null);
 
+
+        g.setFont(FONT_TEXT);
         g.drawString(String.format("Score: %d", player.getScore()), getWidth() - 75, 25);
         g.drawString(String.format("High score: %d", player.getCurrentHighScore()), getWidth() - 118, 35);
     }

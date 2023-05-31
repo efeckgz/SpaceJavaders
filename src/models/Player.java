@@ -9,7 +9,6 @@ import utils.TimeManager;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.function.Supplier;
 
 public class Player extends GameItem {
     private final String username;
@@ -52,8 +51,8 @@ public class Player extends GameItem {
         return isAlive;
     }
 
-    public void setIsAlive(Supplier<Boolean> supplier) {
-        this.isAlive = supplier.get(); // set the isAlive property with a lambda expression.
+    public void setIsAlive(boolean isAlive) {
+        this.isAlive = isAlive; // set the isAlive property with a lambda expression.
     }
 
     public void setMoveUp(boolean moveUp) {

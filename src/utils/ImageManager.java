@@ -30,17 +30,16 @@ public class ImageManager implements GameConstants {
         try {
             switch (p.getLivesLeft()) {
                 case 3:
-                    path = GameConstants.PLAYER_LIVES_THREE_ASSET_PATH;
+                    path = PLAYER_LIVES_THREE_ASSET_PATH;
                     break;
                 case 2:
-                    path = GameConstants.PLAYER_LIVES_TWO_ASSET_PATH;
+                    path = PLAYER_LIVES_TWO_ASSET_PATH;
                     break;
                 case 1:
-                    path = GameConstants.PLAYER_LIVES_ONE_ASSET_PATH;
+                    path = PLAYER_LIVES_ONE_ASSET_PATH;
                     break;
                 default:
                     throw new IllegalStateException(String.format("Unexpected value for player remaining lives: %s", p.getLivesLeft()));
-
             }
 
             BufferedImage livesLeftImg = ImageManager.load(path);

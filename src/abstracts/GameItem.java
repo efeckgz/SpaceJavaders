@@ -5,7 +5,7 @@ import constants.GameConstants;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class GameItem implements GameConstants {
     // Every game object must extend this abstract class. The abstract class includes the position of the item
@@ -15,10 +15,7 @@ public abstract class GameItem implements GameConstants {
     // updatePosition() and draw() methods on everything.
     // This is a special type of ArrayList that achieves thread safety, at the cost of system resources
     // by making a copy of the ArrayList when dealing with mutative operations such as adding and removing.
-//    private static final CopyOnWriteArrayList<GameItem> items = new CopyOnWriteArrayList<>();
-
-
-    private static final ConcurrentLinkedQueue<GameItem> items = new ConcurrentLinkedQueue<>();
+    private static final CopyOnWriteArrayList<GameItem> items = new CopyOnWriteArrayList<>();
 
     // A Point2D instance holds the position of each GameItem. This one here uses the double data type.
     protected Point2D.Double position = new Point2D.Double();
@@ -38,24 +35,12 @@ public abstract class GameItem implements GameConstants {
         for (GameItem item : GameItem.getItems()) item.draw(g);
     }
 
-    public static ConcurrentLinkedQueue<GameItem> getItems() {
+    public static CopyOnWriteArrayList<GameItem> getItems() {
         return items;
     }
 
     public static void clearItems() {
         items.clear();
-    }
-
-    public void destroy() {
-        items.remove(this);
-    }
-
-    public double getX() {
-        return this.getPosition().getX();
-    }
-
-    public double getY() {
-        return this.getPosition().getY();
     }
 
     public Point2D.Double getPosition() {
