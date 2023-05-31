@@ -64,8 +64,10 @@ public class WindowManager extends JFrame implements GameConstants {
 
     // This method gets called after a menu items is clicked to make sure the correct menu items are displayed.
     private void updateMenuItems() {
+        JPanel current = (JPanel) getContentPane().getComponent(0);
+
         backToStartItem.setVisible(!(getContentPane().getComponent(0) instanceof StartScreen));
-        playGameItem.setVisible(LoginRegisterDialog.LOGGED_IN);
+        playGameItem.setVisible(LoginRegisterDialog.LOGGED_IN && !(current instanceof GameScreen));
     }
 
     private void switchScreens(Screen screen) {
@@ -123,7 +125,7 @@ public class WindowManager extends JFrame implements GameConstants {
                 "Space Javaders: Bytecode Battle\nCreated by: Efe Açıkgöz\n20210702094",
                 "About",
                 JOptionPane.INFORMATION_MESSAGE,
-                new ImageIcon(ImageManager.load("Assets/red.png"))
+                new ImageIcon(ImageManager.load(RED_ALIEN_ASSET_PATH))
         );
         updateMenuItems();
     }

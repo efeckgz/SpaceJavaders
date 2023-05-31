@@ -11,6 +11,18 @@ import java.util.ArrayList;
 
 public class Bullet extends GameItem {
     private static final ArrayList<Bullet> bullets = new ArrayList<>();
+    private static final BufferedImage assetSetter;
+
+    static {
+        assetSetter = new BufferedImage(BULLET_WIDTH, BULLET_HEIGHT, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = assetSetter.createGraphics();
+
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, assetSetter.getWidth(), assetSetter.getHeight());
+
+        g.dispose();
+    }
+
     private boolean isAlive = true;
 
     public Bullet(Player player) {
@@ -22,7 +34,7 @@ public class Bullet extends GameItem {
                 player.getPosition().getY() - player.getAsset().getHeight()
         ));
 
-        setAsset(createBulletAsset());
+        setAsset(assetSetter);
 
         if (Main.debug) {
             TimeManager.startTimer(1000, e -> {
@@ -42,18 +54,6 @@ public class Bullet extends GameItem {
 
     public static ArrayList<Bullet> getBullets() {
         return bullets;
-    }
-
-    private BufferedImage createBulletAsset() {
-        BufferedImage asset = new BufferedImage(BULLET_WIDTH, BULLET_HEIGHT, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = asset.createGraphics();
-
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, asset.getWidth(), asset.getHeight());
-
-        g.dispose();
-
-        return asset;
     }
 
     @Override

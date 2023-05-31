@@ -35,6 +35,10 @@ public abstract class Screen extends JPanel implements GameConstants {
             @Override
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
+                if (buffer == null) {
+                    buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+                }
+
                 if (starField == null) {
                     starField = new StarField(getWidth(), getHeight());
                     starField.start();
@@ -42,7 +46,10 @@ public abstract class Screen extends JPanel implements GameConstants {
             }
         });
 
-        timer = new Timer((int) GAME_UPDATE_RATE, e -> updateComponent());
+        timer = new Timer((int) GAME_UPDATE_RATE, e -> {
+//            if (starField != null) starField.animate((float) GAME_UPDATE_RATE);
+            updateComponent();
+        });
     }
 
     public void startTimer() {
@@ -66,9 +73,6 @@ public abstract class Screen extends JPanel implements GameConstants {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // Create the buffer in the draw method to make sure the getWidth() and getHeight() methods
-        // do not return 0. Check if it is null before drawing to not initialize a new buffer for every render.
-        if (buffer == null) buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D bufferGraphics = buffer.createGraphics(); // graphics for the buffer
 
         starField.draw(bufferGraphics, 0, 0);

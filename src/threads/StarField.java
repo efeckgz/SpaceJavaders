@@ -27,7 +27,7 @@ public class StarField implements Runnable, GameConstants {
     }
 
     private BufferedImage createStarField(int width, int height) {
-        BufferedImage starField = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage starField = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = starField.createGraphics();
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, width, height);
@@ -48,6 +48,7 @@ public class StarField implements Runnable, GameConstants {
         yOffset -= STAR_FIELD_SPEED * deltaTime;
         if (yOffset < 0) yOffset = starField.getHeight();
     }
+
 
     public void draw(Graphics g, int x, int y) {
         int starFieldHeight = starField.getHeight();
@@ -102,3 +103,7 @@ public class StarField implements Runnable, GameConstants {
         }
     }
 }
+
+
+
+
