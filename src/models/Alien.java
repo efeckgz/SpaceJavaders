@@ -12,7 +12,6 @@ public class Alien extends GameItem implements GameConstants {
     private static final ArrayList<Alien> aliens = new ArrayList<>();
     private final boolean isStrong;
     private int livesLeft;
-    private boolean isAlive = true;
 
     public Alien(boolean isStrong) {
         super();
@@ -37,14 +36,6 @@ public class Alien extends GameItem implements GameConstants {
         this.livesLeft = livesLeft;
     }
 
-    public boolean getIsAlive() {
-        return this.isAlive;
-    }
-
-    public void setIsAlive(boolean isAlive) {
-        this.isAlive = isAlive;
-    }
-
 
     @Override
     public double getTravelSpeed() {
@@ -61,9 +52,14 @@ public class Alien extends GameItem implements GameConstants {
 
     @Override
     protected void draw(Graphics g) {
-        if (getIsAlive()) {
+        if (isValid()) {
             g.drawImage(getAsset(), (int) getPosition().getX(), (int) getPosition().getY(), null);
         }
+    }
+
+    @Override
+    public void setIsValid() {
+        this.isValid = livesLeft > 0;
     }
 
     public static class RedAlien extends Alien {

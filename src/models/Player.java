@@ -16,7 +16,6 @@ public class Player extends GameItem {
 
     private int livesLeft = 3;
     private int score = 0;
-    private boolean isAlive = true;
 
     // Variables for player movement
     private boolean moveUp = false;
@@ -32,7 +31,6 @@ public class Player extends GameItem {
 
         setAsset(ImageManager.load(PLAYER_ASSET_PATH));
         setPosition(PLAYER_STARTING_POSITION); // 420, 620
-        // setValid(true);
     }
 
     public String getUsername() {
@@ -45,15 +43,6 @@ public class Player extends GameItem {
 
     public void setCurrentHighScore(int currentHighScoreSupplier) {
         this.currentHighScore = currentHighScoreSupplier;
-    }
-
-
-    public boolean getIsAlive() {
-        return isAlive;
-    }
-
-    public void setIsAlive(boolean isAlive) {
-        this.isAlive = isAlive; // set the isAlive property with a lambda expression.
     }
 
     public void setMoveUp(boolean moveUp) {
@@ -70,6 +59,11 @@ public class Player extends GameItem {
 
     public void setMoveRight(boolean moveRight) {
         this.moveRight = moveRight;
+    }
+
+    @Override
+    public void setIsValid() {
+        this.isValid = livesLeft > 0;
     }
 
     @Override
@@ -120,7 +114,7 @@ public class Player extends GameItem {
     }
 
     public void fireBullets() {
-        TimeManager.startTimer(BULLET_FIRE_FREQUENCY, e -> new Bullet(this), () -> !getIsAlive());
+        TimeManager.startTimer(BULLET_FIRE_FREQUENCY, e -> new Bullet(this), () -> !isValid());
     }
 
     // Investigate this

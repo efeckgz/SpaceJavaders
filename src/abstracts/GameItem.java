@@ -26,6 +26,7 @@ public abstract class GameItem implements GameConstants {
     protected boolean isValid; // boolean value to check if the item should be drawn and checked for collision
 
     public GameItem() {
+        this.isValid = true;
         items.add(this);
     }
 
@@ -49,7 +50,7 @@ public abstract class GameItem implements GameConstants {
         return isValid;
     }
 
-    protected abstract void setValid(boolean valid);
+    protected abstract void setIsValid();
 
     public Point2D.Double getPosition() {
         return position;
