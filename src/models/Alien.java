@@ -11,16 +11,30 @@ import java.util.ArrayList;
 public class Alien extends GameItem implements GameConstants {
     private static final ArrayList<Alien> aliens = new ArrayList<>();
     private final boolean isStrong;
+    private int livesLeft;
     private boolean isAlive = true;
 
     public Alien(boolean isStrong) {
         super();
         this.isStrong = isStrong;
+        livesLeft = isStrong ? 2 : 1;
         aliens.add(this);
     }
 
     public static ArrayList<Alien> getAliens() {
         return aliens;
+    }
+
+    public boolean getIsStrong() {
+        return isStrong;
+    }
+
+    public int getLivesLeft() {
+        return livesLeft;
+    }
+
+    public void setLivesLeft(int livesLeft) {
+        this.livesLeft = livesLeft;
     }
 
     public boolean getIsAlive() {

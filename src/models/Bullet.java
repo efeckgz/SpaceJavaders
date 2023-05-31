@@ -7,10 +7,10 @@ import utils.TimeManager;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Bullet extends GameItem {
-    private static final ArrayList<Bullet> bullets = new ArrayList<>();
+    private static final CopyOnWriteArrayList<Bullet> bullets = new CopyOnWriteArrayList<>(); // A thread safe ArrayList
     private static final BufferedImage assetSetter;
 
     static {
@@ -52,7 +52,7 @@ public class Bullet extends GameItem {
         bullets.add(this);
     }
 
-    public static ArrayList<Bullet> getBullets() {
+    public static CopyOnWriteArrayList<Bullet> getBullets() {
         return bullets;
     }
 

@@ -36,8 +36,8 @@ public class GameScreen extends Screen implements GameConstants {
             for (int j = 0; j < level1[i].length; j++) {
                 Alien alienToCreate = null;  // Initialize to null
                 if (level1[i][j] == 1) alienToCreate = new Alien.RedAlien(false);
-                if (level1[i][j] == 2) alienToCreate = new Alien.GreenAlien(false);
-                if (level1[i][j] == 3) alienToCreate = new Alien.YellowAlien(false);
+                if (level1[i][j] == 2) alienToCreate = new Alien.GreenAlien(true);
+                if (level1[i][j] == 3) alienToCreate = new Alien.YellowAlien(true);
                 if (level1[i][j] == 4) alienToCreate = new Alien.ExtraAlien(false);
 
                 // Assign the created alien back to the array
@@ -45,8 +45,8 @@ public class GameScreen extends Screen implements GameConstants {
 
                 // Assign initial position
                 if (alienToCreate != null && alienToCreate.getIsAlive()) {
-                    int x = j * (GameConstants.ALIEN_WIDTH + GameConstants.ALIEN_PADDING);
-                    int y = i * (GameConstants.ALIEN_HEIGHT + GameConstants.ALIEN_PADDING);
+                    int x = j * (ALIEN_WIDTH + ALIEN_PADDING);
+                    int y = i * (ALIEN_HEIGHT + ALIEN_PADDING);
                     alienToCreate.setPosition(new Point2D.Double(x, y));
                 }
             }
@@ -62,24 +62,29 @@ public class GameScreen extends Screen implements GameConstants {
 
         for (Alien alien : Alien.getAliens()) {
             if (alien != null && alien.getIsAlive()) {
-                // models.Alien exists, check collision
+                // Alien exists, check collision
                 if (alien.intersects(player)) {
                     player.setLivesLeft(player.getLivesLeft() - 1);
-                    player.setIsAlive(player.getLivesLeft() > 0); // kill the player if their lives are gone.
-                    alien.setIsAlive(false);
+                    alien.setLivesLeft(alien.getLivesLeft() - 1);
+
+                    player.setIsAlive(player.getLivesLeft() > 0);
+                    alien.setIsAlive(alien.getLivesLeft() > 0);
 
                     if (!player.getIsAlive() && gameOverAction != null) gameOverAction.run();
                 }
 
                 for (Bullet bullet : Bullet.getBullets()) {
                     if (bullet.getIsAlive() && alien.intersects(bullet)) {
-                        bullet.setIsAlive(false); // kill the bullet
+                        bullet.setIsAlive(false); // Kill the bullet on impact
 
-                        alien.setIsAlive(false); // kill the alien
-
-                        player.setScore(player.getScore() + 1); // increment score
-                        // The maximum of the current high score and the score should be the high score
-                        player.setCurrentHighScore(Math.max(player.getCurrentHighScore(), player.getScore()));
+                        alien.setLivesLeft(alien.getLivesLeft() - 1); // Decrease alien life
+                        alien.setIsAlive(alien.getLivesLeft() > 0); // Kill the alien if it has no lives left
+                        
+                        // increment score if the alien is dead
+                        if (!alien.getIsAlive()) {
+                            player.setScore(player.getScore() + 1);
+                            player.setCurrentHighScore(Math.max(player.getCurrentHighScore(), player.getScore()));
+                        }
                     }
                 }
             }

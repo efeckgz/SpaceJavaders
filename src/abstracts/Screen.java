@@ -73,6 +73,9 @@ public abstract class Screen extends JPanel implements GameConstants {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        // These are sometimes null when the component first gets created.
+        if (buffer == null || starField == null) return;
+
         Graphics2D bufferGraphics = buffer.createGraphics(); // graphics for the buffer
 
         starField.draw(bufferGraphics, 0, 0);

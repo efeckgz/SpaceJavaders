@@ -23,6 +23,8 @@ public abstract class GameItem implements GameConstants {
     // The asset of the item
     protected BufferedImage asset;
 
+    protected boolean isValid; // boolean value to check if the item should be drawn and checked for collision
+
     public GameItem() {
         items.add(this);
     }
@@ -42,6 +44,12 @@ public abstract class GameItem implements GameConstants {
     public static void clearItems() {
         items.clear();
     }
+
+    public boolean isValid() {
+        return isValid;
+    }
+
+    protected abstract void setValid(boolean valid);
 
     public Point2D.Double getPosition() {
         return position;

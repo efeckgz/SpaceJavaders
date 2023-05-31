@@ -32,6 +32,7 @@ public class Player extends GameItem {
 
         setAsset(ImageManager.load(PLAYER_ASSET_PATH));
         setPosition(PLAYER_STARTING_POSITION); // 420, 620
+        // setValid(true);
     }
 
     public String getUsername() {
