@@ -132,8 +132,8 @@ public class LoginRegisterDialog extends JDialog {
         }
     }
 
-    public static void addUser(String userCredentials) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE, false))) {
+    public static void addUser(String userCredentials, boolean append) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE, append))) {
             writer.write(userCredentials);
             writer.newLine();
         } catch (IOException ignored) {
@@ -174,7 +174,7 @@ public class LoginRegisterDialog extends JDialog {
 
         // Reconstruct the file from the ArrayList
         for (String line : lines) {
-            LoginRegisterDialog.addUser(line);
+            LoginRegisterDialog.addUser(line, true);
         }
     }
 
@@ -203,7 +203,7 @@ public class LoginRegisterDialog extends JDialog {
 
                 // Add the user if the username does not exist.
                 if (canRegister.get()) {
-                    LoginRegisterDialog.addUser(username + "," + password + "," + 0);
+                    LoginRegisterDialog.addUser(String.format("%s,%s,0", username, password), false);
                     JOptionPane.showMessageDialog(
                             null,
                             String.format("Registered user %s.", username),
