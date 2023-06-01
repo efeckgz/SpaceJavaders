@@ -194,7 +194,8 @@ public class LoginRegisterDialog extends JDialog {
                         JOptionPane.showMessageDialog(
                                 null,
                                 String.format("The username %s already exists!", username),
-                                "Error", JOptionPane.ERROR_MESSAGE
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE
                         );
                     } else {
                         canRegister.set(true);
@@ -221,7 +222,8 @@ public class LoginRegisterDialog extends JDialog {
                         JOptionPane.showMessageDialog(
                                 null,
                                 "Wrong password!",
-                                "Error", JOptionPane.ERROR_MESSAGE
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE
                         );
                     }
                 });

@@ -96,11 +96,14 @@ public class WindowManager extends JFrame implements GameConstants {
         if (LoginRegisterDialog.LOGGED_IN) {
             GameScreen gameScreen = new GameScreen();
             GameUpdateThread gameUpdateThread = gameScreen.getGameUpdateThread();
+
+            //gameScreen.createAliens();
             gameUpdateThread.setGameOverAction(() -> {
                 gameUpdateThread.stop();
                 LoginRegisterDialog.saveHighScore(gameScreen.getPlayer());
                 switchScreens(new GameOverScreen(gameScreen.getPlayer()));
             });
+
             switchScreens(gameScreen);
         }
     }

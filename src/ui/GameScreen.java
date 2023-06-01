@@ -14,9 +14,9 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public class GameScreen extends Screen implements GameConstants {
-    private final Alien[][] aliens;
     private final GameUpdateThread gameUpdateThread;
     private final Player player;
+    private Alien[][] aliens;
 
     public GameScreen() {
         super();
@@ -31,6 +31,11 @@ public class GameScreen extends Screen implements GameConstants {
         // models.Levels
         int[][] level1 = Levels.LEVEL_ONE;
         aliens = new Alien[level1.length][level1[0].length];
+
+        // Calculate total width of aliens and starting x position
+        int totalAliensWidth = level1[0].length * (ALIEN_WIDTH + ALIEN_PADDING);
+        int startX = (SCREEN_WIDTH - totalAliensWidth) / 2;
+
         for (int i = 0; i < level1.length; i++) {
             for (int j = 0; j < level1[i].length; j++) {
                 Alien alienToCreate = null;  // Initialize to null
@@ -44,7 +49,7 @@ public class GameScreen extends Screen implements GameConstants {
 
                 // Assign initial position
                 if (alienToCreate != null && alienToCreate.isValid()) {
-                    int x = j * (ALIEN_WIDTH + ALIEN_PADDING);
+                    int x = startX + j * (ALIEN_WIDTH + ALIEN_PADDING);
                     int y = i * (ALIEN_HEIGHT + ALIEN_PADDING);
                     alienToCreate.setPosition(new Point2D.Double(x, y));
                 }
@@ -54,6 +59,74 @@ public class GameScreen extends Screen implements GameConstants {
         gameUpdateThread.start();
         SwingUtilities.invokeLater(() -> addKeyListener(player.handleUserInput()));
     }
+
+    public void createAliens() {
+        // models.Levels
+        int[][] level1 = Levels.LEVEL_ONE;
+        aliens = new Alien[level1.length][level1[0].length];
+
+        // Calculate total width of aliens and starting x position
+        int totalAliensWidth = level1[0].length * (ALIEN_WIDTH + ALIEN_PADDING);
+        int startX = (getWidth() - totalAliensWidth) / 2;
+
+        for (int i = 0; i < level1.length; i++) {
+            for (int j = 0; j < level1[i].length; j++) {
+                Alien alienToCreate = null;  // Initialize to null
+                if (level1[i][j] == 1) alienToCreate = new Alien.RedAlien(false);
+                if (level1[i][j] == 2) alienToCreate = new Alien.GreenAlien(true);
+                if (level1[i][j] == 3) alienToCreate = new Alien.YellowAlien(true);
+                if (level1[i][j] == 4) alienToCreate = new Alien.ExtraAlien(false);
+
+                // Assign the created alien back to the array
+                aliens[i][j] = alienToCreate;
+
+                // Assign initial position
+                if (alienToCreate != null && alienToCreate.isValid()) {
+                    int x = startX + j * (ALIEN_WIDTH + ALIEN_PADDING);
+                    int y = i * (ALIEN_HEIGHT + ALIEN_PADDING);
+                    alienToCreate.setPosition(new Point2D.Double(x, y));
+                }
+            }
+        }
+    }
+
+
+//    public GameScreen() {
+//        super();
+//
+//        GameItem.clearItems(); // clear the game items from the previous game
+//
+//        player = new Player(LoginRegisterDialog.getCurrentUsername());
+//        gameUpdateThread = new GameUpdateThread(this);
+//
+//        player.fireBullets(); // start shooting
+//
+//        // models.Levels
+//        int[][] level1 = Levels.LEVEL_ONE;
+//        aliens = new Alien[level1.length][level1[0].length];
+//        for (int i = 0; i < level1.length; i++) {
+//            for (int j = 0; j < level1[i].length; j++) {
+//                Alien alienToCreate = null;  // Initialize to null
+//                if (level1[i][j] == 1) alienToCreate = new Alien.RedAlien(false);
+//                if (level1[i][j] == 2) alienToCreate = new Alien.GreenAlien(true);
+//                if (level1[i][j] == 3) alienToCreate = new Alien.YellowAlien(true);
+//                if (level1[i][j] == 4) alienToCreate = new Alien.ExtraAlien(false);
+//
+//                // Assign the created alien back to the array
+//                aliens[i][j] = alienToCreate;
+//
+//                // Assign initial position
+//                if (alienToCreate != null && alienToCreate.isValid()) {
+//                    int x = j * (ALIEN_WIDTH + ALIEN_PADDING);
+//                    int y = i * (ALIEN_HEIGHT + ALIEN_PADDING);
+//                    alienToCreate.setPosition(new Point2D.Double(x, y));
+//                }
+//            }
+//        }
+//
+//        gameUpdateThread.start();
+//        SwingUtilities.invokeLater(() -> addKeyListener(player.handleUserInput()));
+//    }
 
     public void detectCollisions() {
         Player player = getPlayer();
