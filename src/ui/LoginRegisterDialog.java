@@ -11,6 +11,7 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
@@ -131,6 +132,14 @@ public class LoginRegisterDialog extends JDialog {
         }
     }
 
+    public static void addUser(String userCredentials) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE, false))) {
+            writer.write(userCredentials);
+            writer.newLine();
+        } catch (IOException ignored) {
+        }
+    }
+
     public static int getUserCount() {
         AtomicInteger count = new AtomicInteger();
         LoginRegisterDialog.forEach(u -> count.getAndIncrement());
@@ -146,18 +155,6 @@ public class LoginRegisterDialog extends JDialog {
         });
 
         return highScore.get();
-//        try (BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE))) {
-//            String line;
-//            while ((line = reader.readLine()) != null) {
-//                String[] parts = line.split(",");
-//                if (parts.length == 3 && parts[0].equals(username)) {
-//                    return Integer.parseInt(parts[2]);
-//                }
-//            }
-//        } catch (IOException ignored) {
-//        }
-//
-//        return 0; // This won't happen.
     }
 
     public static void saveHighScore(Player player) {
@@ -168,26 +165,16 @@ public class LoginRegisterDialog extends JDialog {
         String playerHighScoreStr = Integer.toString(player.getCurrentHighScore());
         ArrayList<String> lines = new ArrayList<>(); // read files into this
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length == 3 && parts[0].equals(playerUsername)) {
-                    parts[2] = playerHighScoreStr;
-                    line = String.join(",", parts);
-                }
-                lines.add(line); // reconstruct the file as lines into this ArrayList
+        LoginRegisterDialog.forEach(user -> {
+            if (user[0].equals(playerUsername)) {
+                user[2] = playerHighScoreStr;
             }
-        } catch (IOException ignored) {
-        }
+            lines.add(String.join(",", user));
+        });
 
-        // Reconstruct the file using the ArrayList
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE, false))) {
-            for (String line : lines) {
-                writer.write(line);
-                writer.newLine();
-            }
-        } catch (IOException ignored) {
+        // Reconstruct the file from the ArrayList
+        for (String line : lines) {
+            LoginRegisterDialog.addUser(line);
         }
     }
 
@@ -199,46 +186,46 @@ public class LoginRegisterDialog extends JDialog {
             boolean register = registerCheckBox.isSelected();
 
             if (register) { // Register
-                boolean canRegister = false;
-                // Open the file for reading to check if the entered credentials already exist
-                try (BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE))) {
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        String[] parts = line.split(",");
-                        if (parts.length == 3 && parts[0].equals(username)) {
-                            JOptionPane.showMessageDialog(
-                                    null,
-                                    String.format("The username %s already exists!", username),
-                                    "Error", JOptionPane.ERROR_MESSAGE
-                            );
-                            return; // If the username already exists return
-                        } else {
-                            canRegister = true;
-                        }
-                    }
-                } catch (IOException ignored) {
+                AtomicBoolean canRegister = new AtomicBoolean(false);
 
-                }
-
-                // Open the file for writing to Register if registering is allowed
-                if (canRegister) {
-                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE, true))) {
-                        writer.write(username + "," + password + "," + 0);
-                        writer.newLine();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
+                // check the file for if the username already exists
+                LoginRegisterDialog.forEach(user -> {
+                    if (user[0].equals(username)) {
+                        JOptionPane.showMessageDialog(
+                                null,
+                                String.format("The username %s already exists!", username),
+                                "Error", JOptionPane.ERROR_MESSAGE
+                        );
+                    } else {
+                        canRegister.set(true);
                     }
+                });
+
+                // Add the user if the username does not exist.
+                if (canRegister.get()) {
+                    LoginRegisterDialog.addUser(username + "," + password + "," + 0);
+                    JOptionPane.showMessageDialog(
+                            null,
+                            String.format("Registered user %s.", username),
+                            "Success",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
                 }
             } else { // Login
-                if (username.equals("admin")) Main.debug = true; // Enable debug mode for admin user
                 LoginRegisterDialog.forEach(user -> {
                     if (user[0].equals(username) && user[1].equals(password)) {
                         LoginRegisterDialog.LOGGED_IN = true;
                         LoginRegisterDialog.currentUsername = username;
+                        if (username.equals("admin")) Main.debug = true; // Enable debug mode for admin user
+                    } else if (user[0].equals(username)) {
+                        JOptionPane.showMessageDialog(
+                                null,
+                                "Wrong password!",
+                                "Error", JOptionPane.ERROR_MESSAGE
+                        );
                     }
                 });
             }
-
             dispose();
         }
     }

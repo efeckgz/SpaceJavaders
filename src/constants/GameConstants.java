@@ -13,13 +13,12 @@ public interface GameConstants {
     // Window constants
     int SCREEN_WIDTH = 919;
     int SCREEN_HEIGHT = 687;
-    int GAME_FPS = 120;
+    int GAME_FPS = 60;
     long GAME_UPDATE_RATE = 1000 / GAME_FPS;
     String WINDOW_TITLE = "Space Javaders: Bytecode Battle";
 
     // Player constants
     double PLAYER_TRAVEL_SPEED = 0.8;
-    int PLAYER_HP = 100;
     String PLAYER_ASSET_PATH = "/Assets/player.png";
     String PLAYER_LIVES_THREE_ASSET_PATH = "/Assets/livesThree.png";
     String PLAYER_LIVES_TWO_ASSET_PATH = "/Assets/livesTwo.png";
