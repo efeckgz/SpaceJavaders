@@ -89,8 +89,17 @@ public class UserManager {
         }
     }
 
-    public static void addUser(String userCredentials, boolean append) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE, append))) {
+    public static void clearFile() {
+        try (PrintWriter writer = new PrintWriter(USER_DATA_FILE)) {
+            writer.print("");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void addUser(String userCredentials) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE, true))) {
             writer.write(userCredentials);
             writer.newLine();
         } catch (IOException ignored) {

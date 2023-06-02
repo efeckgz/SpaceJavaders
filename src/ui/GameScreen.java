@@ -32,7 +32,35 @@ public class GameScreen extends Screen implements GameConstants {
 
         player.fireBullets(); // start shooting
 
-        drawAliensForLevels();
+        // This only draws the first level - need support for drawing more levels
+        int[][] LEVEL_ONE = Levels.LEVEL_ONE;
+        aliens = new Alien[LEVEL_ONE.length][LEVEL_ONE[0].length];
+
+        // Calculate total width of aliens and starting x position
+        int totalAliensWidth = LEVEL_ONE[0].length * (ALIEN_WIDTH + ALIEN_PADDING);
+        int startX = (SCREEN_WIDTH - totalAliensWidth) / 2;
+
+        for (int i = 0; i < LEVEL_ONE.length; i++) {
+            for (int j = 0; j < LEVEL_ONE[i].length; j++) {
+                Alien alienToCreate = null;  // Initialize to null
+                if (LEVEL_ONE[i][j] == 1) alienToCreate = new Alien.RedAlien(false);
+                if (LEVEL_ONE[i][j] == 2) alienToCreate = new Alien.GreenAlien(true);
+                if (LEVEL_ONE[i][j] == 3) alienToCreate = new Alien.YellowAlien(true);
+                if (LEVEL_ONE[i][j] == 4) alienToCreate = new Alien.ExtraAlien(false);
+
+                // Assign the created alien back to the array
+                aliens[i][j] = alienToCreate;
+
+                // Assign initial position
+                if (alienToCreate != null && alienToCreate.isValid()) {
+                    int x = startX + j * (ALIEN_WIDTH + ALIEN_PADDING);
+                    int y = i * (ALIEN_HEIGHT + ALIEN_PADDING);
+                    alienToCreate.setPosition(new Point2D.Double(x, y));
+                }
+            }
+        }
+
+//        drawAliensForLevels();
 
         gameUpdateThread.start();
         SwingUtilities.invokeLater(() -> addKeyListener(player.handleUserInput()));
@@ -75,6 +103,8 @@ public class GameScreen extends Screen implements GameConstants {
                 levelsDrawn.getAndIncrement();
             }
         }, () -> levelsDrawn.get() == 3);
+
+        
 //        for (int[][] level : Levels.getLevels()) {
 ////            aliens = new Alien[level.length][level[0].length];
 ////
