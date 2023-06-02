@@ -4,6 +4,7 @@ import abstracts.GameItem;
 import abstracts.Screen;
 import constants.GameConstants;
 import models.Alien;
+import models.Bullet;
 import models.Levels;
 import models.Player;
 import threads.GameUpdateThread;
@@ -145,22 +146,15 @@ public class GameScreen extends Screen implements GameConstants {
                     if (!player.isValid() && gameOverAction != null) {
                         gameOverAction.run();
                     }
-                }
 
-//                for (Bullet bullet : Bullet.getBullets()) {
-//                    if (bullet.isValid() && alien.intersects(bullet)) {
-//                        bullet.setIsValid(); // Kill the bullet on impact
-//
-//                        alien.setLivesLeft(alien.getLivesLeft() - 1); // Decrease alien life
-//                        alien.setIsValid(); // Kill the alien if it has no lives left
-//
-//                        // increment score if the alien is dead
-//                        if (!alien.isValid()) {
-//                            player.setScore(player.getScore() + 1);
-//                            player.setCurrentHighScore(Math.max(player.getCurrentHighScore(), player.getScore()));
-//                        }
-//                    }
-//                }
+                    return;
+                }
+            }
+        }
+
+        for (Bullet bullet : Bullet.getBullets()) {
+            if (bullet.isValid()) {
+                bullet.checkForCollisions();
             }
         }
     }

@@ -29,7 +29,7 @@ public interface GameConstants {
     int BULLET_WIDTH = 6;
     int BULLET_HEIGHT = 25;
     int BULLET_TRAVEL_SPEED = 1;
-    int BULLET_FIRE_FREQUENCY = 1000;
+    int BULLET_FIRE_FREQUENCY = 300;
 
     // Alien constants
     int ALIEN_WIDTH = 35;

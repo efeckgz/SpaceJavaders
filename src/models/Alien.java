@@ -16,7 +16,7 @@ public class Alien extends GameItem implements GameConstants {
     public Alien(boolean isStrong) {
         super();
         this.isStrong = isStrong;
-        livesLeft = 5/*isStrong ? 5 : 1*/;
+        livesLeft = isStrong ? 2 : 1;
         aliens.add(this);
     }
 

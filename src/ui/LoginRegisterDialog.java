@@ -101,12 +101,12 @@ public class LoginRegisterDialog extends JDialog {
         return currentUsername;
     }
 
-    // forEach method for the users
-    // This method reads the users.txt file line by line, splits each line into 3 parts and puts them into a
-    // String[] where indices 0, 1, 2 are username, password, high score. The method takes a
-    // Consumer<String[]> as an argument, which represents the user array. This method will be called
-    // with a lambda expression that will run for each user that is registered (except for admin).
-    // The overloaded version gets a parameter for sorting prior to performing the action.
+    /* forEach method for the users
+     This method reads the users.txt file line by line, splits each line into 3 parts and puts them into a
+     String[] where indices 0, 1, 2 are username, password, high score. The method takes a
+     Consumer<String[]> as an argument, which represents the user array. This method will be called
+     with a lambda expression that will run for each user that is registered (except for admin).
+     The overloaded version gets a parameter for sorting prior to performing the action.*/
     public static void forEach(Consumer<String[]> action) {
         try (BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE))) {
             String line;
@@ -127,6 +127,24 @@ public class LoginRegisterDialog extends JDialog {
             forEach(usersToSort::add);
             usersToSort.sort(Comparator.comparingInt((String[] user) -> -Integer.parseInt(user[2])));
             usersToSort.forEach(action);
+        } else {
+            forEach(action);
+        }
+    }
+
+    private static void forEach(Consumer<String[]> action, String ignoreAdmin) { // a hacky solution
+        if (ignoreAdmin.equals("ignoreadmin")) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] parts = line.split(",");
+                    if (parts.length == 3) {
+                        action.accept(parts);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else {
             forEach(action);
         }
@@ -158,8 +176,8 @@ public class LoginRegisterDialog extends JDialog {
     }
 
     public static void saveHighScore(Player player) {
-        // Read the file to find the username and append the high score to the end of the appropriate line.
-        // Add all the lines to a List and reconstruct the file from that list to keep it updated.
+        /* Read the file to find the username and append the high score to the end of the appropriate line.
+         Add all the lines to a List and reconstruct the file from that list to keep it updated.*/
 
         String playerUsername = player.getUsername();
         String playerHighScoreStr = Integer.toString(player.getCurrentHighScore());
@@ -213,22 +231,31 @@ public class LoginRegisterDialog extends JDialog {
                     );
                 }
             } else { // Login
+                /* Variable that checks if the entered password is correct and shows a dialog
+                 if it is not.*/
+                AtomicBoolean correctPassword = new AtomicBoolean(false);
+
                 LoginRegisterDialog.forEach(user -> {
                     if (user[0].equals(username) && user[1].equals(password)) {
                         LoginRegisterDialog.LOGGED_IN = true;
                         LoginRegisterDialog.currentUsername = username;
+                        correctPassword.set(true);
                         if (username.equals("admin")) Main.debug = true; // Enable debug mode for admin user
+                        dispose();
                     } else if (user[0].equals(username)) {
-                        JOptionPane.showMessageDialog(
-                                null,
-                                "Wrong password!",
-                                "Error",
-                                JOptionPane.ERROR_MESSAGE
-                        );
+                        correctPassword.set(false);
                     }
-                });
+                }, "ignoreadmin");
+
+                if (!correctPassword.get()) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Wrong password!",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
             }
-            dispose();
         }
     }
 }
