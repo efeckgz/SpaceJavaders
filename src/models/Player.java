@@ -2,9 +2,9 @@ package models;
 
 import abstracts.GameItem;
 import main.Main;
-import ui.LoginRegisterDialog;
 import utils.ImageManager;
 import utils.TimeManager;
+import utils.UserManager;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -27,7 +27,7 @@ public class Player extends GameItem {
         super();
 
         this.username = username;
-        this.currentHighScore = LoginRegisterDialog.getHighScoreForUser(username);
+        this.currentHighScore = UserManager.getHighScoreForUser(username);
 
         setAsset(ImageManager.load(PLAYER_ASSET_PATH));
         setPosition(PLAYER_STARTING_POSITION); // 420, 620

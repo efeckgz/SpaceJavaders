@@ -53,6 +53,7 @@ public class LoginRegisterDialog extends JDialog {
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(registerCheckBox);
         buttonPanel.add(submitButton);
+        getRootPane().setDefaultButton(submitButton);
         buttonPanel.add(cancelButton);
 
         submitButton.addActionListener(new SubmitButtonListener());

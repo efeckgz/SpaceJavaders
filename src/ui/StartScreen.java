@@ -66,9 +66,13 @@ public class StartScreen extends Screen implements GameConstants {
     }
 
     private void cycleLoggedInActive() {
-        Color temp = active;
-        active = inactive;
-        inactive = temp;
+        if (!LoginRegisterDialog.LOGGED_IN) {
+            Color temp = active;
+            active = inactive;
+            inactive = temp;
+        } else {
+            active = Color.WHITE; // set the active color to white if the user is logged in
+        }
     }
 
     @Override
