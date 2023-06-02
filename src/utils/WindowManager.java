@@ -21,10 +21,19 @@ public class WindowManager extends JFrame implements GameConstants {
         startScreen.startTimer(); // Start the timer of start screen
         add(startScreen);
 
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth();
+        double height = screenSize.getHeight();
+
+        int windowWidth = (int) (width * 0.63);
+        int windowHeight = (int) (height * 0.7);
+
+
         // setting window properties
         setTitle(WINDOW_TITLE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+//        setSize(windowWidth, windowHeight);
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);

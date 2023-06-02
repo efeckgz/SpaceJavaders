@@ -42,14 +42,14 @@ public class GameUpdateThread implements Runnable, GameConstants {
             long deltaTime = now - lastUpdateTime;
 
             if (deltaTime >= GAME_UPDATE_RATE) {
-                // If the time between the last two updates is greater than or equal to the desired
-                // update rate, it is time to update the game.
+                /* If the time between the last two updates is greater than or equal to the desired
+                 update rate, it is time to update the game.*/
                 GameItem.updateAllPositions(deltaTime);
                 gameScreen.detectCollisions();
                 lastUpdateTime = now;
             } else {
-                // If not, the game was updated recently enough so wait until it is time to update
-                // again.
+                /* If not, the game was updated recently enough so wait until it is time to update
+                 again.*/
                 try {
                     Thread.sleep(GAME_UPDATE_RATE - deltaTime);
                 } catch (InterruptedException e) {

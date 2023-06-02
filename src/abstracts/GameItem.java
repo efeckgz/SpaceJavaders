@@ -31,7 +31,11 @@ public abstract class GameItem implements GameConstants {
     }
 
     public static void updateAllPositions(float deltaTime) {
-        for (GameItem item : GameItem.getItems()) item.updatePosition(deltaTime);
+        for (GameItem item : GameItem.getItems()) {
+            if (item.isValid()) {
+                item.updatePosition(deltaTime);
+            }
+        }
     }
 
     public static void drawAllItems(Graphics g) {

@@ -2,6 +2,7 @@ package ui;
 
 import abstracts.Screen;
 import constants.GameConstants;
+import utils.UserManager;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,24 +13,30 @@ public class HighScoresScreen extends Screen implements GameConstants {
 
     public HighScoresScreen() {
         super();
-        this.highScoresImg = createHighScoresImage();
+
+        if (UserManager.getUserCount() > 0) {
+            this.highScoresImg = createHighScoresImage();
+        } else {
+            this.highScoresImg = null;
+        }
     }
 
     private BufferedImage createHighScoresImage() {
-        int imageHeight = LoginRegisterDialog.getUserCount() * 60;
+        int imageHeight = UserManager.getUserCount() * 60;
 
-        BufferedImage img = new BufferedImage(GameConstants.SCREEN_WIDTH, imageHeight, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage img = new BufferedImage(SCREEN_WIDTH, imageHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = img.createGraphics();
 
         g.setFont(FONT_SUBTITLE);
         AtomicInteger index = new AtomicInteger(0);
-        LoginRegisterDialog.forEach(user -> {
+        UserManager.forEach(true, user -> {
             String username = user[0];
             String userHighScoreStr = user[2];
             String usernameHighScorePairing = String.format("%s %s", username, userHighScoreStr);
             int usernameHighScorePairingWidth = g.getFontMetrics().stringWidth(usernameHighScorePairing);
-            g.drawString(usernameHighScorePairing, GameConstants.SCREEN_WIDTH / 2 - usernameHighScorePairingWidth / 2, (index.getAndIncrement() + 1) * 60);
-        }, true);
+
+            g.drawString(usernameHighScorePairing, SCREEN_WIDTH / 2 - usernameHighScorePairingWidth / 2, (index.getAndIncrement() + 1) * 60);
+        });
 
         g.dispose();
 
@@ -49,6 +56,11 @@ public class HighScoresScreen extends Screen implements GameConstants {
             int x = (getWidth() - highScoresImg.getWidth()) / 2;
             int y = (getHeight() - highScoresImg.getHeight()) / 2;
             g.drawImage(highScoresImg, x, y, null);
+        } else {
+            g.setFont(FONT_SUBTITLE);
+            String noHighScores = "No high scores yet!";
+            int noHighScoresWidth = g.getFontMetrics().stringWidth(noHighScores);
+            g.drawString(noHighScores, getWidth() / 2 - noHighScoresWidth / 2, getHeight() / 2);
         }
     }
 }
