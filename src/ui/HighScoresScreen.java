@@ -1,6 +1,6 @@
 package ui;
 
-import abstracts.Screen;
+import abstracts.AbstractScreen;
 import constants.GameConstants;
 import utils.UserManager;
 
@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class HighScoresScreen extends Screen implements GameConstants {
+public class HighScoresScreen extends AbstractScreen implements GameConstants {
     private final BufferedImage highScoresImg;
 
     public HighScoresScreen() {

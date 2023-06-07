@@ -9,7 +9,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 
-public abstract class Screen extends JPanel implements GameConstants {
+public abstract class AbstractScreen extends JPanel implements GameConstants {
     // An abstract class that provides basic functionality that all the screens in the game need.
     // It initializes the star field, automatically updates itself and provides a method for drawing items.
 
@@ -21,7 +21,7 @@ public abstract class Screen extends JPanel implements GameConstants {
     // and then this buffer will be drawn onto the screen.
     private BufferedImage buffer;
 
-    public Screen() {
+    public AbstractScreen() {
         // Constructor code inside this method. This pattern allows inheritors
         // to accept constructor parameters.
         initialize();

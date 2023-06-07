@@ -1,6 +1,6 @@
 package models;
 
-import abstracts.GameItem;
+import abstracts.AbstractGameItem;
 import constants.GameConstants;
 import utils.ImageManager;
 
@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-public class Alien extends GameItem implements GameConstants {
+public class Alien extends AbstractGameItem implements GameConstants {
     private static final ArrayList<Alien> aliens = new ArrayList<>();
     private final boolean isStrong;
     private int livesLeft;

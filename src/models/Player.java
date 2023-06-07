@@ -1,6 +1,6 @@
 package models;
 
-import abstracts.GameItem;
+import abstracts.AbstractGameItem;
 import main.Main;
 import utils.ImageManager;
 import utils.TimeManager;
@@ -10,7 +10,7 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class Player extends GameItem {
+public class Player extends AbstractGameItem {
     private final String username;
     private int currentHighScore;
 

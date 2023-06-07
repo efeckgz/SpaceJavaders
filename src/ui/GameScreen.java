@@ -1,7 +1,7 @@
 package ui;
 
-import abstracts.GameItem;
-import abstracts.Screen;
+import abstracts.AbstractGameItem;
+import abstracts.AbstractScreen;
 import constants.GameConstants;
 import models.Alien;
 import models.Bullet;
@@ -17,7 +17,7 @@ import java.awt.geom.Point2D;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class GameScreen extends Screen implements GameConstants {
+public class GameScreen extends AbstractScreen implements GameConstants {
     private final GameUpdateThread gameUpdateThread;
     private final Player player;
     private Alien[][] aliens;
@@ -25,7 +25,7 @@ public class GameScreen extends Screen implements GameConstants {
     public GameScreen() {
         super();
 
-        GameItem.clearItems(); // clear the game items from the previous game
+        AbstractGameItem.clearItems(); // clear the game items from the previous game
 
         player = new Player(LoginRegisterDialog.getCurrentUsername());
         gameUpdateThread = new GameUpdateThread(this);
@@ -104,7 +104,7 @@ public class GameScreen extends Screen implements GameConstants {
             }
         }, () -> levelsDrawn.get() == 3);
 
-        
+
 //        for (int[][] level : Levels.getLevels()) {
 ////            aliens = new Alien[level.length][level[0].length];
 ////
@@ -178,7 +178,7 @@ public class GameScreen extends Screen implements GameConstants {
 
     @Override
     protected void drawItems(Graphics g) {
-        GameItem.drawAllItems(g);
+        AbstractGameItem.drawAllItems(g);
         ImageManager.displayLivesLeft(player, g);
 
         g.setFont(FONT_TEXT);

@@ -1,12 +1,12 @@
 package ui;
 
-import abstracts.Screen;
+import abstracts.AbstractScreen;
 import constants.GameConstants;
 import models.Player;
 
 import java.awt.*;
 
-public class GameOverScreen extends Screen implements GameConstants {
+public class GameOverScreen extends AbstractScreen implements GameConstants {
     private final Player player;
 
     public GameOverScreen(Player player) {

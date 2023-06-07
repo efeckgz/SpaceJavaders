@@ -1,6 +1,6 @@
 package threads;
 
-import abstracts.GameItem;
+import abstracts.AbstractGameItem;
 import constants.GameConstants;
 import ui.GameScreen;
 
@@ -44,7 +44,7 @@ public class GameUpdateThread implements Runnable, GameConstants {
             if (deltaTime >= GAME_UPDATE_RATE) {
                 /* If the time between the last two updates is greater than or equal to the desired
                  update rate, it is time to update the game.*/
-                GameItem.updateAllPositions(deltaTime);
+                AbstractGameItem.updateAllPositions(deltaTime);
                 gameScreen.detectCollisions();
                 lastUpdateTime = now;
             } else {

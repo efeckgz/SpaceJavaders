@@ -1,6 +1,6 @@
 package utils;
 
-import abstracts.Screen;
+import abstracts.AbstractScreen;
 import constants.GameConstants;
 import threads.GameUpdateThread;
 import ui.*;
@@ -79,7 +79,7 @@ public class WindowManager extends JFrame implements GameConstants {
         playGameItem.setVisible(LoginRegisterDialog.LOGGED_IN && !(current instanceof GameScreen));
     }
 
-    private void switchScreens(Screen screen) {
+    private void switchScreens(AbstractScreen abstractScreen) {
         JPanel current = (JPanel) getContentPane().getComponent(0);
         if (current instanceof GameScreen) {
             // If the player is switching from GamePanel, save their game progress and stop the game loop
@@ -88,13 +88,13 @@ public class WindowManager extends JFrame implements GameConstants {
             gp.stopGameThread();
         }
 
-        Screen currentScreen = (Screen) current;
-        currentScreen.stopTimer();
+        AbstractScreen currentAbstractScreen = (AbstractScreen) current;
+        currentAbstractScreen.stopTimer();
 
-        remove(currentScreen); // Remove the current screen
-        add(screen); // add the desired screen
-        screen.startTimer(); // Start the update timer for the screen to add
-        screen.requestFocusInWindow();
+        remove(currentAbstractScreen); // Remove the current screen
+        add(abstractScreen); // add the desired screen
+        abstractScreen.startTimer(); // Start the update timer for the screen to add
+        abstractScreen.requestFocusInWindow();
 
         updateMenuItems();
         revalidate();

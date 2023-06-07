@@ -1,6 +1,6 @@
 package ui;
 
-import abstracts.Screen;
+import abstracts.AbstractScreen;
 import constants.GameConstants;
 import utils.ImageManager;
 import utils.TimeManager;
@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
-public class StartScreen extends Screen implements GameConstants {
+public class StartScreen extends AbstractScreen implements GameConstants {
     private final BufferedImage allAliens;
     private String titleColor1 = "#f14f50";
     private String titleColor2 = "#50d070";

@@ -1,6 +1,6 @@
 package models;
 
-import abstracts.GameItem;
+import abstracts.AbstractGameItem;
 import main.Main;
 import utils.TimeManager;
 
@@ -9,7 +9,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Bullet extends GameItem {
+public class Bullet extends AbstractGameItem {
     private static final CopyOnWriteArrayList<Bullet> bullets = new CopyOnWriteArrayList<>(); // A thread safe ArrayList
     private static final BufferedImage assetSetter;
 
