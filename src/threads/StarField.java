@@ -22,10 +22,6 @@ public class StarField extends BufferedImage implements Runnable, GameConstants 
         new Thread(this).start();
     }
 
-    public void stop() {
-        running.set(false);
-    }
-
     private void createStarField() {
         Graphics2D g = createGraphics();
         g.setColor(Color.BLACK);

@@ -37,6 +37,7 @@ public class GameUpdateThread implements Runnable, GameConstants {
     @Override
     public void run() {
         long lastUpdateTime = System.currentTimeMillis();
+        int updateCount = 0;
         while (running.get()) {
             long now = System.currentTimeMillis();
             long deltaTime = now - lastUpdateTime;
@@ -46,6 +47,7 @@ public class GameUpdateThread implements Runnable, GameConstants {
                  update rate, it is time to update the game.*/
                 AbstractGameItem.updateAllPositions(deltaTime);
                 gameScreen.detectCollisions();
+                updateCount += 1;
                 lastUpdateTime = now;
             } else {
                 /* If not, the game was updated recently enough so wait until it is time to update

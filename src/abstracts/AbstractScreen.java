@@ -78,6 +78,10 @@ public abstract class AbstractScreen extends JPanel implements GameConstants {
 
         Graphics2D bufferGraphics = buffer.createGraphics(); // graphics for the buffer
 
+        // Clear the buffer
+        bufferGraphics.setColor(Color.BLACK);
+        bufferGraphics.fillRect(0, 0, buffer.getWidth(), buffer.getHeight());
+
         starField.draw(bufferGraphics, 0, 0);
         drawItems(bufferGraphics);
 
