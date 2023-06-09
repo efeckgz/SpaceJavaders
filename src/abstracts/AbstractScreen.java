@@ -87,7 +87,6 @@ public abstract class AbstractScreen extends JPanel implements GameConstants {
 
         bufferGraphics.dispose();
 
-
         g.drawImage(buffer, 0, 0, null);
     }
 }
