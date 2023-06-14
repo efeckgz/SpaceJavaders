@@ -56,6 +56,8 @@ public abstract class AbstractGameItem implements GameConstants {
 
     protected abstract void setIsValid();
 
+    protected abstract void setIsValid(boolean isValid);
+
     public Point2D.Double getPosition() {
         return position;
     }

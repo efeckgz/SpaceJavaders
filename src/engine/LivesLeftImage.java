@@ -1,7 +1,7 @@
-package utils;
+package engine;
 
 import constants.GameConstants;
-import models.Player;
+import items.Player;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

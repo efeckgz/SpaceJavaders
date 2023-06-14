@@ -2,8 +2,8 @@ package ui;
 
 import abstracts.AbstractScreen;
 import constants.GameConstants;
-import utils.ImageManager;
-import utils.TimeManager;
+import engine.ImageManager;
+import engine.TimeManager;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

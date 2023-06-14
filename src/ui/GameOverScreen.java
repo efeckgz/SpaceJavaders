@@ -2,7 +2,7 @@ package ui;
 
 import abstracts.AbstractScreen;
 import constants.GameConstants;
-import models.Player;
+import items.Player;
 
 import java.awt.*;
 

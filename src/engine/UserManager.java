@@ -1,6 +1,4 @@
-package utils;
-
-import ui.LoginRegisterDialog;
+package engine;
 
 import javax.swing.*;
 import java.io.*;
@@ -13,9 +11,9 @@ import java.util.function.Consumer;
 public class UserManager {
     private static File USER_DATA_FILE;
 
-    static {
+    public static void createUsersFile() {
         try {
-            String path = LoginRegisterDialog.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+            String path = UserManager.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
             File jarDir = new File(path).getParentFile();
             USER_DATA_FILE = new File(jarDir, "users.txt");
 

@@ -1,8 +1,8 @@
-package models;
+package items;
 
 import abstracts.AbstractGameItem;
 import constants.GameConstants;
-import utils.ImageManager;
+import engine.ImageManager;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -11,12 +11,16 @@ import java.util.ArrayList;
 public class Alien extends AbstractGameItem implements GameConstants {
     private static final ArrayList<Alien> aliens = new ArrayList<>();
     private final boolean isStrong;
+    private final Player player;
     private int livesLeft;
 
-    public Alien(boolean isStrong) {
+    public Alien(boolean isStrong, Player player) {
         super();
+
         this.isStrong = isStrong;
-        livesLeft = isStrong ? 2 : 1;
+        this.player = player;
+
+        livesLeft = isStrong ? 2 : 1; // this does not work for some reason
         aliens.add(this);
     }
 
@@ -47,6 +51,10 @@ public class Alien extends AbstractGameItem implements GameConstants {
         Point2D.Double pos = getPosition();
         double newY = pos.getY() + getTravelSpeed() * deltaTime;
 
+        if (newY >= PLAYER_STARTING_POSITION.getY()) {
+            player.setLivesLeft(player.getLivesLeft() - 1);
+        }
+
         setPosition(new Point2D.Double(pos.getX(), newY));
     }
 
@@ -62,30 +70,35 @@ public class Alien extends AbstractGameItem implements GameConstants {
         this.isValid = livesLeft > 0;
     }
 
+    @Override
+    protected void setIsValid(boolean isValid) {
+        // ignored
+    }
+
     public static class RedAlien extends Alien {
-        public RedAlien(boolean isStrong) {
-            super(isStrong);
+        public RedAlien(boolean isStrong, Player player) {
+            super(isStrong, player);
             setAsset(ImageManager.load(RED_ALIEN_ASSET_PATH));
         }
     }
 
     public static class GreenAlien extends Alien {
-        public GreenAlien(boolean isStrong) {
-            super(isStrong);
+        public GreenAlien(boolean isStrong, Player player) {
+            super(isStrong, player);
             setAsset(ImageManager.load(GREEN_ALIEN_ASSET_PATH));
         }
     }
 
     public static class YellowAlien extends Alien {
-        public YellowAlien(boolean isStrong) {
-            super(isStrong);
+        public YellowAlien(boolean isStrong, Player player) {
+            super(isStrong, player);
             setAsset(ImageManager.load(YELLOW_ALIEN_ASSET_PATH));
         }
     }
 
     public static class ExtraAlien extends Alien {
-        public ExtraAlien(boolean isStrong) {
-            super(isStrong);
+        public ExtraAlien(boolean isStrong, Player player) {
+            super(isStrong, player);
             setAsset(ImageManager.load(EXTRA_ALIEN_ASSET_PATH));
         }
     }

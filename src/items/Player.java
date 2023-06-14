@@ -1,10 +1,10 @@
-package models;
+package items;
 
 import abstracts.AbstractGameItem;
+import engine.ImageManager;
+import engine.TimeManager;
+import engine.UserManager;
 import main.Main;
-import utils.ImageManager;
-import utils.TimeManager;
-import utils.UserManager;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -64,6 +64,11 @@ public class Player extends AbstractGameItem {
     @Override
     public void setIsValid() {
         this.isValid = livesLeft > 0;
+    }
+
+    @Override
+    protected void setIsValid(boolean isValid) {
+        // ignored
     }
 
     @Override

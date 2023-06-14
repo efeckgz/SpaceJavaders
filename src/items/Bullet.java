@@ -1,8 +1,8 @@
-package models;
+package items;
 
 import abstracts.AbstractGameItem;
+import engine.TimeManager;
 import main.Main;
-import utils.TimeManager;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -53,27 +53,31 @@ public class Bullet extends AbstractGameItem {
         }
 
         bullets.add(this);
-
-//        TimeManager.startTimer((int) GAME_UPDATE_RATE, e -> checkForCollisions(), () -> !isValid());
     }
 
     public static CopyOnWriteArrayList<Bullet> getBullets() {
         return bullets;
     }
 
-    public void checkForCollisions() {
+    public void checkForCollisions(Runnable gameOverAction) {
         if (isValid) {
             for (Alien alien : Alien.getAliens()) {
                 if (alien.isValid() && this.intersects(alien)) {
-                    this.setIsValid(); // Kill the bullet on impact
+                    this.setIsValid(false); // Kill the bullet on impact
 
                     alien.setLivesLeft(alien.getLivesLeft() - 1); // Decrease alien life
                     alien.setIsValid(); // Kill the alien if it has no lives left
 
-                    // increment score if the alien is dead
+                    // Things to do if the alien is dead
                     if (!alien.isValid()) {
+                        // increment player score
                         player.setScore(player.getScore() + 1);
                         player.setCurrentHighScore(Math.max(player.getCurrentHighScore(), player.getScore()));
+
+                        // If all the aliens are dead, show the game over screen
+                        if (Alien.getAliens().stream().noneMatch(AbstractGameItem::isValid)) {
+                            gameOverAction.run();
+                        }
                     }
 
                     return;
@@ -83,8 +87,13 @@ public class Bullet extends AbstractGameItem {
     }
 
     @Override
-    public void setIsValid() {
+    protected void setIsValid() {
         this.isValid = getPosition().y > 0;
+    }
+
+    @Override
+    public void setIsValid(boolean isValid) {
+        this.isValid = isValid;
     }
 
     @Override
@@ -95,6 +104,7 @@ public class Bullet extends AbstractGameItem {
     @Override
     public void updatePosition(float deltaTime) {
         getPosition().y -= getTravelSpeed() * deltaTime;
+        setIsValid();
     }
 
     @Override

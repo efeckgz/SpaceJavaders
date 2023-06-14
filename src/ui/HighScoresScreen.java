@@ -2,7 +2,7 @@ package ui;
 
 import abstracts.AbstractScreen;
 import constants.GameConstants;
-import utils.UserManager;
+import engine.UserManager;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

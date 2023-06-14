@@ -1,5 +1,6 @@
-package utils;
+package engine;
 
+import abstracts.AbstractGameItem;
 import abstracts.AbstractScreen;
 import constants.GameConstants;
 import threads.GameUpdateThread;
@@ -25,15 +26,10 @@ public class WindowManager extends JFrame implements GameConstants {
         double width = screenSize.getWidth();
         double height = screenSize.getHeight();
 
-        int windowWidth = (int) (width * 0.63);
-        int windowHeight = (int) (height * 0.7);
-
-
         // setting window properties
         setTitle(WINDOW_TITLE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-//        setSize(windowWidth, windowHeight);
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
@@ -118,10 +114,12 @@ public class WindowManager extends JFrame implements GameConstants {
     }
 
     private void backToStartItemActionHandler() {
+        AbstractGameItem.clearItems();
         switchScreens(new StartScreen());
     }
 
     private void highScoresItemActionHandler() {
+        AbstractGameItem.clearItems();
         switchScreens(new HighScoresScreen());
     }
 

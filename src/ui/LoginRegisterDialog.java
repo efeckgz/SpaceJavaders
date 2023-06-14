@@ -1,8 +1,8 @@
 package ui;
 
+import engine.UserManager;
+import items.Player;
 import main.Main;
-import models.Player;
-import utils.UserManager;
 
 import javax.swing.*;
 import java.awt.*;

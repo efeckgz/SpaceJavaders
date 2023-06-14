@@ -3,24 +3,21 @@ package ui;
 import abstracts.AbstractGameItem;
 import abstracts.AbstractScreen;
 import constants.GameConstants;
-import models.Alien;
-import models.Bullet;
-import models.Levels;
-import models.Player;
+import engine.ImageManager;
+import items.Alien;
+import items.Bullet;
+import items.Levels;
+import items.Player;
 import threads.GameUpdateThread;
-import utils.ImageManager;
-import utils.TimeManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.util.Iterator;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameScreen extends AbstractScreen implements GameConstants {
     private final GameUpdateThread gameUpdateThread;
     private final Player player;
-    private Alien[][] aliens;
+    private final Alien[][] aliens;
 
     public GameScreen() {
         super();
@@ -43,10 +40,10 @@ public class GameScreen extends AbstractScreen implements GameConstants {
         for (int i = 0; i < LEVEL_ONE.length; i++) {
             for (int j = 0; j < LEVEL_ONE[i].length; j++) {
                 Alien alienToCreate = null;  // Initialize to null
-                if (LEVEL_ONE[i][j] == 1) alienToCreate = new Alien.RedAlien(false);
-                if (LEVEL_ONE[i][j] == 2) alienToCreate = new Alien.GreenAlien(true);
-                if (LEVEL_ONE[i][j] == 3) alienToCreate = new Alien.YellowAlien(true);
-                if (LEVEL_ONE[i][j] == 4) alienToCreate = new Alien.ExtraAlien(false);
+                if (LEVEL_ONE[i][j] == 1) alienToCreate = new Alien.RedAlien(false, player);
+                if (LEVEL_ONE[i][j] == 2) alienToCreate = new Alien.GreenAlien(true, player);
+                if (LEVEL_ONE[i][j] == 3) alienToCreate = new Alien.YellowAlien(true, player);
+                if (LEVEL_ONE[i][j] == 4) alienToCreate = new Alien.ExtraAlien(false, player);
 
                 // Assign the created alien back to the array
                 aliens[i][j] = alienToCreate;
@@ -66,73 +63,73 @@ public class GameScreen extends AbstractScreen implements GameConstants {
         SwingUtilities.invokeLater(() -> addKeyListener(player.handleUserInput()));
     }
 
-    private void drawAliensForLevels() {
-        // Levels
-        Iterator<int[][]> levelIterator = Levels.getLevels().iterator();
-        AtomicInteger levelsDrawn = new AtomicInteger();
-
-        TimeManager.startTimer(3000, e -> {
-            if (levelIterator.hasNext()) {
-                int[][] level = levelIterator.next();
-                aliens = new Alien[level.length][level[0].length];
-
-                // Calculate total width of aliens and starting x position
-                int totalAliensWidth = level[0].length * (ALIEN_WIDTH + ALIEN_PADDING);
-                int startX = (SCREEN_WIDTH - totalAliensWidth) / 2;
-
-                for (int i = 0; i < level.length; i++) {
-                    for (int j = 0; j < level[i].length; j++) {
-                        Alien alienToCreate = null;  // Initialize to null
-                        if (level[i][j] == 1) alienToCreate = new Alien.RedAlien(false);
-                        if (level[i][j] == 2) alienToCreate = new Alien.GreenAlien(true);
-                        if (level[i][j] == 3) alienToCreate = new Alien.YellowAlien(true);
-                        if (level[i][j] == 4) alienToCreate = new Alien.ExtraAlien(false);
-
-                        // Assign the created alien back to the array
-                        aliens[i][j] = alienToCreate;
-
-                        // Assign initial position
-                        if (alienToCreate != null && alienToCreate.isValid()) {
-                            int x = startX + j * (ALIEN_WIDTH + ALIEN_PADDING);
-                            int y = i * (ALIEN_HEIGHT + ALIEN_PADDING);
-                            alienToCreate.setPosition(new Point2D.Double(x, y));
-                        }
-                    }
-                }
-
-                levelsDrawn.getAndIncrement();
-            }
-        }, () -> levelsDrawn.get() == 3);
-
-
-//        for (int[][] level : Levels.getLevels()) {
-////            aliens = new Alien[level.length][level[0].length];
-////
-////            // Calculate total width of aliens and starting x position
-////            int totalAliensWidth = level[0].length * (ALIEN_WIDTH + ALIEN_PADDING);
-////            int startX = (SCREEN_WIDTH - totalAliensWidth) / 2;
-////
-////            for (int i = 0; i < level.length; i++) {
-////                for (int j = 0; j < level[i].length; j++) {
-////                    Alien alienToCreate = null;  // Initialize to null
-////                    if (level[i][j] == 1) alienToCreate = new Alien.RedAlien(false);
-////                    if (level[i][j] == 2) alienToCreate = new Alien.GreenAlien(true);
-////                    if (level[i][j] == 3) alienToCreate = new Alien.YellowAlien(true);
-////                    if (level[i][j] == 4) alienToCreate = new Alien.ExtraAlien(false);
-////
-////                    // Assign the created alien back to the array
-////                    aliens[i][j] = alienToCreate;
-////
-////                    // Assign initial position
-////                    if (alienToCreate != null && alienToCreate.isValid()) {
-////                        int x = startX + j * (ALIEN_WIDTH + ALIEN_PADDING);
-////                        int y = i * (ALIEN_HEIGHT + ALIEN_PADDING);
-////                        alienToCreate.setPosition(new Point2D.Double(x, y));
-////                    }
-////                }
-////            }
-//        }
-    }
+//    private void drawAliensForLevels() {
+//        // Levels
+//        Iterator<int[][]> levelIterator = Levels.getLevels().iterator();
+//        AtomicInteger levelsDrawn = new AtomicInteger();
+//
+//        TimeManager.startTimer(3000, e -> {
+//            if (levelIterator.hasNext()) {
+//                int[][] level = levelIterator.next();
+//                aliens = new Alien[level.length][level[0].length];
+//
+//                // Calculate total width of aliens and starting x position
+//                int totalAliensWidth = level[0].length * (ALIEN_WIDTH + ALIEN_PADDING);
+//                int startX = (SCREEN_WIDTH - totalAliensWidth) / 2;
+//
+//                for (int i = 0; i < level.length; i++) {
+//                    for (int j = 0; j < level[i].length; j++) {
+//                        Alien alienToCreate = null;  // Initialize to null
+//                        if (level[i][j] == 1) alienToCreate = new Alien.RedAlien(false, player);
+//                        if (level[i][j] == 2) alienToCreate = new Alien.GreenAlien(true, player);
+//                        if (level[i][j] == 3) alienToCreate = new Alien.YellowAlien(true, player);
+//                        if (level[i][j] == 4) alienToCreate = new Alien.ExtraAlien(false, player);
+//
+//                        // Assign the created alien back to the array
+//                        aliens[i][j] = alienToCreate;
+//
+//                        // Assign initial position
+//                        if (alienToCreate != null && alienToCreate.isValid()) {
+//                            int x = startX + j * (ALIEN_WIDTH + ALIEN_PADDING);
+//                            int y = i * (ALIEN_HEIGHT + ALIEN_PADDING);
+//                            alienToCreate.setPosition(new Point2D.Double(x, y));
+//                        }
+//                    }
+//                }
+//
+//                levelsDrawn.getAndIncrement();
+//            }
+//        }, () -> levelsDrawn.get() == 3);
+//
+//
+////        for (int[][] level : Levels.getLevels()) {
+//////            aliens = new Alien[level.length][level[0].length];
+//////
+//////            // Calculate total width of aliens and starting x position
+//////            int totalAliensWidth = level[0].length * (ALIEN_WIDTH + ALIEN_PADDING);
+//////            int startX = (SCREEN_WIDTH - totalAliensWidth) / 2;
+//////
+//////            for (int i = 0; i < level.length; i++) {
+//////                for (int j = 0; j < level[i].length; j++) {
+//////                    Alien alienToCreate = null;  // Initialize to null
+//////                    if (level[i][j] == 1) alienToCreate = new Alien.RedAlien(false);
+//////                    if (level[i][j] == 2) alienToCreate = new Alien.GreenAlien(true);
+//////                    if (level[i][j] == 3) alienToCreate = new Alien.YellowAlien(true);
+//////                    if (level[i][j] == 4) alienToCreate = new Alien.ExtraAlien(false);
+//////
+//////                    // Assign the created alien back to the array
+//////                    aliens[i][j] = alienToCreate;
+//////
+//////                    // Assign initial position
+//////                    if (alienToCreate != null && alienToCreate.isValid()) {
+//////                        int x = startX + j * (ALIEN_WIDTH + ALIEN_PADDING);
+//////                        int y = i * (ALIEN_HEIGHT + ALIEN_PADDING);
+//////                        alienToCreate.setPosition(new Point2D.Double(x, y));
+//////                    }
+//////                }
+//////            }
+////        }
+//    }
 
     public void detectCollisions() {
         Player player = getPlayer();
@@ -158,9 +155,8 @@ public class GameScreen extends AbstractScreen implements GameConstants {
         }
 
         for (Bullet bullet : Bullet.getBullets()) {
-            if (bullet.isValid()) {
-                bullet.checkForCollisions();
-            }
+            // each bullet is responsible for its own collision detection.
+            bullet.checkForCollisions(gameOverAction);
         }
     }
 
