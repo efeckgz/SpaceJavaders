@@ -1,142 +1,133 @@
-package engine;
+package engine
 
-import abstracts.AbstractGameItem;
-import abstracts.AbstractScreen;
-import constants.GameConstants;
-import threads.GameUpdateThread;
-import ui.*;
+import abstracts.AbstractGameItem.Companion.clearItems
+import abstracts.AbstractScreen
+import constants.GameConstants
+import engine.FontManager.initialize
+import engine.ImageManager.load
+import ui.*
+import java.awt.GraphicsEnvironment
+import java.awt.Toolkit
+import java.awt.event.ActionEvent
+import javax.swing.*
 
-import javax.swing.*;
-import java.awt.*;
+class WindowManager : JFrame(), GameConstants {
+    private val backToStartItem: JMenuItem
+    private val playGameItem: JMenuItem
 
-public class WindowManager extends JFrame implements GameConstants {
-    private final JMenuItem backToStartItem;
-    private final JMenuItem playGameItem;
-
-    public WindowManager() {
+    init {
         // Load the game font
-        FontManager.initialize(GraphicsEnvironment.getLocalGraphicsEnvironment());
+        initialize(GraphicsEnvironment.getLocalGraphicsEnvironment())
 
         // Loading the start screen
-        StartScreen startScreen = new StartScreen();
-        startScreen.startTimer(); // Start the timer of start screen
-        add(startScreen);
-
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth();
-        double height = screenSize.getHeight();
-
+        val startScreen = StartScreen()
+        startScreen.startTimer() // Start the timer of start screen
+        add(startScreen)
+        val screenSize = Toolkit.getDefaultToolkit().screenSize
         // setting window properties
-        setTitle(WINDOW_TITLE);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-        setLocationRelativeTo(null);
-        setResizable(false);
-        setVisible(true);
-        setIconImage(ImageManager.load(RED_ALIEN_ASSET_PATH));
-
-        JMenuBar menuBar = new JMenuBar();
+        title = GameConstants.WINDOW_TITLE
+        defaultCloseOperation = EXIT_ON_CLOSE
+        setSize(GameConstants.SCREEN_WIDTH, GameConstants.SCREEN_HEIGHT)
+        setLocationRelativeTo(null)
+        isResizable = false
+        isVisible = true
+        iconImage = load(GameConstants.RED_ALIEN_ASSET_PATH)
+        val menuBar = JMenuBar()
         // The file menu
-        JMenu fileMenu = new JMenu("File");
+        val fileMenu = JMenu("File")
 
         // Adding the sub-menu items to the file menu
-        JMenuItem loginRegisterItem = new JMenuItem("Login/Register");
-        fileMenu.add(loginRegisterItem);
-        playGameItem = new JMenuItem("Play Game");
-        fileMenu.add(playGameItem);
-        JMenuItem highScoresItem = new JMenuItem("High Scores");
-        fileMenu.add(highScoresItem);
-        backToStartItem = new JMenuItem("Back to Start");
-        fileMenu.add(backToStartItem);
-        JMenuItem aboutItem = new JMenuItem("About");
-        fileMenu.add(aboutItem);
+        val loginRegisterItem = JMenuItem("Login/Register")
+        fileMenu.add(loginRegisterItem)
+        playGameItem = JMenuItem("Play Game")
+        fileMenu.add(playGameItem)
+        val highScoresItem = JMenuItem("High Scores")
+        fileMenu.add(highScoresItem)
+        backToStartItem = JMenuItem("Back to Start")
+        fileMenu.add(backToStartItem)
+        val aboutItem = JMenuItem("About")
+        fileMenu.add(aboutItem)
 
         // adding file menu to menu bar
-        menuBar.add(fileMenu);
+        menuBar.add(fileMenu)
 
         // setting the frames menu bar
-        setJMenuBar(menuBar);
+        jMenuBar = menuBar
 
         // Handling click actions on the menu bar items
-        playGameItem.addActionListener(e -> playGameItemActionHandler());
-        backToStartItem.addActionListener(e -> backToStartItemActionHandler());
-        loginRegisterItem.addActionListener(e -> loginRegisterItemActionHandler());
-        aboutItem.addActionListener(e -> aboutItemActionHandler());
-        highScoresItem.addActionListener(e -> highScoresItemActionHandler());
-
-        updateMenuItems();
+        playGameItem.addActionListener { e: ActionEvent? -> playGameItemActionHandler() }
+        backToStartItem.addActionListener { e: ActionEvent? -> backToStartItemActionHandler() }
+        loginRegisterItem.addActionListener { e: ActionEvent? -> loginRegisterItemActionHandler() }
+        aboutItem.addActionListener { e: ActionEvent? -> aboutItemActionHandler() }
+        highScoresItem.addActionListener { e: ActionEvent? -> highScoresItemActionHandler() }
+        updateMenuItems()
     }
 
     // This method gets called after a menu items is clicked to make sure the correct menu items are displayed.
-    private void updateMenuItems() {
-        JPanel current = (JPanel) getContentPane().getComponent(0);
-
-        backToStartItem.setVisible(!(getContentPane().getComponent(0) instanceof StartScreen));
-        playGameItem.setVisible(LoginRegisterDialog.LOGGED_IN && !(current instanceof GameScreen));
+    private fun updateMenuItems() {
+        val current = contentPane.getComponent(0) as JPanel
+        backToStartItem.isVisible = contentPane.getComponent(0) !is StartScreen
+        playGameItem.isVisible = LoginRegisterDialog.LOGGED_IN && current !is GameScreen
     }
 
-    private void switchScreens(AbstractScreen abstractScreen) {
-        JPanel current = (JPanel) getContentPane().getComponent(0);
-        if (current instanceof GameScreen) {
+    private fun switchScreens(abstractScreen: AbstractScreen) {
+        val current = contentPane.getComponent(0) as JPanel
+        if (current is GameScreen) {
             // If the player is switching from GamePanel, save their game progress and stop the game loop
-            GameScreen gp = (GameScreen) current;
-            LoginRegisterDialog.saveHighScore(gp.getPlayer());
-            gp.stopGameThread();
+            val gp = current
+            LoginRegisterDialog.saveHighScore(gp.player)
+            gp.stopGameThread()
         }
-
-        AbstractScreen currentAbstractScreen = (AbstractScreen) current;
-        currentAbstractScreen.stopTimer();
-
-        remove(currentAbstractScreen); // Remove the current screen
-        add(abstractScreen); // add the desired screen
-        abstractScreen.startTimer(); // Start the update timer for the screen to add
-        abstractScreen.requestFocusInWindow();
-
-        updateMenuItems();
-        revalidate();
-        repaint();
+        val currentAbstractScreen = current as AbstractScreen
+        currentAbstractScreen.stopTimer()
+        remove(currentAbstractScreen) // Remove the current screen
+        add(abstractScreen) // add the desired screen
+        abstractScreen.startTimer() // Start the update timer for the screen to add
+        abstractScreen.requestFocusInWindow()
+        updateMenuItems()
+        revalidate()
+        repaint()
     }
 
-    private void playGameItemActionHandler() {
+    private fun playGameItemActionHandler() {
         if (LoginRegisterDialog.LOGGED_IN) {
-            GameScreen gameScreen = new GameScreen();
-            GameUpdateThread gameUpdateThread = gameScreen.getGameUpdateThread();
+            val gameScreen = GameScreen()
+            val gameUpdateThread = gameScreen.gameUpdateThread
 
             //gameScreen.createAliens();
-            gameUpdateThread.setGameOverAction(() -> {
-                gameUpdateThread.stop();
-                LoginRegisterDialog.saveHighScore(gameScreen.getPlayer());
-                switchScreens(new GameOverScreen(gameScreen.getPlayer()));
-            });
-
-            switchScreens(gameScreen);
+            gameUpdateThread.gameOverAction = Runnable {
+                gameUpdateThread.stop()
+                LoginRegisterDialog.saveHighScore(gameScreen.player)
+                switchScreens(GameOverScreen(gameScreen.player))
+            }
+            switchScreens(gameScreen)
         }
     }
 
-    private void backToStartItemActionHandler() {
-        AbstractGameItem.clearItems();
-        switchScreens(new StartScreen());
+    private fun backToStartItemActionHandler() {
+        clearItems()
+        switchScreens(StartScreen())
     }
 
-    private void highScoresItemActionHandler() {
-        AbstractGameItem.clearItems();
-        switchScreens(new HighScoresScreen());
+    private fun highScoresItemActionHandler() {
+        clearItems()
+        switchScreens(HighScoresScreen())
     }
 
-    private void loginRegisterItemActionHandler() {
-        LoginRegisterDialog loginRegisterDialog = new LoginRegisterDialog(this);
-        loginRegisterDialog.setVisible(true);
-        updateMenuItems();
+    private fun loginRegisterItemActionHandler() {
+        val loginRegisterDialog = LoginRegisterDialog(this)
+        loginRegisterDialog.isVisible = true
+        updateMenuItems()
     }
 
-    private void aboutItemActionHandler() {
+    private fun aboutItemActionHandler() {
         JOptionPane.showMessageDialog(
                 null,
                 "Space Javaders: Bytecode Battle\nCreated by: Efe Açıkgöz\n20210702094",
                 "About",
                 JOptionPane.INFORMATION_MESSAGE,
-                new ImageIcon(ImageManager.load(RED_ALIEN_ASSET_PATH))
-        );
-        updateMenuItems();
+                ImageIcon(load(GameConstants.RED_ALIEN_ASSET_PATH))
+        )
+        updateMenuItems()
     }
 }

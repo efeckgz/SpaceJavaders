@@ -1,189 +1,133 @@
-package items;
+package items
 
-import abstracts.AbstractGameItem;
-import engine.ImageManager;
-import engine.TimeManager;
-import engine.UserManager;
-import main.Main;
+import abstracts.AbstractGameItem
+import constants.GameConstants
+import engine.ImageManager.load
+import engine.TimeManager.startTimer
+import engine.UserManager.getHighScoreForUser
+import main.Main
+import java.awt.Graphics
+import java.awt.event.ActionEvent
+import java.awt.event.KeyAdapter
+import java.awt.event.KeyEvent
 
-import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+class Player(@JvmField val username: String) : AbstractGameItem() {
+    @JvmField
+    var currentHighScore: Int
 
-public class Player extends AbstractGameItem {
-    private final String username;
-    private int currentHighScore;
+    @JvmField
+    var livesLeft = 3
 
-    private int livesLeft = 3;
-    private int score = 0;
+    @JvmField
+    var score = 0
 
     // Variables for player movement
-    private boolean moveUp = false;
-    private boolean moveDown = false;
-    private boolean moveLeft = false;
-    private boolean moveRight = false;
+    private var moveUp = false
+    private var moveDown = false
+    private var moveLeft = false
+    private var moveRight = false
 
-    public Player(String username) {
-        super();
-
-        this.username = username;
-        this.currentHighScore = UserManager.getHighScoreForUser(username);
-
-        setAsset(ImageManager.load(PLAYER_ASSET_PATH));
-        setPosition(PLAYER_STARTING_POSITION); // 420, 620
+    init {
+        currentHighScore = getHighScoreForUser(username)
+        asset = load(GameConstants.PLAYER_ASSET_PATH)
+        position = GameConstants.PLAYER_STARTING_POSITION // 420, 620
     }
 
-    public String getUsername() {
-        return username;
+    fun setMoveUp(moveUp: Boolean) {
+        this.moveUp = moveUp
     }
 
-    public int getCurrentHighScore() {
-        return currentHighScore;
+    fun setMoveDown(moveDown: Boolean) {
+        this.moveDown = moveDown
     }
 
-    public void setCurrentHighScore(int currentHighScoreSupplier) {
-        this.currentHighScore = currentHighScoreSupplier;
+    fun setMoveLeft(moveLeft: Boolean) {
+        this.moveLeft = moveLeft
     }
 
-    public void setMoveUp(boolean moveUp) {
-        this.moveUp = moveUp;
+    fun setMoveRight(moveRight: Boolean) {
+        this.moveRight = moveRight
     }
 
-    public void setMoveDown(boolean moveDown) {
-        this.moveDown = moveDown;
+    public override fun setIsValid() {
+        isValid = livesLeft > 0
     }
 
-    public void setMoveLeft(boolean moveLeft) {
-        this.moveLeft = moveLeft;
-    }
-
-    public void setMoveRight(boolean moveRight) {
-        this.moveRight = moveRight;
-    }
-
-    @Override
-    public void setIsValid() {
-        this.isValid = livesLeft > 0;
-    }
-
-    @Override
-    protected void setIsValid(boolean isValid) {
+    override fun setIsValid(isValid: Boolean) {
         // ignored
     }
 
-    @Override
-    public double getTravelSpeed() {
-        return PLAYER_TRAVEL_SPEED;
-    }
+    override val travelSpeed: Double
+        get() = GameConstants.PLAYER_TRAVEL_SPEED
 
-    @Override
-    public void updatePosition(float deltaTime) { // The position of player will be updated according to the user input
-        double speed = getTravelSpeed();
-
-        if (moveUp && getPosition().y - speed >= (double) SCREEN_HEIGHT / 2) {
-            getPosition().y -= speed * deltaTime;
+    public override fun updatePosition(deltaTime: Float) { // The position of player will be updated according to the user input
+        val speed = travelSpeed
+        if (moveUp && position.y - speed >= GameConstants.SCREEN_HEIGHT.toDouble() / 2) {
+            position.y -= speed * deltaTime
         }
-
-        if (moveDown && getPosition().y + speed + asset.getHeight() <= SCREEN_HEIGHT - this.getAsset().getHeight()) {
-            getPosition().y += speed * deltaTime;
+        if (moveDown && position.y + speed + asset!!.height <= GameConstants.SCREEN_HEIGHT - asset!!.height) {
+            position.y += speed * deltaTime
         }
-
-        if (moveLeft && getPosition().x - speed >= 0) {
-            getPosition().x -= speed * deltaTime;
+        if (moveLeft && position.x - speed >= 0) {
+            position.x -= speed * deltaTime
         }
-
-        if (moveRight && getPosition().x + speed + asset.getWidth() <= SCREEN_WIDTH) {
-            getPosition().x += speed * deltaTime;
+        if (moveRight && position.x + speed + asset!!.width <= GameConstants.SCREEN_WIDTH) {
+            position.x += speed * deltaTime
         }
     }
 
-    @Override
-    protected void draw(Graphics g) {
-        g.drawImage(getAsset(), (int) getPosition().getX(), (int) getPosition().getY(), null);
+    override fun draw(g: Graphics?) {
+        g!!.drawImage(asset, position.getX().toInt(), position.getY().toInt(), null)
     }
 
-    public int getLivesLeft() {
-        return livesLeft;
-    }
-
-    public void setLivesLeft(int livesLeft) {
-        this.livesLeft = livesLeft;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public void fireBullets() {
-        TimeManager.startTimer(BULLET_FIRE_FREQUENCY, e -> new Bullet(this), () -> !isValid());
+    fun fireBullets() {
+        startTimer(GameConstants.BULLET_FIRE_FREQUENCY, { e: ActionEvent? -> Bullet(this) }) { !isValid() }
     }
 
     // Investigate this
-    private void controlKeyPressedActionHandler(KeyEvent e) {
+    private fun controlKeyPressedActionHandler(e: KeyEvent) {
         try {
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_W:
-                    setMoveUp(true);
-                    break;
-                case KeyEvent.VK_S:
-                    setMoveDown(true);
-                    break;
-                case KeyEvent.VK_A:
-                    setMoveLeft(true);
-                    break;
-                case KeyEvent.VK_D:
-                    setMoveRight(true);
-                    break;
+            when (e.keyCode) {
+                KeyEvent.VK_W -> setMoveUp(true)
+                KeyEvent.VK_S -> setMoveDown(true)
+                KeyEvent.VK_A -> setMoveLeft(true)
+                KeyEvent.VK_D -> setMoveRight(true)
             }
-        } catch (IllegalStateException illegalStateException) {
-            System.err.printf("%s", getLivesLeft());
-            illegalStateException.printStackTrace();
+        } catch (illegalStateException: IllegalStateException) {
+            System.err.printf("%s", livesLeft)
+            illegalStateException.printStackTrace()
         }
     }
 
-    private void controlKeyReleasedActionHandler(KeyEvent e) {
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_W:
-                setMoveUp(false);
-                break;
-            case KeyEvent.VK_S:
-                setMoveDown(false);
-                break;
-            case KeyEvent.VK_A:
-                setMoveLeft(false);
-                break;
-            case KeyEvent.VK_D:
-                setMoveRight(false);
-                break;
+    private fun controlKeyReleasedActionHandler(e: KeyEvent) {
+        when (e.keyCode) {
+            KeyEvent.VK_W -> setMoveUp(false)
+            KeyEvent.VK_S -> setMoveDown(false)
+            KeyEvent.VK_A -> setMoveLeft(false)
+            KeyEvent.VK_D -> setMoveRight(false)
         }
 
         // Only run in debug mode
         if (Main.debug) {
             System.out.printf(
                     "Player location (x, y): %.2f, %.2f\n",
-                    getPosition().getX(),
-                    getPosition().getY()
-            );
+                    position.getX(),
+                    position.getY()
+            )
         }
     }
 
-    public KeyAdapter handleUserInput() {
-        return new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                super.keyPressed(e);
-                controlKeyPressedActionHandler(e);
+    fun handleUserInput(): KeyAdapter {
+        return object : KeyAdapter() {
+            override fun keyPressed(e: KeyEvent) {
+                super.keyPressed(e)
+                controlKeyPressedActionHandler(e)
             }
 
-            @Override
-            public void keyReleased(KeyEvent e) {
-                super.keyReleased(e);
-                controlKeyReleasedActionHandler(e);
+            override fun keyReleased(e: KeyEvent) {
+                super.keyReleased(e)
+                controlKeyReleasedActionHandler(e)
             }
-        };
+        }
     }
 }

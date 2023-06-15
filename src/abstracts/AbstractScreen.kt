@@ -1,92 +1,84 @@
-package abstracts;
+package abstracts
 
-import constants.GameConstants;
-import threads.StarField;
+import constants.GameConstants
+import threads.StarField
+import java.awt.Color
+import java.awt.Graphics
+import java.awt.event.ActionEvent
+import java.awt.event.ComponentAdapter
+import java.awt.event.ComponentEvent
+import java.awt.image.BufferedImage
+import javax.swing.JPanel
+import javax.swing.Timer
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.image.BufferedImage;
-
-public abstract class AbstractScreen extends JPanel implements GameConstants {
+abstract class AbstractScreen : JPanel(), GameConstants {
     // An abstract class that provides basic functionality that all the screens in the game need.
     // It initializes the star field, automatically updates itself and provides a method for drawing items.
-
-    private StarField starField; // Every screen has the star field drawn and animated.
-    private Timer timer;
+    private var starField: StarField? = null // Every screen has the star field drawn and animated.
+    private var timer: Timer? = null
 
     // A buffer to draw all items on to.
     // All the game objects will be drawn onto this buffer
     // and then this buffer will be drawn onto the screen.
-    private BufferedImage buffer;
+    private var buffer: BufferedImage? = null
 
-    public AbstractScreen() {
+    init {
         // Constructor code inside this method. This pattern allows inheritors
         // to accept constructor parameters.
-        initialize();
+        initialize()
     }
 
-    private void initialize() {
-        setFocusable(true);
-        requestFocusInWindow();
-        setBackground(Color.BLACK);
-        addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                super.componentResized(e);
+    private fun initialize() {
+        isFocusable = true
+        requestFocusInWindow()
+        background = Color.BLACK
+        addComponentListener(object : ComponentAdapter() {
+            override fun componentResized(e: ComponentEvent) {
+                super.componentResized(e)
                 if (buffer == null) {
-                    buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+                    buffer = BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
                 }
-
                 if (starField == null) {
-                    starField = new StarField(getWidth(), getHeight());
-                    starField.start();
+                    starField = StarField(width, height)
+                    starField!!.start()
                 }
             }
-        });
-
-        timer = new Timer((int) GAME_UPDATE_RATE, e -> {
+        })
+        timer = Timer(GameConstants.GAME_UPDATE_RATE.toInt()) { e: ActionEvent? ->
 //            if (starField != null) starField.animate((float) GAME_UPDATE_RATE);
-            updateComponent();
-        });
+            updateComponent()
+        }
     }
 
-    public void startTimer() {
-        timer.start();
+    fun startTimer() {
+        timer!!.start()
     }
 
-    public void stopTimer() {
-        if (timer.isRunning()) timer.stop();
+    fun stopTimer() {
+        if (timer!!.isRunning) timer!!.stop()
     }
 
-    public void updateComponent() {
+    fun updateComponent() {
         // revalidate();
-        repaint();
+        repaint()
     }
 
     // Override this method to do screen specific drawing
     // This gets called in JPanel.paintComponent().
-    protected abstract void drawItems(Graphics g);
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    protected abstract fun drawItems(g: Graphics?)
+    override fun paintComponent(g: Graphics) {
+        super.paintComponent(g)
 
         // These are sometimes null when the component first gets created.
-        if (buffer == null || starField == null) return;
-
-        Graphics2D bufferGraphics = buffer.createGraphics(); // graphics for the buffer
+        if (buffer == null || starField == null) return
+        val bufferGraphics = buffer!!.createGraphics() // graphics for the buffer
 
         // Clear the buffer
-        bufferGraphics.setColor(Color.BLACK);
-        bufferGraphics.fillRect(0, 0, buffer.getWidth(), buffer.getHeight());
-
-        starField.draw(bufferGraphics, 0, 0);
-        drawItems(bufferGraphics);
-
-        bufferGraphics.dispose();
-
-        g.drawImage(buffer, 0, 0, null);
+        bufferGraphics.color = Color.BLACK
+        bufferGraphics.fillRect(0, 0, buffer!!.width, buffer!!.height)
+        starField!!.draw(bufferGraphics, 0, 0)
+        drawItems(bufferGraphics)
+        bufferGraphics.dispose()
+        g.drawImage(buffer, 0, 0, null)
     }
 }

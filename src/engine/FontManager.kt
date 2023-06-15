@@ -1,42 +1,36 @@
-package engine;
+package engine
 
-import constants.GameConstants;
+import constants.GameConstants
+import java.awt.Font
+import java.awt.FontFormatException
+import java.awt.GraphicsEnvironment
+import java.io.IOException
+import java.util.*
 
-import java.awt.*;
-import java.io.IOException;
-import java.util.Objects;
-
-public class FontManager implements GameConstants {
-    private static Font font;
-    private static Font fontTitle;
-    private static Font fontSubtitle;
-    private static Font fontText;
+object FontManager : GameConstants {
+    private var font: Font? = null
+    var fontTitle: Font? = null
+        private set
+    var fontSubtitle: Font? = null
+        private set
+    var fontText: Font? = null
+        private set
 
     // load font
-    public static void initialize(GraphicsEnvironment ge) {
+    @JvmStatic
+    fun initialize(ge: GraphicsEnvironment) {
         try {
-            font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(FontManager.class.getResourceAsStream(GameConstants.FONT_PATH)));
-            fontTitle = font.deriveFont(GameConstants.FONT_TITLE_SIZE);
-            fontSubtitle = font.deriveFont(GameConstants.FONT_SUBTITLE_SIZE);
-            fontText = font.deriveFont(GameConstants.FONT_TEXT_SIZE);
-        } catch (IOException | FontFormatException e) {
-            e.printStackTrace();
+            font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(FontManager::class.java.getResourceAsStream(GameConstants.FONT_PATH)))
+            fontTitle = font.deriveFont(GameConstants.FONT_TITLE_SIZE)
+            fontSubtitle = font.deriveFont(GameConstants.FONT_SUBTITLE_SIZE)
+            fontText = font.deriveFont(GameConstants.FONT_TEXT_SIZE)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } catch (e: FontFormatException) {
+            e.printStackTrace()
         }
-
         if (font != null) {
-            ge.registerFont(font);
+            ge.registerFont(font)
         }
-    }
-
-    public static Font getFontSubtitle() {
-        return fontSubtitle;
-    }
-
-    public static Font getFontTitle() {
-        return fontTitle;
-    }
-
-    public static Font getFontText() {
-        return fontText;
     }
 }

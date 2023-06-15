@@ -1,32 +1,22 @@
-package ui;
+package ui
 
-import abstracts.AbstractScreen;
-import constants.GameConstants;
-import items.Player;
+import abstracts.AbstractScreen
+import constants.GameConstants
+import items.Player
+import java.awt.Color
+import java.awt.Graphics
 
-import java.awt.*;
-
-public class GameOverScreen extends AbstractScreen implements GameConstants {
-    private final Player player;
-
-    public GameOverScreen(Player player) {
-        super();
-        this.player = player;
-    }
-
-    @Override
-    protected void drawItems(Graphics g) {
+class GameOverScreen(private val player: Player) : AbstractScreen(), GameConstants {
+    override fun drawItems(g: Graphics?) {
         // Draw the game over text and the player score
-        g.setColor(Color.WHITE);
-        g.setFont(FONT_TITLE);
-
-        String gameOver = "Game Over!";
-        int gameOverWidth = g.getFontMetrics().stringWidth(gameOver);
-        g.drawString(gameOver, getWidth() / 2 - gameOverWidth / 2, 300);
-
-        g.setFont(FONT_SUBTITLE);
-        String score = String.format("Score: %d", player.getScore());
-        int scoreWidth = g.getFontMetrics().stringWidth(score);
-        g.drawString(score, getWidth() / 2 - scoreWidth / 2, 350);
+        g!!.color = Color.WHITE
+        g.font = GameConstants.FONT_TITLE
+        val gameOver = "Game Over!"
+        val gameOverWidth = g.fontMetrics.stringWidth(gameOver)
+        g.drawString(gameOver, width / 2 - gameOverWidth / 2, 300)
+        g.font = GameConstants.FONT_SUBTITLE
+        val score = String.format("Score: %d", player.score)
+        val scoreWidth = g.fontMetrics.stringWidth(score)
+        g.drawString(score, width / 2 - scoreWidth / 2, 350)
     }
 }

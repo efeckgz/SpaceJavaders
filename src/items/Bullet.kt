@@ -1,117 +1,98 @@
-package items;
+package items
 
-import abstracts.AbstractGameItem;
-import engine.TimeManager;
-import main.Main;
+import abstracts.AbstractGameItem
+import constants.GameConstants
+import engine.TimeManager.startTimer
+import main.Main
+import java.awt.Color
+import java.awt.Graphics
+import java.awt.event.ActionEvent
+import java.awt.geom.Point2D
+import java.awt.image.BufferedImage
 
-import java.awt.*;
-import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-
-public class Bullet extends AbstractGameItem {
-    private static final ArrayList<Bullet> bullets = new ArrayList<>(); // A thread safe ArrayList
-    private static final BufferedImage assetSetter;
-
-    static {
-        // Set the asset here
-        assetSetter = new BufferedImage(BULLET_WIDTH, BULLET_HEIGHT, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = assetSetter.createGraphics();
-
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, assetSetter.getWidth(), assetSetter.getHeight());
-
-        g.dispose();
-    }
-
-    private final Player player;
-
-    public Bullet(Player player) {
-        super();
-
-        this.player = player;
+class Bullet(private val player: Player) : AbstractGameItem() {
+    init {
 
         // Place the bullet at the center of the players asset and just above it
-        setPosition(new Point2D.Double(
-                (player.getPosition().getX() + (double) player.getAsset().getWidth() / 2) - (double) BULLET_WIDTH / 2,
-                player.getPosition().getY() - player.getAsset().getHeight()
-        ));
-
-        setAsset(assetSetter);
-
+        position = Point2D.Double(
+                player.position.getX() + player.asset!!.width.toDouble() / 2 - GameConstants.BULLET_WIDTH.toDouble() / 2,
+                player.position.getY() - player.asset!!.height
+        )
+        asset = assetSetter
         if (Main.debug) {
-            TimeManager.startTimer(1000, e -> {
+            startTimer(1000, { e: ActionEvent? ->
                 if (isValid()) {
                     System.out.printf(
                             "models.Bullet %s location (x, y): %.2f, %.2f\n",
-                            Bullet.getBullets().indexOf(this),
-                            getPosition().getX(),
-                            getPosition().getY()
-                    );
+                            bullets.indexOf(this),
+                            position.getX(),
+                            position.getY()
+                    )
                 }
-            }, () -> !player.isValid());
+            }) { !player.isValid() }
         }
-
-        bullets.add(this);
+        bullets.add(this)
     }
 
-    public static ArrayList<Bullet> getBullets() {
-        return bullets;
-    }
-
-    public void checkForCollisions(Runnable gameOverAction) {
+    fun checkForCollisions(gameOverAction: Runnable) {
         if (isValid) {
-            for (Alien alien : Alien.getAliens()) {
-                if (alien.isValid() && this.intersects(alien)) {
-                    this.setIsValid(false); // Kill the bullet on impact
-
-                    alien.setLivesLeft(alien.getLivesLeft() - 1); // Decrease alien life
-                    alien.setIsValid(); // Kill the alien if it has no lives left
+            for (alien in Alien.aliens) {
+                if (alien.isValid() && intersects(alien)) {
+                    this.setIsValid(false) // Kill the bullet on impact
+                    alien.livesLeft = alien.livesLeft - 1 // Decrease alien life
+                    alien.setIsValid() // Kill the alien if it has no lives left
 
                     // Things to do if the alien is dead
                     if (!alien.isValid()) {
                         // increment player score
-                        player.setScore(player.getScore() + 1);
-                        player.setCurrentHighScore(Math.max(player.getCurrentHighScore(), player.getScore()));
+                        player.score = player.score + 1
+                        player.currentHighScore = Math.max(player.currentHighScore, player.score)
 
                         // If all the aliens are dead, show the game over screen
-                        if (Alien.getAliens().stream().noneMatch(AbstractGameItem::isValid)) {
-                            gameOverAction.run();
+                        if (Alien.aliens.stream().noneMatch { obj: Alien -> obj.isValid() }) {
+                            gameOverAction.run()
                         }
                     }
-
-                    return; // Do not keep checking if the bullet hits other aliens
+                    return  // Do not keep checking if the bullet hits other aliens
                 }
             }
         }
     }
 
-    @Override
-    protected void setIsValid() {
-        this.isValid = getPosition().y > 0;
+    override fun setIsValid() {
+        isValid = position.y > 0
     }
 
-    @Override
-    public void setIsValid(boolean isValid) {
-        this.isValid = isValid;
+    public override fun setIsValid(isValid: Boolean) {
+        this.isValid = isValid
     }
 
-    @Override
-    public double getTravelSpeed() {
-        return BULLET_TRAVEL_SPEED;
+    override val travelSpeed: Double
+        get() = GameConstants.BULLET_TRAVEL_SPEED.toDouble()
+
+    public override fun updatePosition(deltaTime: Float) {
+        position.y -= travelSpeed * deltaTime
+        setIsValid()
     }
 
-    @Override
-    public void updatePosition(float deltaTime) {
-        getPosition().y -= getTravelSpeed() * deltaTime;
-        setIsValid();
-    }
-
-    @Override
-    protected void draw(Graphics g) {
+    override fun draw(g: Graphics?) {
         if (isValid()) {
-            g.drawImage(getAsset(), (int) getPosition().getX(), (int) getPosition().getY(), null);
+            g!!.drawImage(asset, position.getX().toInt(), position.getY().toInt(), null)
+        }
+    }
+
+    companion object {
+        @JvmField
+        val bullets = ArrayList<Bullet>() // A thread safe ArrayList
+        private val assetSetter: BufferedImage? = null
+
+        init {
+            // Set the asset here
+            assetSetter = BufferedImage(GameConstants.BULLET_WIDTH, GameConstants.BULLET_HEIGHT, BufferedImage.TYPE_INT_RGB)
+            val g = assetSetter.createGraphics()
+            g.color = Color.WHITE
+            g.fillRect(0, 0, assetSetter.width, assetSetter.height)
+            g.dispose()
         }
     }
 }
-

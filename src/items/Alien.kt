@@ -1,57 +1,27 @@
-package items;
+package items
 
-import abstracts.AbstractGameItem;
-import constants.GameConstants;
-import engine.ImageManager;
+import abstracts.AbstractGameItem
+import constants.GameConstants
+import engine.ImageManager.load
+import java.awt.Graphics
+import java.awt.geom.Point2D
 
-import java.awt.*;
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
+open class Alien(val isStrong: Boolean, private val player: Player) : AbstractGameItem(), GameConstants {
+    @JvmField
+    var livesLeft: Int
 
-public class Alien extends AbstractGameItem implements GameConstants {
-    private static final ArrayList<Alien> aliens = new ArrayList<>();
-    private final boolean isStrong;
-    private final Player player;
-    private int livesLeft;
-
-    public Alien(boolean isStrong, Player player) {
-        super();
-
-        this.isStrong = isStrong;
-        this.player = player;
-
-        livesLeft = isStrong ? 2 : 1; // this does not work for some reason
-        aliens.add(this);
+    init {
+        livesLeft = if (isStrong) 2 else 1 // this does not work for some reason
+        aliens.add(this)
     }
 
-    public static ArrayList<Alien> getAliens() {
-        return aliens;
-    }
+    override val travelSpeed: Double
+        get() = GameConstants.ALIEN_TRAVEL_SPEED
 
-    public boolean getIsStrong() {
-        return isStrong;
-    }
-
-    public int getLivesLeft() {
-        return livesLeft;
-    }
-
-    public void setLivesLeft(int livesLeft) {
-        this.livesLeft = livesLeft;
-    }
-
-
-    @Override
-    public double getTravelSpeed() {
-        return ALIEN_TRAVEL_SPEED;
-    }
-
-    @Override
-    public void updatePosition(float deltaTime) {
-        Point2D.Double pos = getPosition();
-        double newY = pos.getY() + getTravelSpeed() * deltaTime;
-
-        setPosition(new Point2D.Double(pos.getX(), newY));
+    public override fun updatePosition(deltaTime: Float) {
+        val pos = position
+        val newY = pos.getY() + travelSpeed * deltaTime
+        position = Point2D.Double(pos.getX(), newY)
 
 //        if (newY >= SCREEN_HEIGHT) {
 //            player.setLivesLeft(player.getLivesLeft() - 1);
@@ -60,48 +30,46 @@ public class Alien extends AbstractGameItem implements GameConstants {
 //        }
     }
 
-    @Override
-    protected void draw(Graphics g) {
+    override fun draw(g: Graphics?) {
         if (isValid()) {
-            g.drawImage(getAsset(), (int) getPosition().getX(), (int) getPosition().getY(), null);
+            g!!.drawImage(asset, position.getX().toInt(), position.getY().toInt(), null)
         }
     }
 
-    @Override
-    public void setIsValid() {
-        this.isValid = livesLeft > 0;
+    public override fun setIsValid() {
+        isValid = livesLeft > 0
     }
 
-    @Override
-    protected void setIsValid(boolean isValid) {
+    override fun setIsValid(isValid: Boolean) {
         // ignored
     }
 
-    public static class RedAlien extends Alien {
-        public RedAlien(boolean isStrong, Player player) {
-            super(isStrong, player);
-            setAsset(ImageManager.load(RED_ALIEN_ASSET_PATH));
+    class RedAlien(isStrong: Boolean, player: Player) : Alien(isStrong, player) {
+        init {
+            asset = load(GameConstants.RED_ALIEN_ASSET_PATH)
         }
     }
 
-    public static class GreenAlien extends Alien {
-        public GreenAlien(boolean isStrong, Player player) {
-            super(isStrong, player);
-            setAsset(ImageManager.load(GREEN_ALIEN_ASSET_PATH));
+    class GreenAlien(isStrong: Boolean, player: Player) : Alien(isStrong, player) {
+        init {
+            asset = load(GameConstants.GREEN_ALIEN_ASSET_PATH)
         }
     }
 
-    public static class YellowAlien extends Alien {
-        public YellowAlien(boolean isStrong, Player player) {
-            super(isStrong, player);
-            setAsset(ImageManager.load(YELLOW_ALIEN_ASSET_PATH));
+    class YellowAlien(isStrong: Boolean, player: Player) : Alien(isStrong, player) {
+        init {
+            asset = load(GameConstants.YELLOW_ALIEN_ASSET_PATH)
         }
     }
 
-    public static class ExtraAlien extends Alien {
-        public ExtraAlien(boolean isStrong, Player player) {
-            super(isStrong, player);
-            setAsset(ImageManager.load(EXTRA_ALIEN_ASSET_PATH));
+    class ExtraAlien(isStrong: Boolean, player: Player) : Alien(isStrong, player) {
+        init {
+            asset = load(GameConstants.EXTRA_ALIEN_ASSET_PATH)
         }
+    }
+
+    companion object {
+        @JvmField
+        val aliens = ArrayList<Alien>()
     }
 }

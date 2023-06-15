@@ -1,11 +1,13 @@
-package main;
+package main
 
-import engine.StartupUtilities;
+import engine.StartupUtilities.start
 
-public class Main {
-    public static boolean debug = false;
+object Main {
+    @JvmField
+    var debug = false
 
-    public static void main(String[] args) {
-        StartupUtilities.start();
+    @JvmStatic
+    fun main(args: Array<String>) {
+        start()
     }
 }
