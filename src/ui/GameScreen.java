@@ -17,7 +17,6 @@ import java.awt.geom.Point2D;
 public class GameScreen extends AbstractScreen implements GameConstants {
     private final GameUpdateThread gameUpdateThread;
     private final Player player;
-    private final Alien[][] aliens;
 
     public GameScreen() {
         super();
@@ -31,7 +30,7 @@ public class GameScreen extends AbstractScreen implements GameConstants {
 
         // This only draws the first level - need support for drawing more levels
         int[][] LEVEL_ONE = Levels.LEVEL_ONE;
-        aliens = new Alien[LEVEL_ONE.length][LEVEL_ONE[0].length];
+        Alien[][] aliens = new Alien[LEVEL_ONE.length][LEVEL_ONE[0].length];
 
         // Calculate total width of aliens and starting x position
         int totalAliensWidth = LEVEL_ONE[0].length * (ALIEN_WIDTH + ALIEN_PADDING);
@@ -179,6 +178,6 @@ public class GameScreen extends AbstractScreen implements GameConstants {
 
         g.setFont(FONT_TEXT);
         g.drawString(String.format("Score: %d", player.getScore()), getWidth() - 75, 25);
-        g.drawString(String.format("High score: %d", player.getCurrentHighScore()), getWidth() - 118, 35);
+        g.drawString(String.format("High score: %d", player.getCurrentHighScore()), getWidth() - 127, 35);
     }
 }

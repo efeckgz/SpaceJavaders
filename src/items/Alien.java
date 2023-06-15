@@ -51,11 +51,13 @@ public class Alien extends AbstractGameItem implements GameConstants {
         Point2D.Double pos = getPosition();
         double newY = pos.getY() + getTravelSpeed() * deltaTime;
 
-        if (newY >= PLAYER_STARTING_POSITION.getY()) {
-            player.setLivesLeft(player.getLivesLeft() - 1);
-        }
-
         setPosition(new Point2D.Double(pos.getX(), newY));
+
+//        if (newY >= SCREEN_HEIGHT) {
+//            player.setLivesLeft(player.getLivesLeft() - 1);
+//            setIsValid(false);
+//            System.out.printf("Yes: %s\n", this.getClass().getName());
+//        }
     }
 
     @Override
