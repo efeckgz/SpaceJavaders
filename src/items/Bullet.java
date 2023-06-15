@@ -7,10 +7,10 @@ import main.Main;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.ArrayList;
 
 public class Bullet extends AbstractGameItem {
-    private static final CopyOnWriteArrayList<Bullet> bullets = new CopyOnWriteArrayList<>(); // A thread safe ArrayList
+    private static final ArrayList<Bullet> bullets = new ArrayList<>(); // A thread safe ArrayList
     private static final BufferedImage assetSetter;
 
     static {
@@ -55,7 +55,7 @@ public class Bullet extends AbstractGameItem {
         bullets.add(this);
     }
 
-    public static CopyOnWriteArrayList<Bullet> getBullets() {
+    public static ArrayList<Bullet> getBullets() {
         return bullets;
     }
 
@@ -80,7 +80,7 @@ public class Bullet extends AbstractGameItem {
                         }
                     }
 
-                    return;
+                    return; // Do not keep checking if the bullet hits other aliens
                 }
             }
         }

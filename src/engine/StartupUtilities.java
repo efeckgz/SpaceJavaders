@@ -12,7 +12,7 @@ public class StartupUtilities {
 
         // Log info & sources
         System.out.println(
-                "Space Javaders: Bytecode Battle\nCreated by Efe Açıkgöz\n\nSources:\nFont: https://www.dafont.com/upheaval.font\nAssets: https://opengameart.org/content/assets-for-a-space-invader-like-game"
+                "Space Javaders: Bytecode Battle\nCreated by Efe Açıkgöz\n\nFont: https://www.dafont.com/upheaval.font\nAssets: https://opengameart.org/content/assets-for-a-space-invader-like-game"
         );
 
         UserManager.createUsersFile(); // Create the users file on the first start of the program

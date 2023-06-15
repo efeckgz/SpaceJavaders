@@ -24,9 +24,6 @@ public class StartScreen extends AbstractScreen implements GameConstants {
         TimeManager.startTimer(1000 / 3, e -> {
             cycleTitleColors();
             cycleLoggedInActive();
-//            if (!LoginRegisterDialog.LOGGED_IN) {
-//                cycleLoggedInActive();
-//            }
         });
 
         // load alien assets and add them to the array

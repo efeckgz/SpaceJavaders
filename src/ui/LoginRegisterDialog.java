@@ -90,28 +90,6 @@ public class LoginRegisterDialog extends JDialog {
         }
     }
 
-
-//    public static void saveHighScore(Player player) {
-//        /* Read the file to find the username and append the high score to the end of the appropriate line.
-//         Add all the lines to a List and reconstruct the file from that list to keep it updated.*/
-//
-//        String playerUsername = player.getUsername();
-//        String playerHighScoreStr = Integer.toString(player.getCurrentHighScore());
-//        ArrayList<String> lines = new ArrayList<>(); // read files into this
-//
-//        UserManager.forEach(user -> {
-//            if (user[0].equals(playerUsername)) {
-//                user[2] = playerHighScoreStr;
-//            }
-//            lines.add(String.join(",", user));
-//        });
-//
-//        // Reconstruct the file from the ArrayList
-//        for (String line : lines) {
-//            UserManager.addUser(line);
-//        }
-//    }
-
     private class SubmitButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -146,32 +124,6 @@ public class LoginRegisterDialog extends JDialog {
                             JOptionPane.ERROR_MESSAGE
                     );
                 }
-//                AtomicBoolean canRegister = new AtomicBoolean(false);
-//
-//                // check the file for if the username already exists
-//                UserManager.forEach(user -> {
-//                    if (user[0].equals(username)) {
-//                        JOptionPane.showMessageDialog(
-//                                null,
-//                                String.format("The username %s already exists!", username),
-//                                "Error",
-//                                JOptionPane.ERROR_MESSAGE
-//                        );
-//                    } else {
-//                        canRegister.set(true);
-//                    }
-//                });
-//
-//                // Add the user if the username does not exist.
-//                if (canRegister.get()) {
-//                    UserManager.addUser(String.format("%s,%s,0", username, password));
-//                    JOptionPane.showMessageDialog(
-//                            null,
-//                            String.format("Registered user %s.", username),
-//                            "Success",
-//                            JOptionPane.INFORMATION_MESSAGE
-//                    );
-//                }
             } else { // Login
                 /* Variable that checks if the entered password is correct and shows a dialog
                  if it is not.*/
