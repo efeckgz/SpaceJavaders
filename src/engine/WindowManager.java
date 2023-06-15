@@ -4,6 +4,7 @@ import abstracts.AbstractGameItem;
 import abstracts.AbstractScreen;
 import constants.GameConstants;
 import threads.GameUpdateThread;
+import threads.UpdateScreensThread;
 import ui.*;
 
 import javax.swing.*;
@@ -12,6 +13,7 @@ import java.awt.*;
 public class WindowManager extends JFrame implements GameConstants {
     private final JMenuItem backToStartItem;
     private final JMenuItem playGameItem;
+    private final UpdateScreensThread updateScreensThread;
 
     public WindowManager() {
         // Load the game font
@@ -19,12 +21,10 @@ public class WindowManager extends JFrame implements GameConstants {
 
         // Loading the start screen
         StartScreen startScreen = new StartScreen();
-        startScreen.startTimer(); // Start the timer of start screen
+//        startScreen.startTimer(); // Start the timer of start screen
         add(startScreen);
-
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth();
-        double height = screenSize.getHeight();
+        updateScreensThread = new UpdateScreensThread(this);
+        updateScreensThread.start();
 
         // setting window properties
         setTitle(WINDOW_TITLE);
@@ -87,9 +87,11 @@ public class WindowManager extends JFrame implements GameConstants {
         AbstractScreen currentAbstractScreen = (AbstractScreen) current;
         currentAbstractScreen.stopTimer();
 
+        updateScreensThread.stop();
         remove(currentAbstractScreen); // Remove the current screen
         add(abstractScreen); // add the desired screen
-        abstractScreen.startTimer(); // Start the update timer for the screen to add
+        updateScreensThread.start();
+//        abstractScreen.startTimer(); // Start the update timer for the screen to add
         abstractScreen.requestFocusInWindow();
 
         updateMenuItems();
