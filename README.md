@@ -1,2 +1,2 @@
-# SpaceJavaders
-A Java implementation of SpaceInvaders.
+# SpaceJavaders: ByteCode Battle
+A Java implementation of popular arcade game Space Invaders.
