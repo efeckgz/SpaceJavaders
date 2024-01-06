@@ -9,12 +9,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class AbstractGameItem implements GameConstants {
     /* Every game object must extend this abstract class. The abstract class includes the position of the item
-     and methods to update it. This abstract class may get bigger in the future.*/
+     and methods to update it. */
 
     /* CopyOnWriteArrayList that holds all the game items in it. Loop over this ArrayList and run
-     updatePosition() and draw() methods on everything.
-     This is a special type of ArrayList that achieves thread safety, at the cost of system resources
-     by making a copy of the ArrayList when dealing with mutative operations such as adding and removing.*/
+     updatePosition() and draw() methods on everything. */
     private static final CopyOnWriteArrayList<AbstractGameItem> items = new CopyOnWriteArrayList<>();
 
     // A Point2D instance holds the position of each GameItem. This one here uses the double data type.

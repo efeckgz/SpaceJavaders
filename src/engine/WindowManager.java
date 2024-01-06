@@ -78,10 +78,10 @@ public class WindowManager extends JFrame implements GameConstants {
     private void switchScreens(AbstractScreen abstractScreen) {
         JPanel current = (JPanel) getContentPane().getComponent(0);
         if (current instanceof GameScreen) {
-            // If the player is switching from GamePanel, save their game progress and stop the game loop
-            GameScreen gp = (GameScreen) current;
-            LoginRegisterDialog.saveHighScore(gp.getPlayer());
-            gp.stopGameThread();
+            // If the player is switching from GameScreen, save their game progress and stop the game loop
+            GameScreen gs = (GameScreen) current;
+            LoginRegisterDialog.saveHighScore(gs.getPlayer());
+            gs.stopGameThread();
         }
 
         AbstractScreen currentAbstractScreen = (AbstractScreen) current;
