@@ -24,7 +24,6 @@ public class ImageManager implements GameConstants {
     }
 
     // This method loads the appropriate image to display the player's remaining lives.
-    // Only called from the paintComponent() method of GamePanel.
     public static void displayLivesLeft(Player p, Graphics g) {
         String path;
         try {

@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Bullet extends AbstractGameItem {
-    private static final ArrayList<Bullet> bullets = new ArrayList<>(); // A thread safe ArrayList
+    private static final ArrayList<Bullet> bullets = new ArrayList<>();
     private static final BufferedImage assetSetter;
 
     static {
